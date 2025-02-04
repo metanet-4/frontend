@@ -1,0 +1,10 @@
+{
+  "message": {
+    "hello": "Hello, {userId}!"
+  },
+  "menu": {
+    "menu1": "menu1",
+    "menu2": "menu2",
+    "menu3": "menu3"
+  }
+}
