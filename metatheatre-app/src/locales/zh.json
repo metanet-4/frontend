@@ -1,0 +1,10 @@
+{
+  "message": {
+    "hello": "你好，{userId}!"
+  },
+  "menu": {
+    "menu1": "菜单1",
+    "menu2": "菜单2",
+    "menu3": "菜单3"
+  }
+}
