@@ -14,9 +14,9 @@ import BottomBar from "./components/BottomBar.vue";
   width: 100vw;
   max-width: 390px;
   height: 100vh;
-  margin: 0 auto; /* 가운데 정렬 */
+  margin: 0 auto;
   overflow: hidden;
-  position: relative; /* 하위 요소를 기준으로 위치 설정 가능 */
+  position: relative;
   background-color: white;
 }
 </style>

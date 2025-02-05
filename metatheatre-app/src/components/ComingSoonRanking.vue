@@ -1,6 +1,6 @@
 <template>
-  <div class="bo-ranking">
-    <p class="title">{{ $t("title.bo-ranking") }}</p>
+  <div class="cs-ranking">
+    <p class="title">{{ $t("title.cs-ranking") }}</p>
     <vueper-slides
       class="no-shadow"
       :visible-slides="4"
@@ -18,7 +18,8 @@ import "vueperslides/dist/vueperslides.css";
 </script>
 
 <style>
-.bo-ranking {
+.cs-ranking {
+  margin-top: 50px;
   height: 200px;
   background-color: #f8f8f8;
 }

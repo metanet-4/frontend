@@ -6,6 +6,8 @@
   </div>
 </template>
 
+<script setup></script>
+
 <style scoped>
 .bottom-bar {
   width: 100%;

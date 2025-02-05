@@ -42,19 +42,41 @@
       </button>
     </div>
     <div class="buttons">
-      <CustomButton label="한국어" bgColor="#ADA7D1" />
-      <CustomButton label="English" bgColor="#ADA7D1" />
-      <CustomButton label="中文" bgColor="#ADA7D1" />
-      <CustomButton label="日本語" bgColor="#ADA7D1" />
+      <CustomButton
+        v-for="lang in ['kr', 'en', 'zh', 'ja']"
+        :key="lang"
+        @click="changeLanguage(lang)"
+        :label="getLanguageLabel(lang)"
+        :bgColor="computedBgColor(lang)"
+      />
     </div>
     <BoxOfficeRanking />
+    <ComingSoonRanking />
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import NavBar from "../components/NavBar.vue";
 import CustomButton from "../components/CustomButton.vue";
 import BoxOfficeRanking from "../components/BoxOfficeRanking.vue";
+import ComingSoonRanking from "../components/ComingSoonRanking.vue";
+
+const { locale } = useI18n();
+
+const changeLanguage = (lang) => {
+  locale.value = lang;
+};
+
+const computedBgColor = (lang) => {
+  return locale.value === lang ? null : "#ADA7D1";
+};
+
+const getLanguageLabel = (lang) => {
+  const labels = { kr: "한국어", en: "English", zh: "中文", ja: "日本語" };
+  return labels[lang];
+};
 </script>
 
 <style>
@@ -68,6 +90,6 @@ import BoxOfficeRanking from "../components/BoxOfficeRanking.vue";
 .buttons {
   display: flex;
   gap: 5px;
-  margin: 5px;
+  margin: 10px;
 }
 </style>

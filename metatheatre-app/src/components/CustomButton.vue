@@ -1,36 +1,25 @@
 <template>
-  <button :style="buttonStyle">
-    {{ label }}
-  </button>
+  <button :style="buttonStyle">{{ label }}</button>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
-// props를 받아서 변수로 저장
+// props 받아서 변수로 저장
 const props = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  bgColor: {
-    type: String,
-    default: "#281B7A",
-  },
-  textColor: {
-    type: String,
-    default: "#ffffff",
-  },
+  label: String,
+  bgColor: String,
+  textColor: String,
 });
 
 // 버튼 스타일을 동적으로 설정
 const buttonStyle = computed(() => ({
-  backgroundColor: props.bgColor, // props를 통해 접근
-  color: props.textColor,
+  backgroundColor: props.bgColor ?? "#281B7A",
+  color: props.textColor ?? "white",
   padding: "10px 10px",
   fontSize: "12px",
   border: "none",
-  borderRadius: "10px",
+  borderRadius: "15px",
   cursor: "pointer",
   transition: "opacity 0.3s",
   textAlign: "center",
