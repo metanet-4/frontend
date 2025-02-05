@@ -12,15 +12,15 @@
 .bottom-bar {
   width: 100%;
   max-width: 390px;
-  height: 80px;
+  height: 70px;
   background: #f3f3f3;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  position: absolute; /* 부모 컨테이너(mobile-container)를 기준으로 */
+  position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%); /* 정 중앙 정렬 */
+  transform: translateX(-50%);
   z-index: 1000;
 }
 </style>

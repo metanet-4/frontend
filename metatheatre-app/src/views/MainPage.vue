@@ -56,7 +56,6 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import NavBar from "../components/NavBar.vue";
 import CustomButton from "../components/CustomButton.vue";
@@ -81,9 +80,16 @@ const getLanguageLabel = (lang) => {
 
 <style>
 .wrapper {
-  height: 100%;
-  padding-top: 120px;
-  padding-bottom: 80px;
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  position: absolute;
+  top: 125px;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: white;
 }
 
