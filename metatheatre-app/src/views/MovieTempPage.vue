@@ -1,9 +1,9 @@
 <script>
 export default {
-    name: 'MainPage',
+    name: 'MovieTempPage',
     methods: {
-        buyProduct(productId) {
-            this.$router.push(`/movie/${productId}`); // Vue Router 사용하여 페이지 이동
+        buyProduct(movieId) {
+            this.$router.push(`/movie/${movieId}`); // Vue Router 사용하여 페이지 이동
         },
     },
 };

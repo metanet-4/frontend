@@ -6,7 +6,7 @@ import MovieDetail from '../components/MovieDetail.vue'; // 상세 페이지 컴
 const routes = [
     { path: '/', component: MainPage },
     { path: '/movie', component: MovieTempPage },
-    { path: '/movie/:productId', component: MovieDetail }, // 동적 라우트 추가
+    { path: '/movie/:movieId', component: MovieDetail }, // 동적 라우트 추가
 ];
 
 const router = createRouter({
