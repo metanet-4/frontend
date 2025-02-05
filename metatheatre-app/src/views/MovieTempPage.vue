@@ -15,7 +15,7 @@ export default {
     </div>
 
     <div class="two">
-        <button class="two" @click="buyProduct('20249281')">2번</button>
+        <router-link :to="{ name: 'Detail', params: { movieId: '20233218' } }"><button>2번테스트</button></router-link>
     </div>
 </template>
 

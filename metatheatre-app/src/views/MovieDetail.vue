@@ -1,38 +1,42 @@
 <template>
-    <YouTube
-        v-if="youtubeVideoId"
-        class="youtube-player"
-        :src="`https://www.youtube.com/watch?v=${youtubeVideoId}`"
-        @ready="onReady"
-        ref="youtube"
-        :width="390"
-        :height="250"
-        :key="youtubeVideoId"
-    />
-    <!-- 도넛 차트 -->
-    <div class="chart-container">
-        <div class="chart-box">
-            <apexchart type="donut" width="200" :options="chartOptionsDoughnut" :series="seriesDoughnut" />
-        </div>
-    </div>
+    <NavBar />
+    <div class="wrapper">
+        <YouTube
+            v-if="youtubeVideoId"
+            class="youtube-player"
+            :src="`https://www.youtube.com/watch?v=${youtubeVideoId}`"
+            @ready="onReady"
+            ref="youtube"
+            :width="390"
+            :height="250"
+            :key="youtubeVideoId"
+        />
 
-    <div class="chart-container">
-        <!-- 바 차트 -->
-        <div>
-            <apexchart width="190" type="bar" :options="chartOptionsBar" :series="seriesBar"></apexchart>
+        <div v-if="movie">
+            <h1>{{ movie.krName }}</h1>
+            <img :src="movie.mainImage" alt="영화 이미지" width="390" />
+            <p>{{ movie.description }}</p>
+            <p>누적 관객수: {{ movie.totalAudience }}</p>
+            <button @click="likeMovie">좋아요</button>
+            <button @click="bookMovie">예매하기</button>
         </div>
-        <!-- 새 바 차트 (남성 vs 여성) -->
-        <div>
-            <apexchart width="190" type="bar" :options="chartOptionsGender" :series="seriesGender"></apexchart>
+        <!-- 도넛 차트 -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <apexchart type="donut" width="200" :options="chartOptionsDoughnut" :series="seriesDoughnut" />
+            </div>
         </div>
-    </div>
-    <div v-if="movie">
-        <h1>{{ movie.krName }}</h1>
-        <img :src="movie.mainImage" alt="영화 이미지" />
-        <p>{{ movie.description }}</p>
-        <p>누적 관객수: {{ movie.totalAudience }}</p>
-        <button @click="likeMovie">좋아요</button>
-        <button @click="bookMovie">예매하기</button>
+
+        <div class="chart-container">
+            <!-- 바 차트 -->
+            <div>
+                <apexchart width="190" type="bar" :options="chartOptionsBar" :series="seriesBar"></apexchart>
+            </div>
+            <!-- 새 바 차트 (남성 vs 여성) -->
+            <div>
+                <apexchart width="190" type="bar" :options="chartOptionsGender" :series="seriesGender"></apexchart>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -40,9 +44,10 @@
 import { defineComponent } from 'vue';
 import YouTube from 'vue3-youtube';
 import VueApexCharts from 'vue3-apexcharts';
+import NavBar from '../components/NavBar.vue';
 
 export default defineComponent({
-    components: { YouTube, apexchart: VueApexCharts },
+    components: { YouTube, apexchart: VueApexCharts, NavBar },
     data() {
         return {
             movie: null,
@@ -165,6 +170,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.wrapper {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    position: absolute;
+    top: 125px;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: white;
+}
+
 .youtube-player {
     max-width: 390px;
 }
