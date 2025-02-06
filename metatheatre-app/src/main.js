@@ -8,6 +8,7 @@ import i18n from "./i18n";
 import VueApexCharts from "vue3-apexcharts";
 import store from "./store/modules/modalStore";
 import axios from "axios";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 axios.defaults.withCredentials = true;
 
