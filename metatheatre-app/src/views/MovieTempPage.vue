@@ -2,8 +2,11 @@
 export default {
     name: 'MovieTempPage',
     methods: {
-        buyProduct(movieId) {
-            this.$router.push(`/movie/${movieId}`); // Vue Router 사용하여 페이지 이동
+        getDetail(movieId) {
+            this.$router.push({
+                name: 'Detail',
+                params: { movieId },
+            });
         },
     },
 };
@@ -11,11 +14,7 @@ export default {
 
 <template>
     <div class="one">
-        <button class="one" @click="buyProduct('20223819')">1번</button>
-    </div>
-
-    <div class="two">
-        <router-link :to="{ name: 'Detail', params: { movieId: '20233218' } }"><button>2번테스트</button></router-link>
+        <router-link :to="{ name: 'Detail', params: { movieId: '20223819' } }"><button>1번테스트</button></router-link>
     </div>
 </template>
 
