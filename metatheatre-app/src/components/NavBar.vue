@@ -1,6 +1,8 @@
 <template>
   <nav class="nav-bar">
-    <img :src="logo" alt="로고 이미지" class="logo" />
+    <router-link to="/">
+      <img :src="logo" alt="로고 이미지" class="logo"
+    /></router-link>
     <div>검색창</div>
   </nav>
 </template>
