@@ -88,7 +88,9 @@ const goToDetail = (reservationCode) => {
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
     try {
-        const response = await fetch('http://localhost:8080/mypage');
+        const response = await fetch('http://localhost:8080/mypage', {
+            credentials: 'include',
+        });
         if (response.ok) {
             const data = await response.json();
             mypageData.value = data; // 받은 데이터를 반영
