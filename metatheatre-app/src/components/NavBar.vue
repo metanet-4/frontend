@@ -1,24 +1,14 @@
 <template>
-<<<<<<< HEAD
     <nav class="nav-bar">
-        <img :src="logo" alt="로고 이미지" class="logo" />
+        <router-link to="/"> <img :src="logo" alt="로고 이미지" class="logo" /></router-link>
         <div>검색창</div>
         <button @click="openLikeList">❤️</button>
     </nav>
-    <Modal />
-=======
-  <nav class="nav-bar">
-    <router-link to="/">
-      <img :src="logo" alt="로고 이미지" class="logo"
-    /></router-link>
-    <div>검색창</div>
-  </nav>
->>>>>>> 628d9cbe64245639e296b6a98f299d2146c62c6a
 </template>
 
 <script setup>
 import logo from '../assets/logo.png';
-import Modal from './LikeModal.vue';
+import LikeModal from './LikeModal.vue';
 import { useStore } from 'vuex';
 
 const store = useStore(); // store 사용
