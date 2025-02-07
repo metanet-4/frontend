@@ -1,11 +1,24 @@
-<!-- 박스오피스 목록 컴포넌트 -->
-<!-- 여기에서 해야 할 일
-  1. 박스오피스 영화 목록 가져오는 요청
-  2. 영화 단일 컴포넌트로 목록 보여 주기 -->
-<template><div>박스오피스 목록 컴포넌트</div></template>
+<template>
+  <div class="boMovies">
+    <p v-for="movie in boMovies" :key="movie.id">
+      <router-link :to="{ name: 'Detail', params: { movieId: movie.id } }"
+        >{{ movie.krName }} - {{ movie.showTime }}분 -
+        {{ movie.watchGrade }} ({{ movie.releaseDate }} 개봉)</router-link
+      >
+    </p>
+  </div>
+</template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useMovieList } from "../stores/movieListStore";
+
 import MovieCard from "./MovieCard.vue";
+
+const { boMovies, fetchBoxOffice } = useMovieList();
+onMounted(() => {
+  fetchBoxOffice();
+});
 </script>
 
 <style></style>

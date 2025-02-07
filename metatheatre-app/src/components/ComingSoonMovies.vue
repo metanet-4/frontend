@@ -1,6 +1,24 @@
-<!-- 상영예정작 목록 컴포넌트 -->
-<template><div>상영예정작 목록 컴포넌트</div></template>
+<template>
+  <div class="csMovies">
+    <p v-for="movie in csMovies" :key="movie.id">
+      {{ movie.krName }} - {{ movie.showTime }}분 - {{ movie.watchGrade }} ({{
+        movie.releaseDate
+      }}
+      개봉 예정)
+    </p>
+  </div>
+</template>
 
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+import { useMovieList } from "../stores/movieListStore";
+
+import MovieCard from "./MovieCard.vue";
+
+const { csMovies, fetchComingSoon } = useMovieList();
+onMounted(() => {
+  fetchComingSoon();
+});
+</script>
 
 <style></style>
