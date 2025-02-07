@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-bar">
-    <p>영화</p>
+    <router-link to="/movies">영화</router-link>
     <p>예매</p>
     <p>마이페이지</p>
   </div>

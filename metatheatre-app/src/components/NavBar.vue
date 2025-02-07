@@ -1,10 +1,19 @@
 <template>
+<<<<<<< HEAD
     <nav class="nav-bar">
         <img :src="logo" alt="로고 이미지" class="logo" />
         <div>검색창</div>
         <button @click="openLikeList">❤️</button>
     </nav>
     <Modal />
+=======
+  <nav class="nav-bar">
+    <router-link to="/">
+      <img :src="logo" alt="로고 이미지" class="logo"
+    /></router-link>
+    <div>검색창</div>
+  </nav>
+>>>>>>> 628d9cbe64245639e296b6a98f299d2146c62c6a
 </template>
 
 <script setup>
