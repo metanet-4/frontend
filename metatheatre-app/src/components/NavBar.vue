@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <nav class="nav-bar">
     <router-link to="/">
       <img :src="logo" alt="로고 이미지" class="logo"
@@ -8,14 +7,6 @@
     <button @click="openLikeList">❤️</button>
   </nav>
   <Modal />
-=======
-    <nav class="nav-bar">
-        <img :src="logo" alt="로고 이미지" class="logo" />
-        <div>검색창</div>
-        <button @click="openLikeList">❤️</button>
-    </nav>
-    <Modal />
->>>>>>> 482d12aa3908e6af8c9aaf27177b360f46c8e8a3
 </template>
 
 <script setup>
