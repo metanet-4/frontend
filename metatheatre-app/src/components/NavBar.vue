@@ -11,7 +11,6 @@
 import logo from '../assets/logo.png';
 import Modal from './LikeModal.vue';
 import { useStore } from 'vuex';
-import axios from 'axios';
 
 const store = useStore(); // store 사용
 
