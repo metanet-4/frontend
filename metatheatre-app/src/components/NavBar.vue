@@ -14,11 +14,11 @@ import logo from "../assets/logo.png";
 import Modal from "./LikeModal.vue";
 import { useStore } from "vuex";
 
-const store = useStore(); // store 사용
+const store = useStore();
 
 const openLikeList = async () => {
-  await store.dispatch("fetchLikeList"); // 좋아요 목록 불러오기
-  store.commit("openModal"); // 모달 열기
+  await store.dispatch("fetchLikeList");
+  store.commit("openModal");
 };
 </script>
 

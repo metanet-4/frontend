@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import axios from "axios";
 
 const boMovies = ref(null);
 const csMovies = ref(null);
@@ -8,7 +7,12 @@ export const fetchBoxOffice = async () => {
   if (boMovies.value) return;
 
   try {
-    const response = await axios.get("http://localhost:8080/movie/boxoffice");
+    const response = await this.$axios.get(
+      "http://localhost:8080/movie/boxoffice",
+      {
+        withCredentials: true,
+      }
+    );
     console.log(response.data);
     boMovies.value = response.data;
   } catch (error) {
@@ -20,7 +24,12 @@ export const fetchComingSoon = async () => {
   if (csMovies.value) return;
 
   try {
-    const response = await axios.get("http://localhost:8080/movie/comingsoon");
+    const response = await this.$axios.get(
+      "http://localhost:8080/movie/comingsoon",
+      {
+        withCredentials: true,
+      }
+    );
     console.log(response.data);
     csMovies.value = response.data;
   } catch (error) {
