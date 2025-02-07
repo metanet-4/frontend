@@ -140,7 +140,9 @@ const chartOptionsDoughnut = ref({
 // 영화 데이터 가져오기
 onMounted(() => {
   const movieId = route.params.movieId; // URL에서 productId 가져오기
-  fetch(`http://localhost:8080/movie/detail/${movieId}`)
+  fetch(`http://localhost:8080/movie/detail/${movieId}`, {
+    credentials: "include",
+  })
     .then((response) => response.json())
     .then((data) => {
       movie.value = data.movie;
@@ -177,7 +179,10 @@ const toggleLike = async () => {
   try {
     const movieId = route.params.movieId;
     const response = await axios.post(
-      `http://localhost:8080/movie/detail/${movieId}`
+      `http://localhost:8080/movie/detail/${movieId}`,
+      {
+        credentials: "include",
+      }
     );
     if (response.status === 200) {
       liked.value = !liked.value; // 좋아요 상태 반전

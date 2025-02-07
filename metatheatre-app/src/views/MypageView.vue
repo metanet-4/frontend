@@ -16,7 +16,11 @@
         <h2>예약 목록</h2>
         <div v-if="mypageData.reserveList.length > 0">
             <ul>
-                <li v-for="(reservation, index) in mypageData.reserveList" :key="index">
+                <li
+                    v-for="(reservation, index) in mypageData.reserveList"
+                    :key="index"
+                    @click="goToDetail(reservation.reservationCode)"
+                >
                     <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
                     <br />
                     <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
@@ -77,10 +81,16 @@ const mypageData = ref({
     cancelList: [], // 취소된 예약 내역
 });
 
+const goToDetail = (reservationCode) => {
+    router.push({ name: 'ReservationDetail', params: { reservationCode } });
+};
+
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
     try {
-        const response = await fetch('http://localhost:8080/mypage');
+        const response = await fetch('http://localhost:8080/mypage', {
+            credentials: 'include',
+        });
         if (response.ok) {
             const data = await response.json();
             mypageData.value = data; // 받은 데이터를 반영
