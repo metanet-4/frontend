@@ -11,7 +11,6 @@
             :height="250"
             :key="youtubeVideoId"
         />
-
         <div v-if="movie">
             <h1>{{ movie.krName }}</h1>
             <img :src="movie.mainImage" alt="영화 이미지" width="390" />
@@ -20,7 +19,9 @@
             <button @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
                 {{ liked ? '❤️' : '🤍' }}
             </button>
-            <button @click="bookMovie">예매하기</button>
+            <router-link :to="`http://localhost:8080/reservation/${movieId}`"
+                ><button @click="bookMovie">예매하기</button></router-link
+            >;
         </div>
         <!-- 도넛 차트 -->
         <div class="chart-container">
@@ -48,6 +49,15 @@ import YouTube from 'vue3-youtube';
 import { useRoute } from 'vue-router';
 import NavBar from '../components/NavBar.vue';
 import axios from 'axios';
+
+import Modal from '../components/LikeModal.vue';
+import { useStore } from 'vuex';
+
+const store = useStore(); // store 사용
+
+const likeList = () => {
+    store.commit('openModal'); // store에 접근하여 'openModal' 커밋
+};
 
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
 
@@ -145,11 +155,6 @@ const toggleLike = async () => {
     } catch (error) {
         console.error('좋아요 처리 중 오류 발생', error);
     }
-};
-
-// 예매하기 버튼 클릭
-const bookMovie = () => {
-    window.location.href = '/booking';
 };
 
 // YouTube 비디오 재생 준비

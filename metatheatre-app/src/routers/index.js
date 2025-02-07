@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainPage from '../views/MainPage.vue';
-import MovieTempPage from '../views/MovieTempPage.vue';
-import MovieDetail from '../views/MovieDetail.vue'; // 상세 페이지 컴포넌트 추가
+import MainView from '../views/MainView.vue';
+import MovieTempView from '../views/MovieTempView.vue';
+import MovieDetailView from '../views/MovieDetailView.vue';
+import MypageView from '../views/MypageView.vue';
 
 const routes = [
-    { path: '/', component: MainPage },
-    { path: '/movie', component: MovieTempPage },
-    { path: '/movie/:movieId', component: MovieDetail, name: 'Detail' }, // 동적 라우트 추가
+    { path: '/', component: MainView },
+    { path: '/movie', component: MovieTempView },
+    { path: '/movie/:movieId', component: MovieDetailView, name: 'Detail' },
+    { path: '/mypage', component: MypageView },
 ];
 
 const router = createRouter({
