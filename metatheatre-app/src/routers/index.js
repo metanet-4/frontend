@@ -18,7 +18,7 @@ const routes = [
     { path: '/fileupload', component: FileUpload },
     { path: '/screen?:cinemaId&:movieId', component: ScreenChoiceView, name: 'ScreenChoiceView' },
     { path: "/payment", component: PaymentPage },// 결제 페이지 추가
-    { path: "/reservation/:id", component: ReservationDetail, props: true }, // 동적 파라미터 추가
+    { path: "/reservation/:id", component: ReservationDetail, props: true }, // 예매 상세 페이지
 ];
 
 const router = createRouter({

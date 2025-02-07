@@ -8,7 +8,8 @@
 		<!-- 결제 수단 선택 컴포넌트 -->
 		<PaymentMethods @method-selected="setPaymentMethod" />
 		<!-- 결제 버튼: selectedMethod를 props로 전달 -->
-		<PaymentButton :price="100" :method="selectedMethod" :movie="movie" />
+		<PaymentButton :price="price" :method="selectedMethod" :movie="movie" 
+		:playing-id="playingId" :ticket-type="ticketType" />
 	</div>
 </template>
 
@@ -30,7 +31,10 @@ export default {
 				userType: "성인 1",
 				image: "src/assets/movie-poster.png"
 			},
-			selectedMethod: "" 
+			selectedMethod: "",
+			price: 100,
+			playingId: 1,
+			ticketType: "일반",
 		};
 	},
 	methods: {
