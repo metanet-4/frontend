@@ -4,6 +4,7 @@ import MovieListView from '../views/MovieListView.vue';
 import MovieDetailView from '../views/MovieDetailView.vue';
 import MypageView from '../views/MypageView.vue';
 import CinemaChoiceView from '../views/CinemaChoiceView.vue';
+import ScreenChoiceView from '../views/ScreenChoiceView.vue';
 import FileUpload from '../components/FileUpload.vue';
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
     { path: '/cinema', component: CinemaChoiceView },
     { path: '/mypage', component: MypageView },
     { path: '/fileupload', component: FileUpload },
+    { path: '/screen?:cinemaId&:movieId', component: ScreenChoiceView, name: 'ScreenChoiceView' },
 ];
 
 const router = createRouter({
