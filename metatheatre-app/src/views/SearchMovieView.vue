@@ -20,13 +20,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import NavBar from '../components/NavBar.vue';
 
 const router = useRoute();
 const keyword = ref(router.params.keyword); // URL에서 검색어 가져오기
 const movies = ref([]); // 영화 리스트
+let intervalId = null;
+let prevCount = ref(0);
 
 // 🔹 API 호출 함수
 const fetchMovies = async (searchKeyword) => {
@@ -46,6 +48,25 @@ const fetchMovies = async (searchKeyword) => {
     }
 };
 
+// 🔹 영화 개수 확인 함수
+const checkMovieCount = async () => {
+    try {
+        const response = await fetch(`http://localhost:8080/movie/search/${encodeURIComponent(keyword.value)}/count`, {
+            method: 'GET',
+            credentials: 'include', // ✅ 쿠키 전송
+        });
+        if (response.ok) {
+            const count = await response.json();
+            if (count !== prevCount.value) {
+                fetchMovies(keyword.value); // 개수가 변경되면 새로 데이터를 가져옴
+                prevCount.value = count; // 개수 업데이트
+            }
+        }
+    } catch (error) {
+        console.error('영화 개수 체크 중 오류 발생:', error);
+    }
+};
+
 const formatDate = (timestamp) => {
     if (timestamp) {
         const date = new Date(parseInt(timestamp)); // 타임스탬프를 Date 객체로 변환
@@ -60,6 +81,14 @@ const formatDate = (timestamp) => {
 // 🔹 onMounted: 처음 페이지 로딩 시에만 실행
 onMounted(() => {
     fetchMovies(keyword.value); // 최초 검색어로 API 호출
+    checkMovieCount(); // 최초 영화 개수 체크
+    intervalId = setInterval(() => {
+        checkMovieCount(); // 10초마다 영화 개수 확인
+    }, 10000);
+});
+
+onUnmounted(() => {
+    if (intervalId) clearInterval(intervalId);
 });
 
 // 🔹 watch: keyword가 변경될 때마다 호출
@@ -69,7 +98,9 @@ watch(
         if (newKeyword) {
             keyword.value = newKeyword;
             movies.value = [];
+            prevCount.value = 0; // 이전 영화 개수 초기화
             fetchMovies(newKeyword);
+            checkMovieCount(); // 새로운 검색어로 영화 개수 체크
         }
     }
 );
