@@ -8,6 +8,8 @@ import ScreenChoiceView from '../views/ScreenChoiceView.vue';
 import FileUpload from '../components/FileUpload.vue';
 import PaymentPage from "../views/PaymentPage.vue"; // 결제 페이지 추가
 import ReservationDetail from "@/views/ReservationDetail.vue"; // 예매 상세 페이지
+import SeatChoiceView from '@/views/SeatChoiceView.vue';
+import SeatMap from '../components/SeatMap.vue';
 
 const routes = [
     { path: '/', component: MainView },
@@ -19,6 +21,8 @@ const routes = [
     { path: '/screen?:cinemaId&:movieId', component: ScreenChoiceView, name: 'ScreenChoiceView' },
     { path: "/payment", component: PaymentPage },// 결제 페이지 추가
     { path: "/reservation/:id", component: ReservationDetail, props: true }, // 예매 상세 페이지
+    { path: '/seats?:playingId', component: SeatChoiceView, name: 'SeatChoiceView' },
+    { path: '/seatMap', component: SeatMap }
 ];
 
 const router = createRouter({
