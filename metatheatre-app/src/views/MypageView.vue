@@ -5,7 +5,7 @@
         <div class="user-info">
             <div class="profile-container">
                 <div class="profile-image">
-                    <img :src="mypageData.mypageMember.image" alt="사용자 이미지" class="profile-img" />
+                    <img :src="profileImage" alt="사용자 이미지" class="profile-img" />
                 </div>
                 <div class="profile-details">
                     <p>아이디: {{ mypageData.mypageMember.userId }}</p>
@@ -20,29 +20,26 @@
         <h2>예약 목록</h2>
         <div v-if="mypageData.reserveList.length > 0">
             <ul class="reservation-list">
-                <li
-                    v-for="(reservation, index) in mypageData.reserveList"
-                    :key="index"
-                    @click="goToDetail(reservation.reservationCode)"
-                    class="reservation-item"
-                >
-                    <div class="movie-info">
-                        <img
-                            :src="reservation.mainImage"
-                            alt="영화 포스터"
-                            class="movie-poster"
-                            v-if="reservation.mainImage"
-                        />
-                        <div class="movie-details">
-                            <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
-                            <div class="reservation-details">
-                                <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
-                                <span>예약 코드: {{ reservation.reservationCode }}</span>
-                                <span>좌석: {{ reservation.seatName }}</span>
-                                <span>결제 금액: {{ reservation.paymentAmount }} 원</span>
+                <li v-for="(reservation, index) in mypageData.reserveList" :key="index" class="reservation-item">
+                    <router-link :to="`/reservation/${reservation.reservationCode}`" class="reservation-link">
+                        <div class="movie-info">
+                            <img
+                                :src="reservation.mainImage"
+                                alt="영화 포스터"
+                                class="movie-poster"
+                                v-if="reservation.mainImage"
+                            />
+                            <div class="movie-details">
+                                <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
+                                <div class="reservation-details">
+                                    <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
+                                    <span>예약 코드: {{ reservation.reservationCode }}</span>
+                                    <span>좌석: {{ reservation.seatName }}</span>
+                                    <span>결제 금액: {{ reservation.paymentAmount }} 원</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -80,7 +77,9 @@
 <script setup>
 import NavBar from '../components/NavBar.vue';
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
+const profileImage = ref(null);
 const mypageData = ref({
     mypageMember: {
         userId: '', // 사용자 아이디
@@ -92,10 +91,6 @@ const mypageData = ref({
     reserveList: [], // 예약 내역
     cancelList: [], // 취소된 예약 내역
 });
-
-const goToDetail = (reservationCode) => {
-    router.push({ name: 'ReservationDetail', params: { reservationCode } });
-};
 
 // 생일 날짜 포맷 함수
 const formatDate = (timestamp) => {
@@ -112,6 +107,18 @@ onMounted(async () => {
         if (response.ok) {
             const data = await response.json();
             mypageData.value = data; // 받은 데이터를 반영
+            console.log(data);
+            if (data.mypageMember.image) {
+                const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
+                    responseType: 'blob',
+                });
+
+                if (response.data) {
+                    profileImage.value = URL.createObjectURL(response.data);
+                } else {
+                    profileImage.value = null;
+                }
+            }
         } else {
             console.error('API 호출 실패');
         }
@@ -139,6 +146,11 @@ onMounted(async () => {
     font-family: 'Arial', sans-serif;
 }
 
+.reservation-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .user-info {
     text-align: center;
     margin-bottom: 30px;
@@ -155,8 +167,8 @@ onMounted(async () => {
 }
 
 .profile-img {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ccc;
