@@ -8,8 +8,6 @@
 
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
-
-
             <ul>
                 <li v-for="(day, index) in days" :key="day.fullDate" :class="{
                     active: selectedDayIndex === index,
@@ -63,6 +61,7 @@ import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
 const days = ref([])
@@ -73,6 +72,7 @@ const selectedDayIndex = ref(0)
 const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] })
 
 const route = useRoute();
+const router = useRouter()
 
 // API 데이터를 받아와서 기존 형식으로 가공하는 함수
 async function fetchSchedules() {
@@ -80,7 +80,9 @@ async function fetchSchedules() {
     const movieId = route.params.movieId;
 
     try {
-        const response = await axios.get(`http://localhost:8080/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`)
+        const response = await axios.get(`http://localhost:8080/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`, {
+            withCredentials: true
+        })
         console.log(response.data)
         const data = response.data
 
@@ -167,6 +169,12 @@ function selectDay(index) {
 // 시간 버튼 클릭 시 다음 페이지로 이동 
 function goToNextPage(timeSlot) {
     Swal.fire(`${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`)
+        .then(() => {
+            router.push({
+                name: 'SeatChoiceView',
+                params: { playingId: timeSlot.playingId }
+            })
+        })
 }
 
 onMounted(() => {
