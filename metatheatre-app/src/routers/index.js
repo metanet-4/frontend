@@ -5,6 +5,10 @@ import MovieDetailView from "../views/MovieDetailView.vue";
 import MypageView from "../views/MypageView.vue";
 import CinemaChoiceView from "../views/CinemaChoiceView.vue";
 import ScreenChoiceView from "../views/ScreenChoiceView.vue";
+<<<<<<< HEAD
+=======
+import FileUpload from "../components/FileUpload.vue";
+>>>>>>> 735166a990f2c1aeef888596bf78b5a9fbcabce6
 import PaymentPage from "../views/PaymentPage.vue"; // 결제 페이지 추가
 import ReservationDetail from "@/views/ReservationDetail.vue"; // 예매 상세 페이지
 import SeatChoiceView from "@/views/SeatChoiceView.vue";
@@ -19,6 +23,10 @@ const routes = [
   { path: "/movie/:movieId", component: MovieDetailView, name: "Detail" },
   { path: "/cinema", component: CinemaChoiceView },
   { path: "/mypage", component: MypageView },
+<<<<<<< HEAD
+=======
+  { path: "/fileupload", component: FileUpload },
+>>>>>>> 735166a990f2c1aeef888596bf78b5a9fbcabce6
   {
     path: "/screen?:cinemaId&:movieId",
     component: ScreenChoiceView,
