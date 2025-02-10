@@ -5,14 +5,12 @@
 <script setup>
 import { computed, watch } from "vue";
 
-// props 받아서 변수로 저장
 const props = defineProps({
   label: String,
   bgColor: String,
   textColor: String,
 });
 
-// 버튼 스타일을 동적으로 설정
 const buttonStyle = computed(() => ({
   backgroundColor: props.bgColor ?? "#281B7A",
   color: props.textColor ?? "white",

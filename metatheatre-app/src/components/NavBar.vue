@@ -3,9 +3,6 @@
     <router-link to="/">
       <img :src="logo" alt="로고 이미지" class="logo"
     /></router-link>
-<<<<<<< HEAD
-    <div>검색창</div>
-=======
     <!-- 🔍 검색창 추가 -->
     <div class="search-box">
       <input
@@ -23,7 +20,6 @@
       </button>
       <button @click="openLikeList">❤️</button>
     </div>
->>>>>>> e005fa6e5f1dcf74a48b9ac8e8f35f787a0770d9
   </nav>
   <Modal />
 </template>
