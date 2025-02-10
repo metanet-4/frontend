@@ -2,35 +2,47 @@
     <NavBar />
     <div class="wrapper">
         <!-- 사용자 정보 -->
-        <h1>{{ mypageData.mypageMember.name }}</h1>
-        <p>이메일: {{ mypageData.mypageMember.email }}</p>
-        <p>생일: {{ mypageData.mypageMember.birthday }}</p>
-        <p>성별: {{ mypageData.mypageMember.gender === 1 ? '남성' : '여성' }}</p>
-        <p>
-            프로필:
-            <img :src="mypageData.mypageMember.image" alt="사용자 이미지" v-if="mypageData.mypageMember.image" />
-            <span v-else>이미지 없음</span>
-        </p>
+        <div class="user-info">
+            <div class="profile-container">
+                <div class="profile-image">
+                    <img :src="mypageData.mypageMember.image" alt="사용자 이미지" class="profile-img" />
+                </div>
+                <div class="profile-details">
+                    <p>아이디: {{ mypageData.mypageMember.userId }}</p>
+                    <p>이메일: {{ mypageData.mypageMember.email }}</p>
+                    <p>생일: {{ formatDate(mypageData.mypageMember.birthday) }}</p>
+                    <p>성별: {{ mypageData.mypageMember.gender === 1 ? '남성' : '여성' }}</p>
+                </div>
+            </div>
+        </div>
 
         <!-- 예약 목록 -->
         <h2>예약 목록</h2>
         <div v-if="mypageData.reserveList.length > 0">
-            <ul>
+            <ul class="reservation-list">
                 <li
                     v-for="(reservation, index) in mypageData.reserveList"
                     :key="index"
                     @click="goToDetail(reservation.reservationCode)"
+                    class="reservation-item"
                 >
-                    <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
-                    <br />
-                    <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
-                    <br />
-                    <span>예약 코드: {{ reservation.reservationCode }}</span>
-                    <br />
-                    <span>좌석: {{ reservation.seatName }}</span>
-                    <br />
-                    <span>결제 금액: {{ reservation.paymentAmount }} 원</span>
-                    <br />
+                    <div class="movie-info">
+                        <img
+                            :src="reservation.mainImage"
+                            alt="영화 포스터"
+                            class="movie-poster"
+                            v-if="reservation.mainImage"
+                        />
+                        <div class="movie-details">
+                            <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
+                            <div class="reservation-details">
+                                <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
+                                <span>예약 코드: {{ reservation.reservationCode }}</span>
+                                <span>좌석: {{ reservation.seatName }}</span>
+                                <span>결제 금액: {{ reservation.paymentAmount }} 원</span>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -41,20 +53,21 @@
         <!-- 취소된 예약 목록 -->
         <h2>취소된 예약 목록</h2>
         <div v-if="mypageData.cancelList.length > 0">
-            <ul>
-                <li v-for="(cancel, index) in mypageData.cancelList" :key="index">
-                    <strong>{{ cancel.movieTitle }}</strong> ({{ cancel.screenName }})
-                    <br />
-                    <span>상영 시간: {{ new Date(cancel.startTime).toLocaleString() }}</span>
-                    <br />
-                    <span>예약 코드: {{ cancel.reservationCode }}</span>
-                    <br />
-                    <span>좌석: {{ cancel.seatName }}</span>
-                    <br />
-                    <span>결제 금액: {{ cancel.paymentAmount }} 원</span>
-                    <br />
-                    <span>취소 시간: {{ new Date(cancel.cancelTime).toLocaleString() }}</span>
-                    <br />
+            <ul class="reservation-list">
+                <li v-for="(cancel, index) in mypageData.cancelList" :key="index" class="reservation-item">
+                    <div class="movie-info">
+                        <img :src="cancel.mainImage" alt="영화 포스터" class="movie-poster" v-if="cancel.mainImage" />
+                        <div class="movie-details">
+                            <strong>{{ cancel.movieTitle }}</strong> ({{ cancel.screenName }})
+                            <div class="reservation-details">
+                                <span>상영 시간: {{ new Date(cancel.startTime).toLocaleString() }}</span>
+                                <span>예약 코드: {{ cancel.reservationCode }}</span>
+                                <span>좌석: {{ cancel.seatName }}</span>
+                                <span>결제 금액: {{ cancel.paymentAmount }} 원</span>
+                                <span>취소 시간: {{ new Date(cancel.cancelTime).toLocaleString() }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -70,10 +83,9 @@ import { ref, onMounted } from 'vue';
 
 const mypageData = ref({
     mypageMember: {
-        userId: '',
-        name: '',
+        userId: '', // 사용자 아이디
         email: '',
-        birthday: '',
+        birthday: 806166000000, // 예시 생일 (타임스탬프)
         image: null,
         gender: 1,
     },
@@ -83,6 +95,12 @@ const mypageData = ref({
 
 const goToDetail = (reservationCode) => {
     router.push({ name: 'ReservationDetail', params: { reservationCode } });
+};
+
+// 생일 날짜 포맷 함수
+const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString(); // 기본적으로 로컬 형식으로 날짜 출력
 };
 
 // 페이지가 로드될 때 API 호출
@@ -102,6 +120,7 @@ onMounted(async () => {
     }
 });
 </script>
+
 <style scoped>
 .wrapper {
     width: 100%;
@@ -115,5 +134,91 @@ onMounted(async () => {
     overflow-x: hidden;
     overflow-y: auto;
     background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.user-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin-right: 15px;
+}
+
+.profile-details {
+    flex: 1;
+    text-align: left;
+}
+
+.profile-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0;
+}
+
+.reservation-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.reservation-item {
+    background-color: #f9f9f9;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reservation-item:hover {
+    background-color: #e0f7fa;
+}
+
+.movie-info {
+    display: flex;
+    align-items: center;
+}
+
+.movie-poster {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.movie-details {
+    flex: 1;
+}
+
+.reservation-details span {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-top: 4px;
+}
+
+h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 12px;
 }
 </style>
