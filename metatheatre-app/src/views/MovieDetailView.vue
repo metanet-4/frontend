@@ -1,6 +1,7 @@
 <template>
   <NavBar />
   <div class="wrapper">
+    <button @click="posterDownload">포스터 다운로드</button>
     <YouTube
       v-if="youtubeVideoId"
       class="youtube-player"
@@ -227,6 +228,36 @@ const fetchYouTubeVideo = (query) => {
       console.error("Error fetching YouTube video:", error);
       youtubeVideoId.value = null;
     });
+};
+
+// 포스터 다운로드
+const posterDownload = async () => {
+  console.log(movie.value.mainImage);
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(
+        movie.value.mainImage
+      )}`,
+      {
+        responseType: "blob",
+      }
+    );
+
+    const url = URL.createObjectURL(response.data);
+    const link = document.createElement("a");
+    link.href = url;
+
+    const filename = movie.value.krName;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("포스터 다운로드에 실패하였습니다.", error);
+  }
 };
 </script>
 
