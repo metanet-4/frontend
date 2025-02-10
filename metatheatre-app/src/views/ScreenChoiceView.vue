@@ -19,7 +19,6 @@
                 </li>
             </ul>
         </div>
-
         <!-- 해당 날짜에 대한 상영 정보 -->
         <div class="schedule-container">
             <div v-for="theater in currentDaySchedule.theaters" :key="theater.name" class="theater-block">
@@ -86,7 +85,6 @@ async function fetchSchedules() {
         console.log(response.data)
         const data = response.data
 
-
         let screenings = []
         for (const key in data) {
             screenings = screenings.concat(data[key])
@@ -137,7 +135,8 @@ async function fetchSchedules() {
                     end: item.endTime.substring(0, 5),
                     seats: `${item.capacity - item.reservedSeat}/${item.capacity}`,
                     playingId: item.playingId,
-                    movieId: item.movieId
+                    movieId: item.movieId,
+                    screenId: item.screenId
                 })
             })
 
@@ -172,7 +171,10 @@ function goToNextPage(timeSlot) {
         .then(() => {
             router.push({
                 name: 'SeatChoiceView',
-                params: { playingId: timeSlot.playingId }
+                params: {
+                    playingId: timeSlot.playingId,
+                    screenId: timeSlot.screenId
+                }
             })
         })
 }
