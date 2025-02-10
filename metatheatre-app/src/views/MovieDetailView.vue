@@ -24,9 +24,11 @@
                 <button @click="bookMovie" class="book-button">예매하기</button>
             </div>
             <p class="movie-description">{{ movie.description }}</p>
-            <h5 class="movie-title">상세 정보</h5>
+            <div class="movie-header">
+                <h5 class="movie-title">상세 정보</h5>
+                <button @click="posterDownload" class="book-button2">포스터 다운로드</button>
+            </div>
             <hr class="divider" />
-
             <div class="movie-info">
                 <!-- 이미지 크기를 작게 설정 -->
                 <img :src="movie.mainImage" alt="영화 이미지" class="movie-image" />
@@ -42,12 +44,6 @@
             </div>
             <div class="movie-extra-details"></div>
         </div>
-        <!-- 도넛 차트 -->
-        <div class="chart-container">
-            <div class="chart-box">
-                <apexchart type="donut" width="200" :options="chartOptionsDoughnut" :series="seriesDoughnut" />
-            </div>
-        </div>
 
         <div class="chart-container">
             <!-- 바 차트 -->
@@ -57,6 +53,12 @@
             <!-- 새 바 차트 (남성 vs 여성) -->
             <div>
                 <apexchart width="190" type="bar" :options="chartOptionsGender" :series="seriesGender"></apexchart>
+            </div>
+        </div>
+        <!-- 도넛 차트 -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <apexchart type="donut" width="200" :options="chartOptionsDoughnut" :series="seriesDoughnut" />
             </div>
         </div>
     </div>
@@ -99,7 +101,7 @@ const chartOptionsBar = ref({
     },
     grid: { show: false },
     tooltip: { enabled: false },
-    colors: ['#36a2eb'],
+    colors: ['#006666'],
     dataLabels: {
         enabled: true, // 데이터 레이블 표시
         style: {
@@ -114,7 +116,7 @@ const chartOptionsBar = ref({
 const chartOptionsGender = ref({
     chart: { id: 'gender-chart', toolbar: { show: false } },
     plotOptions: {
-        bar: { horizontal: false, columnWidth: '30%' },
+        bar: { horizontal: false, columnWidth: '50%' },
         borderRadius: 5,
     },
     xaxis: {
@@ -134,7 +136,7 @@ const chartOptionsGender = ref({
 });
 
 const chartOptionsDoughnut = ref({
-    chart: { type: 'donut' },
+    chart: { type: 'donut', height: 550 },
     labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대'],
     colors: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#B8E986'],
     legend: { show: false },
@@ -146,6 +148,17 @@ const chartOptionsDoughnut = ref({
             },
         },
     },
+    title: {
+        text: '연령대 분포', // 🔥 차트의 제목 추가
+        align: 'center', // 가운데 정렬
+        offsetY: 77, // 위치 조정 (아래쪽으로 이동)
+        floating: true,
+        style: {
+            fontSize: '10px',
+            fontWeight: 'bold',
+            color: '#333',
+        },
+    },
 });
 
 // 영화 데이터 가져오기 함수
@@ -153,6 +166,31 @@ const fetchMovieData = (movieId) => {
     fetch(`http://localhost:8080/movie/detail/${movieId}`, {
         credentials: 'include',
     })
+        .then((response) => response.json())
+        .then((data) => {
+            movie.value = data.movie;
+            movieChart.value = data.movieMemberForChart;
+            liked.value = data.isLiked;
+
+            const audienceCount = movie.value.totalAudience || 0;
+            seriesBar.value = [{ name: '누적 관객수', data: [audienceCount] }];
+            seriesDoughnut.value = [audienceCount];
+
+            const manCount = movieChart.value?.man || 0;
+            const womanCount = movieChart.value?.woman || 0;
+            seriesGender.value = [{ name: '관객 수', data: [manCount, womanCount] }];
+
+            seriesDoughnut.value = [
+                movieChart.value?.age10th || 0,
+                movieChart.value?.age20th || 0,
+                movieChart.value?.age30th || 0,
+                movieChart.value?.age40th || 0,
+                movieChart.value?.age50th || 0,
+                movieChart.value?.age60th || 0,
+                movieChart.value?.age70th || 0,
+                movieChart.value?.age80th || 0,
+            ];
+        })
         .then((response) => response.json())
         .then((data) => {
             movie.value = data.movie;
@@ -250,6 +288,34 @@ const fetchYouTubeVideo = (query) => {
             youtubeVideoId.value = null;
         });
 };
+
+// 포스터 다운로드
+const posterDownload = async () => {
+    console.log(movie.value.mainImage);
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(movie.value.mainImage)}`,
+            {
+                responseType: 'blob',
+            }
+        );
+
+        const url = URL.createObjectURL(response.data);
+        const link = document.createElement('a');
+        link.href = url;
+
+        const filename = movie.value.krName;
+        link.download = filename;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('포스터 다운로드에 실패하였습니다.', error);
+    }
+};
 </script>
 
 <style scoped>
@@ -302,6 +368,10 @@ const fetchYouTubeVideo = (query) => {
     justify-content: center; /* 차트 가운데 정렬 */
 }
 
+.apexcharts-svg {
+    height: 300px;
+}
+
 .movie-header {
     display: flex;
     align-items: center;
@@ -343,8 +413,25 @@ const fetchYouTubeVideo = (query) => {
     white-space: nowrap; /* 버튼은 한 줄 유지 */
 }
 
+.book-button2 {
+    background-color: #666666;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* 버튼은 한 줄 유지 */
+}
+
 .book-button:hover {
     background-color: #3a2ca4;
+}
+
+.book-button2:hover {
+    background-color: #777777;
 }
 
 .movie-description {

@@ -136,7 +136,9 @@ async function fetchRegions() {
   isLoading.value = true
   errorMessage.value = ''
   try {
-    const response = await axios.get('http://localhost:8080/ticket/theater?movieId=20223819')
+    const response = await axios.get('http://localhost:8080/ticket/cinema?movieId=20223819', {
+      withCredentials: true
+    })
     regionData.value = response.data
 
     // regionData가 비어 있지 않다면 첫 지역 자동 선택 (선택 사항)
