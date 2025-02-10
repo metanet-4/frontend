@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import YouTube from "vue3-youtube";
 import { useRoute } from "vue-router";
 import NavBar from "../components/NavBar.vue";
@@ -67,7 +67,6 @@ import axios from "axios";
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
 
 // 데이터 및 상태 변수 설정
-const userId = "aaa";
 const movie = ref(null);
 const movieChart = ref(null);
 const liked = ref(null);
@@ -137,9 +136,8 @@ const chartOptionsDoughnut = ref({
   dataLabels: { enabled: true },
 });
 
-// 영화 데이터 가져오기
-onMounted(() => {
-  const movieId = route.params.movieId; // URL에서 productId 가져오기
+// 영화 데이터 가져오기 함수
+const fetchMovieData = (movieId) => {
   fetch(`http://localhost:8080/movie/detail/${movieId}`, {
     credentials: "include",
   })
@@ -167,13 +165,23 @@ onMounted(() => {
         movieChart.value?.age70th || 0,
         movieChart.value?.age80th || 0,
       ];
-      //API 호출 부분 비활성화 처리 (영화 제목으로 YouTube 비디오 검색)
-      // if (movie.value.krName) {
-      //     fetchYouTubeVideo(movie.value.krName);
-      // }
     })
     .catch((error) => console.error("Error fetching movie:", error));
+};
+
+// 초기 로딩 시 영화 데이터 가져오기
+onMounted(() => {
+  const movieId = route.params.movieId;
+  fetchMovieData(movieId);
 });
+
+// movieId 변경 시 데이터 새로 로딩
+watch(
+  () => route.params.movieId, // movieId가 변경될 때
+  (newMovieId) => {
+    fetchMovieData(newMovieId);
+  }
+);
 
 const toggleLike = async () => {
   try {
@@ -195,11 +203,6 @@ const toggleLike = async () => {
 // 예매하기 버튼 클릭
 const bookMovie = () => {
   window.location.href = "/booking";
-};
-
-// YouTube 비디오 재생 준비
-const onReady = () => {
-  youtubeRef.value.playVideo();
 };
 
 // YouTube API 호출을 위한 함수
