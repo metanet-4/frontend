@@ -24,7 +24,7 @@ const routes = [
     { path: "/payment", component: PaymentPage },// 결제 페이지 추가
     { path: "/reservation/:id", component: ReservationDetail, props: true }, // 예매 상세 페이지
     { path: '/seats?:playingId', component: SeatChoiceView, name: 'SeatChoiceView' },
-    { path: '/seatMap', component: SeatMap }
+    { path: '/seatMap', component: SeatMap },
     { path: '/movie/search/:keyword', component: SearchMovieView, name: 'SearchMovieView' },
 ];
 
