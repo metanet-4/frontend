@@ -2,7 +2,7 @@
   <div class="bottom-bar">
     <router-link to="/movies">영화</router-link>
     <p>예매</p>
-    <p>마이페이지</p>
+    <router-link to="/mypage">마이페이지</router-link>
   </div>
 </template>
 

@@ -11,7 +11,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { useMovieList } from "../stores/movieListStore";
+import { useMovieList } from "../store/modules/movieListStore";
 
 import MovieCard from "./MovieCard.vue";
 
