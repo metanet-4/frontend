@@ -13,14 +13,34 @@
         />
 
         <div v-if="movie">
-            <h1>{{ movie.krName }}</h1>
-            <img :src="movie.mainImage" alt="영화 이미지" width="390" />
-            <p>{{ movie.description }}</p>
-            <p>누적 관객수: {{ movie.totalAudience }}</p>
-            <button @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
-                {{ liked ? '❤️' : '🤍' }}
-            </button>
-            <button @click="bookMovie">예매하기</button>
+            <div class="movie-header">
+                <div class="movie-header-info">
+                    <h5 class="movie-title">{{ movie.krName }}</h5>
+                    <p class="movie-en-title">{{ movie.enName }}</p>
+                </div>
+                <button @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
+                    {{ liked ? '❤️' : '🤍' }}
+                </button>
+                <button @click="bookMovie" class="book-button">예매하기</button>
+            </div>
+            <p class="movie-description">{{ movie.description }}</p>
+            <h5 class="movie-title">상세 정보</h5>
+            <hr class="divider" />
+
+            <div class="movie-info">
+                <!-- 이미지 크기를 작게 설정 -->
+                <img :src="movie.mainImage" alt="영화 이미지" class="movie-image" />
+
+                <!-- 영화 정보 표시 -->
+                <div class="movie-details">
+                    <p>{{ movie.watchGrade }}</p>
+                    <p>{{ formatDate(movie.releaseDate) }} {{ movie.openYn }} · {{ movie.showTime }}분</p>
+                    <p><strong>감독</strong> {{ movie.directors }}</p>
+                    <p><strong>배우</strong> {{ movie.actors }}</p>
+                    <p><strong>국가</strong> {{ movie.nation }}</p>
+                </div>
+            </div>
+            <div class="movie-extra-details"></div>
         </div>
         <!-- 도넛 차트 -->
         <div class="chart-container">
@@ -63,7 +83,7 @@ const seriesDoughnut = ref([0, 0, 0, 0, 0, 0, 0, 0]);
 const chartOptionsBar = ref({
     chart: { id: 'movie-audience-chart', toolbar: { show: false } },
     plotOptions: {
-        bar: { horizontal: false, columnWidth: '20%' },
+        bar: { horizontal: false, columnWidth: '60%' },
         borderRadius: 5,
     },
     xaxis: {
@@ -80,6 +100,15 @@ const chartOptionsBar = ref({
     grid: { show: false },
     tooltip: { enabled: false },
     colors: ['#36a2eb'],
+    dataLabels: {
+        enabled: true, // 데이터 레이블 표시
+        style: {
+            fontSize: '12px',
+            fontWeight: 'bold',
+        },
+        offsetX: 0, // 필요에 따라 위치 조정
+        offsetY: 0, // 필요에 따라 위치 조정
+    },
 });
 
 const chartOptionsGender = ref({
@@ -95,7 +124,7 @@ const chartOptionsGender = ref({
         axisTicks: { show: false },
     },
     yaxis: {
-        labels: { show: true },
+        labels: { show: false },
         axisBorder: { show: false },
         axisTicks: { show: false },
     },
@@ -110,6 +139,13 @@ const chartOptionsDoughnut = ref({
     colors: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#B8E986'],
     legend: { show: false },
     dataLabels: { enabled: true },
+    plotOptions: {
+        pie: {
+            donut: {
+                size: '50%',
+            },
+        },
+    },
 });
 
 // 영화 데이터 가져오기 함수
@@ -141,8 +177,21 @@ const fetchMovieData = (movieId) => {
                 movieChart.value?.age70th || 0,
                 movieChart.value?.age80th || 0,
             ];
+            //API 호출 부분 비활성화 처리 (영화 제목으로 YouTube 비디오 검색)
+            // if (movie.value.krName) {
+            //     fetchYouTubeVideo(movie.value.krName);
+            // }
         })
         .catch((error) => console.error('Error fetching movie:', error));
+};
+
+const formatDate = (timestamp) => {
+    const date = new Date(timestamp); // 타임스탬프를 Date 객체로 변환
+    return new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(date); // 'yyyy.MM.dd' 형식으로 출력
 };
 
 // 초기 로딩 시 영화 데이터 가져오기
@@ -251,5 +300,94 @@ const fetchYouTubeVideo = (query) => {
     width: 50%; /* 두 개의 차트가 균등하게 배치됨 */
     display: flex;
     justify-content: center; /* 차트 가운데 정렬 */
+}
+
+.movie-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    gap: 10px; /* 제목과 버튼 사이 간격 */
+}
+
+.movie-header-info {
+    flex: 1; /* 버튼을 제외한 나머지 공간을 차지하도록 설정 */
+    min-width: 0; /* flex 사용 시, 글자가 넘치는 것 방지 */
+}
+
+.movie-title {
+    font-size: 16px; /* 기존보다 살짝 작은 크기 */
+    font-weight: bold;
+    margin: 0;
+    word-break: break-word; /* 긴 제목도 줄바꿈 가능하게 설정 */
+}
+
+.movie-en-title {
+    font-size: 14px; /* 영어 제목도 살짝 작은 크기로 조정 */
+    color: gray;
+    margin: 0;
+    word-break: break-word;
+}
+
+.book-button {
+    background-color: #281b7a; /* 예쁜 빨간색 버튼 */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* 버튼은 한 줄 유지 */
+}
+
+.book-button:hover {
+    background-color: #3a2ca4;
+}
+
+.movie-description {
+    font-size: 14px;
+    line-height: 1.6; /* 줄 간격 */
+    color: #333; /* 글자 색 */
+    background-color: #f8f8f8; /* 부드러운 배경 */
+    padding: 10px; /* 안쪽 여백 */
+    border-radius: 8px; /* 둥근 모서리 */
+    word-break: break-word; /* 긴 단어 자동 줄바꿈 */
+    text-align: justify; /* 양쪽 정렬 */
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #aaa; /* 연한 회색 */
+    margin: 16px 0; /* 위아래 여백 */
+}
+
+.liked,
+.unliked {
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    font-size: 24px; /* 하트 크기 조절 */
+    cursor: pointer; /* 클릭 가능 표시 */
+    padding: 5px; /* 여백 추가 */
+}
+
+.movie-info {
+    display: flex;
+    align-items: center; /* 수평으로 정렬 */
+}
+
+.movie-image {
+    width: 120px; /* 이미지 크기를 작게 설정 */
+    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+    margin-bottom: 15px;
+}
+
+.movie-details {
+    font-size: 15px; /* 텍스트 크기 설정 */
+    font-weight: bold;
+    line-height: 1.3;
 }
 </style>
