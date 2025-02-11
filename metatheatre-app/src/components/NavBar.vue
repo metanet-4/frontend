@@ -7,9 +7,12 @@
             </router-link>
             <div class="icon-group">
                 <!-- 좋아요 리스트 열기 (기존 기능) -->
-                <button @click="openLikeList">❤️</button>
+                <button @click="openLikeList" class="icon-button">
+                    <i class="bi bi-heart-fill"></i>
+                </button>
+
                 <!-- 알림 기능 버튼 (새로 추가) -->
-                <button @click="openAlarmList">
+                <button @click="openAlarmList" class="icon-button">
                     <i class="bi bi-bell"></i>
                 </button>
             </div>
@@ -18,7 +21,7 @@
         <!-- 검색창 영역 -->
         <div class="search-box">
             <input v-model="keyword" type="text" placeholder="검색어를 입력하세요." @keyup.enter="searchMovie" />
-            <button @click="searchMovie">
+            <button @click="searchMovie" class="icon-button">
                 <img src="@/assets/search-icon.png" alt="검색 아이콘" class="search-icon" />
             </button>
         </div>
@@ -112,14 +115,16 @@ const searchMovie = () => {
 .icon-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 .icon-button {
+    font-size: 20px;
+    color: #1c3788;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    /* padding: 10; */
 }
 
 .icon-img {
@@ -155,6 +160,7 @@ const searchMovie = () => {
 }
 
 .search-icon {
+    background: none;
     width: 20px;
     height: 20px;
 }
