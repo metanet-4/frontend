@@ -8,7 +8,7 @@
 			<img :src="movie.image" alt="영화 포스터" class="poster" />
 			<div class="info">
 				<p>{{ movie.title }}</p>
-				<p>{{ movie.date }} ({{ movie.time }})</p>
+				<p>{{ movie.date }}</p>
 				<p>{{ movie.theater }}</p>
 				<p>{{ movie.seat }} ({{ movie.userType }})</p>
 			</div>

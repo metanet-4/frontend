@@ -30,7 +30,7 @@ const routes = [
     name: "ScreenChoiceView",
   },
   { path: "/payment", component: PaymentPage }, // 결제 페이지 추가
-  { path: "/reservation/:id", component: ReservationDetail, props: true }, // 예매 상세 페이지
+  { path: "/reservation/:reservationCode", component: ReservationDetail, props: true }, // 예매 상세 페이지
   {
     path: "/seats?:playingId",
     component: SeatChoiceView,
