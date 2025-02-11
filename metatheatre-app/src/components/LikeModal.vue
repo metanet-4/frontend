@@ -4,11 +4,8 @@
             <h3 class="modal-title">좋아요한 목록</h3>
             <ul>
                 <li v-for="movie in likeList" :key="movie.movie_id" class="movie-item">
-                    <router-link
-                        :to="{ name: 'Detail', params: { movieId: movie.id } }"
-                        class="movie-card-link"
-                        @click.native="closeModal"
-                    >
+                    <router-link :to="{ name: 'Detail', params: { movieId: movie.id } }" class="movie-card-link"
+                        @click.native="closeModal">
                         <img :src="movie.mainImage" alt="영화 이미지" class="movie-image" />
                         <span class="movie-title">{{ movie.krName }}</span>
                     </router-link>
@@ -81,7 +78,8 @@ ul {
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    max-height: 60vh; /* 리스트가 길어지면 개별 스크롤 */
+    max-height: 60vh;
+    /* 리스트가 길어지면 개별 스크롤 */
     flex-grow: 1;
 }
 
@@ -117,7 +115,8 @@ ul {
     font-size: 1rem;
     cursor: pointer;
     width: 100%;
-    margin-top: 15px; /* 리스트와 버튼 사이 여백 */
+    margin-top: 15px;
+    /* 리스트와 버튼 사이 여백 */
     position: relative;
 }
 
