@@ -18,7 +18,8 @@
         <hr class="divider" />
         <div class="user-actions">
             <router-link to="/edit-profile" class="action-text">회원 정보 수정</router-link>
-            <router-link to="/logout" class="action-text">로그아웃</router-link>
+            <button @click="handleLogout" class="action-text logout-button">로그아웃</button>
+
             <router-link to="/delete-account" class="action-text">회원 탈퇴</router-link>
         </div>
         <!-- 예약 목록 -->
@@ -81,9 +82,11 @@
 
 <script setup>
 import NavBar from '../components/NavBar.vue';
+import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
+const router = useRouter(); // ✅ Vue Router 인스턴스 생성
 const profileImage = ref(null);
 const mypageData = ref({
     mypageMember: {
@@ -102,6 +105,20 @@ const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString(); // 기본적으로 로컬 형식으로 날짜 출력
 };
+
+const handleLogout = async () => {
+    try {
+        await fetch('http://localhost:8080/auth/logout', { 
+            method: 'POST', 
+            credentials: 'include' 
+        });
+        alert('로그아웃 되었습니다.');
+        router.push('/'); // 로그아웃 후 로그인 페이지로 이동
+    } catch (error) {
+        alert('로그아웃 실패: ' + error.message);
+    }
+};
+
 
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
@@ -290,4 +307,21 @@ h2 {
     color: #1c3688;
     margin-bottom: 20px;
 }
+.logout-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    margin: 4px 0 4px -5px; 
+    text-align: left;
+}
+
+.logout-button:hover {
+    text-decoration: underline;
+}
+
+
 </style>
