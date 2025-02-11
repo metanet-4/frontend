@@ -1,4 +1,5 @@
 <template>
+  
   <div>
     <h1>회원 정보 수정</h1>
 
@@ -47,7 +48,7 @@ import { ref, onMounted } from "vue";
 
 export default {
   setup() {
-    const userId = ref("testUser"); // 예제용 값
+    const userId = ref("");
     const name = ref("");
     const email = ref("");
     const password = ref("");
@@ -69,122 +70,29 @@ export default {
       return "";
     };
 
-    const loadProfileImage = async () => {
+    const loadUserInfo = async () => {
       try {
-        const response = await fetch("/user/profile-pic", {
+        const response = await fetch("/user/info", {
           method: "GET",
           headers: { Authorization: `Bearer ${getJwtToken()}` },
           credentials: "include",
         });
-        const blob = await response.blob();
-        if (blob.size > 0) {
-          profileImage.value = URL.createObjectURL(blob);
+        if (response.ok) {
+          const data = await response.json();
+          userId.value = data.userId;
+          name.value = data.name;
+          email.value = data.email;
         }
       } catch (error) {
-        console.error("프로필 사진 로드 실패:", error);
-      }
-    };
-
-    const loadCertificateImage = async () => {
-      try {
-        const response = await fetch("/user/certificate", {
-          method: "GET",
-          headers: { Authorization: `Bearer ${getJwtToken()}` },
-          credentials: "include",
-        });
-        const blob = await response.blob();
-        if (blob.size > 0) {
-          certificateImage.value = URL.createObjectURL(blob);
-        } else {
-          certificateUploadMsg.value = "등록된 장애인 인증서가 없습니다.";
-        }
-      } catch (error) {
-        console.error("장애인 인증서 로드 실패:", error);
-      }
-    };
-
-    const updateUserInfo = async () => {
-      if (password.value !== password2.value) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-      const formData = {
-        name: name.value,
-        email: email.value,
-        password: password.value,
-      };
-      try {
-        const response = await fetch("/user/updateInfo", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${getJwtToken()}` },
-          credentials: "include",
-          body: JSON.stringify(formData),
-        });
-        alert(response.ok ? "회원 정보가 성공적으로 수정되었습니다." : "회원 정보 수정 실패");
-      } catch (error) {
-        alert("회원 정보 수정 실패: " + error.message);
-      }
-    };
-
-    const handleProfileFileUpload = (event) => {
-      profileFile.value = event.target.files[0];
-    };
-
-    const updateProfile = async () => {
-      if (!profileFile.value) {
-        profileUploadMsg.value = "파일을 선택해주세요.";
-        return;
-      }
-      let formData = new FormData();
-      formData.append("file", profileFile.value);
-      try {
-        const response = await fetch("/user/profile-pic", {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${getJwtToken()}` },
-          credentials: "include",
-          body: formData,
-        });
-        const data = await response.json();
-        profileUploadMsg.value = data.message;
-        alert(data.message);
-        loadProfileImage();
-      } catch (error) {
-        alert("업로드 중 오류 발생: " + error.message);
-      }
-    };
-
-    const handleCertificateFileUpload = (event) => {
-      certificateFile.value = event.target.files[0];
-    };
-
-    const updateCertificate = async () => {
-      if (!certificateFile.value) {
-        certificateUploadMsg.value = "파일을 선택해주세요.";
-        return;
-      }
-      let formData = new FormData();
-      formData.append("file", certificateFile.value);
-      try {
-        const response = await fetch("/user/certificate", {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${getJwtToken()}` },
-          credentials: "include",
-          body: formData,
-        });
-        const data = await response.json();
-        certificateUploadMsg.value = data.message;
-        alert(data.message);
-      } catch (error) {
-        alert("업로드 중 오류 발생: " + error.message);
+        console.error("사용자 정보 로드 실패:", error);
       }
     };
 
     onMounted(() => {
-      loadProfileImage();
-      loadCertificateImage();
+      loadUserInfo();
     });
 
-    return { userId, name, email, password, password2, profileImage, certificateImage, profileUploadMsg, certificateUploadMsg, handleProfileFileUpload, updateProfile, handleCertificateFileUpload, updateCertificate, updateUserInfo };
+    return { userId, name, email, password, password2, profileImage, certificateImage, profileUploadMsg, certificateUploadMsg, getJwtToken, loadUserInfo };
   },
 };
 </script>

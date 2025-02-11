@@ -10,7 +10,7 @@ const password2 = ref("");
 const phone = ref("");
 const email = ref("");
 const birthDate = ref("");
-const gender = ref("남성");
+const gender = ref(1); // Integer 값으로 수정
 const disabilityCertificate = ref(null);
 const errorMessage = ref("");
 const emailMessage = ref("");
@@ -24,101 +24,75 @@ const handleFileUpload = (event) => {
   disabilityCertificate.value = event.target.files[0];
 };
 
-// ✅ 아이디 중복 확인
 const checkUserId = async () => {
   if (!userId.value) {
     userIdMessage.value = "아이디를 입력해주세요.";
     return;
   }
-
   try {
-    const response = await api.get("/auth/check-userId", {
-      params: { userId: userId.value },
-    });
-
+    const response = await api.get("/auth/check-userId", { params: { userId: userId.value } });
     userIdMessage.value = response.data ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.";
   } catch (error) {
     userIdMessage.value = "아이디 확인 실패";
   }
 };
 
-// ✅ 전화번호 중복 확인
 const checkPhone = async () => {
   if (!phone.value) return;
-
   try {
-    const response = await api.get("/auth/check-phone", {
-      params: { phone: phone.value },
-    });
-
+    const response = await api.get("/auth/check-phone", { params: { phone: phone.value } });
     phoneMessage.value = response.data ? "이미 등록된 전화번호입니다." : "사용 가능한 전화번호입니다.";
   } catch (error) {
     phoneMessage.value = "전화번호 확인 실패";
   }
 };
 
-// ✅ 이메일 인증번호 전송
 const sendAuthCode = async () => {
   emailMessage.value = "";
   if (!email.value) {
     emailMessage.value = "이메일을 입력해주세요.";
     return;
   }
-
   try {
-    const response = await api.post("/auth/send-code", null, {
-      params: { email: email.value },
-    });
-
+    const response = await api.post("/auth/send-code", null, { params: { email: email.value } });
     emailMessage.value = response.status === 200 ? "인증번호가 이메일로 전송되었습니다." : "이메일 전송 실패.";
   } catch (error) {
     emailMessage.value = "이메일 전송 실패.";
   }
 };
 
-// ✅ 인증번호 확인
 const verifyAuthCode = async () => {
   authCodeMessage.value = "";
   if (!authCode.value) {
     authCodeMessage.value = "인증번호를 입력해주세요.";
     return;
   }
-
   try {
-    const response = await api.post("/auth/verify-code", null, {
-      params: { email: email.value, authCode: authCode.value },
-    });
-
+    const response = await api.post("/auth/verify-code", null, { params: { email: email.value, authCode: authCode.value } });
     authCodeMessage.value = response.data === true ? "인증 성공!" : "잘못된 인증번호입니다.";
   } catch (error) {
     authCodeMessage.value = "인증 확인 실패.";
   }
 };
 
-// ✅ 회원가입 (FormData 방식)
 const signup = async () => {
   errorMessage.value = "";
-
   if (password.value !== password2.value) {
     errorMessage.value = "비밀번호가 일치하지 않습니다.";
     return;
   }
-
   if (userIdMessage.value.includes("이미 존재하는")) {
     errorMessage.value = "아이디가 중복되었습니다.";
     return;
   }
-
   if (phoneMessage.value.includes("이미 등록된")) {
     errorMessage.value = "전화번호가 중복되었습니다.";
     return;
   }
-
   if (authCodeMessage.value !== "인증 성공!") {
     errorMessage.value = "이메일 인증을 완료해주세요.";
     return;
   }
-
   const formData = new FormData();
   formData.append("userId", userId.value);
   formData.append("name", name.value);
@@ -131,16 +105,19 @@ const signup = async () => {
   if (disabilityCertificate.value) {
     formData.append("disabilityCertificate", disabilityCertificate.value);
   }
-  console.log("📌 회원가입 FormData:", Object.fromEntries(formData));
   try {
-    const response = await api.post("/auth/signup", formData);
+    const response = await api.post("/auth/signup", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true, // ✅ 쿠키 포함 요청 설정
+    });
     console.log("회원가입 성공:", response.data);
     router.push("/login");
   } catch (error) {
-    errorMessage.value = error.response?.data || "회원가입 실패";
+    errorMessage.value = error.response?.data?.error || "회원가입 실패";
   }
 };
 </script>
+
 
 <template>
   <div class="signup-container">
@@ -171,9 +148,10 @@ const signup = async () => {
     <input v-model="birthDate" type="date" class="input-box" />
 
     <select v-model="gender" class="input-box">
-      <option value="남성">남성</option>
-      <option value="여성">여성</option>
+      <option :value="1">남성</option>
+      <option :value="0">여성</option>
     </select>
+
 
     <!-- ✅ 장애인 인증서 업로드 UI 개선 -->
     <div class="file-upload">
