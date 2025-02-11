@@ -131,8 +131,8 @@ async function fetchSchedules() {
                 }
                 // 시간 정보와 좌석 정보를 추가
                 theatersMap[theaterName][screenKey].timeSlots.push({
-                    start: item.startTime.substring(0, 5), // HH:mm 형식으로 자름
-                    end: item.endTime.substring(0, 5),
+                    start: item.startTime.substring(11, 16), // HH:mm 형식으로 자름
+                    end: item.endTime.substring(11, 16),
                     seats: `${item.capacity - item.reservedSeat}/${item.capacity}`,
                     playingId: item.playingId,
                     movieId: item.movieId,
