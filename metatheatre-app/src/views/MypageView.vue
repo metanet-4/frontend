@@ -29,12 +29,8 @@
                 <li v-for="(reservation, index) in mypageData.reserveList" :key="index" class="reservation-item">
                     <router-link :to="`/reservation/${reservation.reservationCode}`" class="reservation-link">
                         <div class="movie-info">
-                            <img
-                                :src="reservation.mainImage"
-                                alt="영화 포스터"
-                                class="movie-poster"
-                                v-if="reservation.mainImage"
-                            />
+                            <img :src="reservation.mainImage" alt="영화 포스터" class="movie-poster"
+                                v-if="reservation.mainImage" />
                             <div class="movie-details">
                                 <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
                                 <div class="reservation-details">
@@ -85,6 +81,7 @@ import NavBar from '../components/NavBar.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import ws from '../services/WebSocketService'
 
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
 const profileImage = ref(null);
@@ -108,10 +105,11 @@ const formatDate = (timestamp) => {
 
 const handleLogout = async () => {
     try {
-        await fetch('http://localhost:8080/auth/logout', { 
-            method: 'POST', 
-            credentials: 'include' 
+        await fetch('http://localhost:8080/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
         });
+        ws.disconnect();
         alert('로그아웃 되었습니다.');
         router.push('/'); // 로그아웃 후 로그인 페이지로 이동
     } catch (error) {
@@ -296,8 +294,10 @@ h2 {
 .divider {
     border: none;
     height: 1px;
-    background-color: #aaa; /* 연한 회색 */
-    margin: 16px 0; /* 위아래 여백 */
+    background-color: #aaa;
+    /* 연한 회색 */
+    margin: 16px 0;
+    /* 위아래 여백 */
 }
 
 .wrapper h5 {
@@ -307,6 +307,7 @@ h2 {
     color: #1c3688;
     margin-bottom: 20px;
 }
+
 .logout-button {
     background: none;
     border: none;
@@ -315,13 +316,11 @@ h2 {
     cursor: pointer;
     font-weight: bold;
     display: block;
-    margin: 4px 0 4px -5px; 
+    margin: 4px 0 4px -5px;
     text-align: left;
 }
 
 .logout-button:hover {
     text-decoration: underline;
 }
-
-
 </style>
