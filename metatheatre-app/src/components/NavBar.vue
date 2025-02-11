@@ -32,12 +32,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import logo from "@/assets/logo.png";
 import Modal from "./LikeModal.vue";
 import NotificationModal from "./NotificationModal.vue";
+import { EventBus } from '../services/EventBus'
+import ws from '../services/WebSocketService'
+
+const messages = ref([]);
+
+const handleWsMessage = (message) => {
+  messages.value.push(message);
+};
+
+onMounted(() => {
+  // 컴포넌트가 마운트되면 이벤트 버스에 구독합니다.
+  EventBus.on('ws-message', handleWsMessage);
+});
+
+onBeforeUnmount(() => {
+  // 컴포넌트가 파괴되기 전에 구독을 해제합니다.
+  EventBus.off('ws-message', handleWsMessage);
+});
 
 const store = useStore();
 const router = useRouter();
