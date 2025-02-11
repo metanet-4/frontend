@@ -1,27 +1,23 @@
 <template>
-  <div class="bottom-bar">
-    <router-link to="/movies" class="bottom-link-button">
-      <i class="bi bi-film"></i>
-      <span>영화</span>
-    </router-link>
-    <router-link to="/cinema" class="bottom-link-button">
-      <i class="bi bi-ticket-perforated-fill"></i>
-      <span>예매</span>
-    </router-link>
-    <router-link
-      :to="role === null ? '/login' : role === 'ADMIN' ? '/admin' : '/mypage'"
-      class="bottom-link-button"
-    >
-      <i class="bi bi-person-lines-fill"></i>
-      <span>{{
-        role === null
-          ? "로그인"
-          : role === "ADMIN"
-          ? "관리자페이지"
-          : "마이페이지"
-      }}</span>
-    </router-link>
-  </div>
+
+    <div class="bottom-bar">
+        <router-link to="/movies" class="bottom-link-button">
+            <i class="bi bi-film"></i>
+            <span>영화</span>
+        </router-link>
+        <router-link to="/cinema" class="bottom-link-button">
+            <i class="bi bi-ticket-perforated-fill"></i>
+            <span>예매</span>
+        </router-link>
+        <router-link
+            :to="role === null ? '/login' : role === 'ADMIN' ? '/admin/users' : '/mypage'"
+            class="bottom-link-button"
+        >
+            <i class="bi bi-person-lines-fill"></i>
+            <span>{{ role === null ? '로그인' : role === 'ADMIN' ? '관리자페이지' : '마이페이지' }}</span>
+        </router-link>
+    </div>
+
 </template>
 
 <script setup>
