@@ -36,16 +36,16 @@ const connectWebSocket = () => {
     socket.value = new WebSocket('ws://localhost:8080/ws');
 
     socket.value.onopen = (event) => {
-        console.log("WebSocket 연결 성공:", event);
+        console.log('WebSocket 연결 성공:', event);
     };
 
     socket.value.onmessage = (event) => {
-        console.log("수신된 메시지:", event.data);
+        console.log('수신된 메시지:', event.data);
         let data;
         try {
             data = event.data;
         } catch (error) {
-            console.error("메시지 파싱 에러:", error.message);
+            console.error('메시지 파싱 에러:', error.message);
             // 파싱 실패 시 평문 메시지를 객체로 감싸서 처리
             data = { message: event.data };
         }
@@ -54,11 +54,11 @@ const connectWebSocket = () => {
     };
 
     socket.value.onerror = (error) => {
-        console.error("WebSocket 에러 발생:", error);
+        console.error('WebSocket 에러 발생:', error);
     };
 
     socket.value.onclose = (event) => {
-        console.log("WebSocket 연결 종료:", event);
+        console.log('WebSocket 연결 종료:', event);
     };
 };
 
