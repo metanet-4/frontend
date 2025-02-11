@@ -9,16 +9,23 @@
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="3000">
           <img
-            src="../assets/main1.jpg"
+            src="../assets/main01.jpg"
             class="d-block w-100"
             alt="홍보 이미지 1"
           />
         </div>
         <div class="carousel-item" data-bs-interval="3000">
           <img
-            src="../assets/main2.jpg"
+            src="../assets/main02.jpg"
             class="d-block w-100"
             alt="홍보 이미지 2"
+          />
+        </div>
+        <div class="carousel-item" data-bs-interval="3000">
+          <img
+            src="../assets/main03.jpg"
+            class="d-block w-100"
+            alt="홍보 이미지 3"
           />
         </div>
       </div>
@@ -48,6 +55,7 @@
         @click="changeLanguage(lang)"
         :label="getLanguageLabel(lang)"
         :bgColor="computedBgColor(lang)"
+        :ftWeight="computedFtWeight(lang)"
       />
     </div>
     <BoxOfficeRanking />
@@ -70,6 +78,10 @@ const changeLanguage = (lang) => {
 
 const computedBgColor = (lang) => {
   return locale.value === lang ? null : "#ADA7D1";
+};
+
+const computedFtWeight = (lang) => {
+  return locale.value === lang ? null : "normal";
 };
 
 const getLanguageLabel = (lang) => {

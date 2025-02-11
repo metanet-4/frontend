@@ -1,38 +1,74 @@
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 
-const boMovies = ref(null);
-const csMovies = ref(null);
+const boMovies = ref([]);
+const csMovies = ref([]);
 
-export const fetchBoxOffice = async () => {
-  if (boMovies.value) return;
-
+const fetchBoxOffice = async () => {
   try {
     const response = await axios.get("http://localhost:8080/movie/boxoffice");
-    console.log(response.data);
     boMovies.value = response.data;
   } catch (error) {
-    console.error("Error fetching box office data:", error);
+    console.error("박스오피스 목록 가져오기 실패하였습니다.", error);
   }
 };
 
-export const fetchComingSoon = async () => {
-  if (csMovies.value) return;
-
+const fetchComingSoon = async () => {
   try {
     const response = await axios.get("http://localhost:8080/movie/comingsoon");
-    console.log(response.data);
     csMovies.value = response.data;
   } catch (error) {
-    console.error("Error fetching coming soon movies:", error);
+    console.error("상영예정작 목록 가져오기 실패하였습니다.", error);
   }
+};
+
+const useAutoFetch = (interval = 20000) => {
+  let timer = null;
+
+  const startFetching = () => {
+    if (!timer) {
+      fetchBoxOffice();
+      fetchComingSoon();
+      timer = setInterval(() => {
+        fetchBoxOffice();
+        fetchComingSoon();
+      }, interval);
+    }
+  };
+
+  const stopFetching = () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+
+  onMounted(() => {
+    if (document.visibilityState === "visible") {
+      startFetching();
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        startFetching();
+      } else {
+        stopFetching();
+      }
+    });
+  });
+
+  onUnmounted(() => {
+    stopFetching();
+    document.removeEventListener("visibilitychange", stopFetching);
+  });
 };
 
 export const useMovieList = () => {
   return {
     boMovies,
-    fetchBoxOffice,
     csMovies,
+    fetchBoxOffice,
     fetchComingSoon,
+    useAutoFetch,
   };
 };
