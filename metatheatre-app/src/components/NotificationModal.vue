@@ -1,29 +1,31 @@
 <template>
-    <div class="modal-overlay-style">
+    <!-- 모달이 열려 있고, 모달 타입이 'alarm'일 때만 표시 -->
+    <div v-if="isModalVisible && modalType === 'alarm'" class="modal-overlay-style">
         <div class="modal-content">
-            <h3 class="alarm-title">알림 목록</h3>
-            <ul>
-                <!-- store의 alarmList를 사용 -->
-                <li v-for="(alarm, index) in alarmList" :key="index">
-                    <!-- alarm이 객체라면 alarm.message, 혹은 단순 문자열이면 그대로 사용 -->
-                    {{ alarm.message || alarm }}
-                </li>
-            </ul>
-            <button @click="closeModal" class="close-button">X</button>
+            <header class="modal-header">
+                <h2>알람 목록</h2>
+                <button class="close-button" @click="closeModal">X</button>
+            </header>
+            <section class="modal-body">
+                <!-- 알람 목록 출력 -->
+                <ul>
+                    <li v-for="(alarm, index) in alarmList" :key="index">
+                        {{ alarm.message }}
+                    </li>
+                </ul>
+            </section>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
-
 const store = useStore();
-
-// Vuex에서 알림 목록을 가져옴
+const isModalVisible = computed(() => store.state.isModalVisible);
+const modalType = computed(() => store.state.modalType);
 const alarmList = computed(() => store.state.alarmList);
-
-// 모달 닫기 함수 (스토어의 closeModal 뮤테이션 호출)
+// 모달 닫기 함수 (스토어에 closeModal 뮤테이션이 있다고 가정)
 const closeModal = () => {
     store.commit('closeModal');
 };
@@ -74,6 +76,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* 모달 스타일 예제 */
 .modal-overlay-style {
     position: fixed;
     top: 50%;
