@@ -18,10 +18,11 @@
                     <h5 class="movie-title">{{ movie.krName }}</h5>
                     <p class="movie-en-title">{{ movie.enName }}</p>
                 </div>
-                <button @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
+                <button v-if="store.getters.isUser" @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
                     {{ liked ? '❤️' : '🤍' }}
                 </button>
-                <button @click="bookMovie" class="book-button">예매하기</button>
+
+                <button v-if="store.getters.isUser" @click="bookMovie" class="book-button">예매하기</button>
             </div>
             <p class="movie-description">{{ movie.description }}</p>
             <div class="movie-header">

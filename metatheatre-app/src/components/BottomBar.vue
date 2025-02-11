@@ -23,7 +23,6 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const role = store.getters.user;
-console.log('바텀바 롤', role);
 </script>
 
 <style scoped>

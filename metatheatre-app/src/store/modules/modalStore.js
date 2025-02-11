@@ -107,7 +107,12 @@ const store = createStore({
         isUser: (state) => state.user === 'ROLE_USER',
         isAdmin: (state) => state.user === 'ROLE_ADMIN',
     },
-    plugins: [createPersistedState()],
+    plugins: [
+        createPersistedState({
+            // 세션 스토리지에 저장
+            storage: window.sessionStorage,
+        }),
+    ],
 });
 
 export default store;

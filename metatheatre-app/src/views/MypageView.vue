@@ -116,6 +116,7 @@ const handleLogout = async () => {
         });
         store.dispatch('logout');
         alert('로그아웃 되었습니다.');
+        window.sessionStorage.removeItem('vuex');
         router.push('/').then(() => {
             window.location.reload(); // 강제 새로고침
         });
