@@ -32,6 +32,7 @@
 </template>
 
 <script setup>
+
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -57,43 +58,42 @@ onBeforeUnmount(() => {
   EventBus.off('ws-message', handleWsMessage);
 });
 
+
 const store = useStore();
 const router = useRouter();
 
 // 검색어 상태
-const keyword = ref("");
+const keyword = ref('');
 
 // Vuex 상태 가져오기
 const modalType = computed(() => store.state.modalType);
 
 // 좋아요 모달 열기
 const openLikeList = async () => {
-  await store.dispatch("fetchLikeList");
-  store.commit("setModalType", "like");
-  store.commit("openModal");
+  await store.dispatch('fetchLikeList');
+  store.commit('setModalType', 'like');
+  store.commit('openModal');
 };
 
 // 알림 모달 열기
 const openAlarmList = async () => {
-  await store.dispatch("fetchAlarmList");
-  console.log("Opening alarm modal...");
-  store.commit("setModalType", "alarm");
-  store.commit("openModal");
-  console.log("Current modal type:", store.state.modalType);
+  await store.dispatch('fetchAlarmList');
+  console.log('Opening alarm modal...');
+  store.commit('setModalType', 'alarm');
+  store.commit('openModal');
+  console.log('Current modal type:', store.state.modalType);
 };
-
-
 
 // 모달 닫기
 const closeModal = () => {
-  store.commit("closeModal");
+  store.commit('closeModal');
 };
 
 // 검색 기능
 const searchMovie = () => {
-  if (keyword.value.trim() !== "") {
+  if (keyword.value.trim() !== '') {
     router.push({
-      name: "SearchMovieView",
+      name: 'SearchMovieView',
       params: { keyword: keyword.value },
     });
   }
@@ -163,7 +163,6 @@ const searchMovie = () => {
 .search-box input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ccc;
   border-radius: 30px;
   outline: none;
   font-size: 0.9rem;
