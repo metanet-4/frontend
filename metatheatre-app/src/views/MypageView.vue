@@ -85,7 +85,9 @@ import NavBar from '../components/NavBar.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
 const profileImage = ref(null);
 const mypageData = ref({
@@ -108,17 +110,19 @@ const formatDate = (timestamp) => {
 
 const handleLogout = async () => {
     try {
-        await fetch('http://localhost:8080/auth/logout', { 
-            method: 'POST', 
-            credentials: 'include' 
+        await fetch('http://localhost:8080/auth/logout', {
+            method: 'POST',
+            credentials: 'include',
         });
+        store.dispatch('logout');
         alert('로그아웃 되었습니다.');
-        router.push('/'); // 로그아웃 후 로그인 페이지로 이동
+        router.push('/').then(() => {
+            window.location.reload(); // 강제 새로고침
+        });
     } catch (error) {
         alert('로그아웃 실패: ' + error.message);
     }
 };
-
 
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
@@ -315,13 +319,11 @@ h2 {
     cursor: pointer;
     font-weight: bold;
     display: block;
-    margin: 4px 0 4px -5px; 
+    margin: 4px 0 4px -5px;
     text-align: left;
 }
 
 .logout-button:hover {
     text-decoration: underline;
 }
-
-
 </style>

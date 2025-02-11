@@ -60,10 +60,12 @@
 import { ref, onMounted, watch } from 'vue';
 import YouTube from 'vue3-youtube';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import NavBar from '../components/NavBar.vue';
 import axios from 'axios';
 
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
+const store = useStore();
 
 // 데이터 및 상태 변수 설정
 const movie = ref(null);
@@ -144,7 +146,6 @@ const fetchMovieData = (movieId) => {
             console.log(data);
             movie.value = data.movie;
             movieChart.value = data.movieMemberForChart;
-            liked.value = data.isLiked;
 
             const audienceCount = movie.value.totalAudience || 0;
             seriesBar.value = [{ name: '누적 관객수', data: [audienceCount] }];
@@ -175,6 +176,17 @@ const fetchMovieData = (movieId) => {
         .catch((error) => console.error('Error fetching movie:', error));
 };
 
+const fetchLikeData = (movieId) => {
+    fetch(`http://localhost:8080/movie/detail/${movieId}/like`, {
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            liked.value = data;
+        })
+        .catch((error) => console.error('Error fetching movie:', error));
+};
+
 const formatDate = (timestamp) => {
     const date = new Date(timestamp); // 타임스탬프를 Date 객체로 변환
     return new Intl.DateTimeFormat('ko-KR', {
@@ -198,6 +210,7 @@ const getWatchGrade = (watchGrade) => {
 onMounted(() => {
     const movieId = route.params.movieId;
     fetchMovieData(movieId);
+    if (store.getters.isUser) fetchLikeData(movieId);
 });
 
 // movieId 변경 시 데이터 새로 로딩

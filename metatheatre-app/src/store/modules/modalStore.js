@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import axios from 'axios';
 
 const store = createStore({
@@ -7,6 +8,8 @@ const store = createStore({
         likeList: [],
         alarmList: [],
         modalType: '', // 모달의 유형 (like, alarm 등)
+        isAuthenticated: false,
+        user: null,
     },
     mutations: {
         toggleModal(state) {
@@ -33,6 +36,15 @@ const store = createStore({
         },
         clearAlarms(state) {
             state.alarmList = [];
+        },
+        LOGIN(state, userData) {
+            console.log('로그인중', userData);
+            state.isAuthenticated = true;
+            state.user = userData;
+        },
+        LOGOUT(state) {
+            state.isAuthenticated = false;
+            state.user = null;
         },
     },
     actions: {
@@ -78,35 +90,11 @@ const store = createStore({
         clearAlarms(state) {
             state.alarmList = [];
         },
-    },
-    actions: {
-        async fetchLikeList({ commit }) {
-            try {
-                const response = await axios.get('http://localhost:8080/likeList');
-                commit('setLikeList', response.data);
-                commit('setModalType', 'like'); // 모달 유형 설정
-                commit('openModal'); // 모달 열기
-            } catch (error) {
-                console.error('Error fetching like list:', error);
-            }
+        login({ commit }, userData) {
+            commit('LOGIN', userData);
         },
-        async fetchAlarmList({ commit }) {
-            try {
-                console.log('알림 모달창 ');
-                commit('setModalType', 'alarm'); // 모달 유형 설정
-                commit('openModal'); // 모달 열기
-            } catch (error) {
-                console.error('Error fetching alarm list:', error);
-            }
-        },
-        openModal({ commit }) {
-            commit('openModal');
-        },
-        closeModal({ commit }) {
-            commit('closeModal');
-        },
-        toggleModal({ commit }) {
-            commit('toggleModal');
+        logout({ commit }) {
+            commit('LOGOUT');
         },
     },
     getters: {
@@ -114,7 +102,12 @@ const store = createStore({
         modalType: (state) => state.modalType,
         likeList: (state) => state.likeList,
         alarmList: (state) => state.alarmList,
+        isAuthenticated: (state) => state.isAuthenticated,
+        user: (state) => state.user,
+        isUser: (state) => state.user === 'ROLE_USER',
+        isAdmin: (state) => state.user === 'ROLE_ADMIN',
     },
+    plugins: [createPersistedState()],
 });
 
 export default store;
