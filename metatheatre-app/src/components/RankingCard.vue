@@ -1,11 +1,11 @@
 <template>
   <div class="card" @click="handleCardClick">
     <img class="poster" :src="movie.mainImage" />
-    <div class="card-top">
-      <img :src="getGradeImage(movie.watchGrade)" class="grade-icon" />
-      <p class="title">{{ movie.krName }}</p>
-    </div>
-    <div class="card-bottom">
+    <div class="card-content">
+      <div class="card-content-top">
+        <img :src="getGradeImage(movie.watchGrade)" class="grade-icon" />
+        <p class="title">{{ movie.krName }}</p>
+      </div>
       <p class="date">{{ formatDate(movie.releaseDate) }} 개봉</p>
       <p class="time"><i class="bi bi-stopwatch"></i> {{ movie.showTime }}분</p>
     </div>
@@ -54,40 +54,43 @@ const getGradeImage = (watchGrade) => {
 .card {
   text-decoration: none;
   border: none;
+  background: none;
+  margin-top: 10px;
   display: flex;
-  flex-direction: column;
-  width: 160px;
+  flex-direction: row;
+  justify-content: center;
+  width: 300px;
   cursor: pointer;
 }
 
 .poster {
-  height: 229px;
+  width: 120px;
 }
 
-.card-top {
+.card-content {
   display: flex;
-  margin-top: 5px;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.card-content-top {
+  display: flex;
 }
 
 .grade-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 3px;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
 }
 
 .title {
   margin: 0px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 160px;
-}
-
-.card-bottom {
-  display: flex;
-  justify-content: space-between;
 }
 
 .date {

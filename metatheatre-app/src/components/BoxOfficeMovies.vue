@@ -10,21 +10,18 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useMovieList } from "../store/modules/movieListStore";
 import MovieCard from "./MovieCard.vue";
 
 const router = useRouter();
-const { boMovies, fetchBoxOffice } = useMovieList();
-
-onMounted(() => {
-  fetchBoxOffice();
-});
+const { boMovies, useAutoFetch } = useMovieList();
 
 const goToDetailPage = (movieId) => {
   router.push({ name: "Detail", params: { movieId } });
 };
+
+useAutoFetch();
 </script>
 
 <style>

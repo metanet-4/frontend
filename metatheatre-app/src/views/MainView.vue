@@ -48,6 +48,7 @@
         @click="changeLanguage(lang)"
         :label="getLanguageLabel(lang)"
         :bgColor="computedBgColor(lang)"
+        :ftWeight="computedFtWeight(lang)"
       />
     </div>
     <BoxOfficeRanking />
@@ -70,6 +71,10 @@ const changeLanguage = (lang) => {
 
 const computedBgColor = (lang) => {
   return locale.value === lang ? null : "#ADA7D1";
+};
+
+const computedFtWeight = (lang) => {
+  return locale.value === lang ? null : "normal";
 };
 
 const getLanguageLabel = (lang) => {

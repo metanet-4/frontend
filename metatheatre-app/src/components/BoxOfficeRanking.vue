@@ -2,38 +2,77 @@
   <div class="bo-ranking">
     <p class="bo-title">{{ $t("title.bo-ranking") }}</p>
     <div class="bo-ranking-contents">
-      <vueper-slides
-        class="no-shadow"
-        :visible-slides="2"
-        :slide-ratio="1 / 4"
-        :dragging-distance="70"
+      <swiper
+        :grabCursor="true"
+        :effect="'creative'"
+        :creativeEffect="{
+          prev: {
+            shadow: true,
+            translate: ['-120%', 0, -500],
+          },
+          next: {
+            shadow: true,
+            translate: ['120%', 0, -500],
+          },
+        }"
+        :modules="modules"
+        class="mySwiper2 custom-swiper"
       >
-        <vueper-slide v-for="i in 10" :key="i" :title="i.toString()" />
-      </vueper-slides>
+        <swiper-slide
+          v-for="movie in top5"
+          :key="movie.id"
+          class="custom-slide"
+        >
+          <RankingCard :movie="movie" @movieClicked="goToDetailPage" />
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
 
 <script setup>
-import { VueperSlides, VueperSlide } from "vueperslides";
-import "vueperslides/dist/vueperslides.css";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { useMovieList } from "../store/modules/movieListStore";
+import RankingCard from "./RankingCard.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { EffectCreative } from "swiper/modules";
+import "swiper/css/effect-creative";
+import "swiper/css";
+
+const router = useRouter();
+const { boMovies, useAutoFetch } = useMovieList();
+const top5 = computed(() => boMovies.value?.slice(0, 5) || []);
+const modules = [EffectCreative];
+
+const goToDetailPage = (movieId) => {
+  router.push({ name: "Detail", params: { movieId } });
+};
+
+useAutoFetch(10000);
 </script>
 
 <style>
-.bo-title {
-  font-size: 18px;
-  margin: 10px;
-}
-
 .bo-ranking {
-  height: 240px;
+  height: 250px;
   background-color: #f8f8f8;
   display: flex;
   flex-direction: column;
 }
 
+.bo-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #525252;
+  margin: 10px;
+}
+
 .bo-ranking-contents {
   width: 80%;
   align-self: center;
+}
+
+.custom-swiper {
+  width: 330px;
 }
 </style>
