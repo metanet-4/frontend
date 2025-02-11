@@ -44,7 +44,7 @@ const closeModal = () => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 380px;
+    width: 390px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;

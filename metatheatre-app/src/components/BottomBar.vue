@@ -8,14 +8,23 @@
             <i class="bi bi-ticket-perforated-fill"></i>
             <span>예매</span>
         </router-link>
-        <router-link to="/mypage" class="bottom-link-button">
+        <router-link
+            :to="role === null ? '/login' : role === 'ADMIN' ? '/admin' : '/mypage'"
+            class="bottom-link-button"
+        >
             <i class="bi bi-person-lines-fill"></i>
-            <span>마이페이지</span>
+            <span>{{ role === null ? '로그인' : role === 'ADMIN' ? '관리자페이지' : '마이페이지' }}</span>
         </router-link>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const role = 'aaa';
+</script>
 
 <style scoped>
 .bottom-bar {

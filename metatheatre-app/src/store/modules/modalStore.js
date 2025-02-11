@@ -26,7 +26,7 @@ const store = createStore({
     actions: {
         async fetchLikeList({ commit }) {
             try {
-                const response = await axios.get('http://localhost:8080/movie/likeList');
+                const response = await axios.get('http://localhost:8080/likeList');
                 commit('setLikeList', response.data); // 받아온 데이터를 상태에 저장
                 commit('openModal'); // 데이터 가져온 후 모달 열기
             } catch (error) {
