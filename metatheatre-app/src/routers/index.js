@@ -12,6 +12,11 @@ import SeatMap from "../components/SeatMap.vue";
 import SearchMovieView from "../views/SearchMovieView.vue";
 import ProfileUpload from "../components/ProfileUpload.vue";
 import CertificateUpload from "../components/CertificateUpload.vue";
+import LoginView from "../views/LoginView.vue";
+import SignupView from "../views/SignupView.vue";
+import AdminUsersView from "../views/AdminUsersView.vue";
+import UpdateInfo from "../views/UpdateInfo.vue";
+import ProfileView from "../views/ProfileView.vue";
 
 const routes = [
   { path: "/", component: MainView },
@@ -40,6 +45,12 @@ const routes = [
   // 파일 업로드 페이지 보기 편하라고 링크 만들었어요 적용하면 지워도 돼요!
   { path: "/profileUpload", component: ProfileUpload },
   { path: "/certificateUpload", component: CertificateUpload },
+
+  { path: "/login", component: LoginView },
+  { path: "/signup", component: SignupView },
+  { path: "/admin/users", component: AdminUsersView },
+  { path: "/updateinfo", component: UpdateInfo },
+  { path: "/user/profile", component: ProfileView },
 ];
 
 const router = createRouter({
