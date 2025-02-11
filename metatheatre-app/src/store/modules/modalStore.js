@@ -5,22 +5,34 @@ const store = createStore({
     state: {
         isModalVisible: false, // 모달 상태
         likeList: [],
+        alarmList: [],
+        modalType: '', // 모달의 유형 (like, alarm 등)
     },
     mutations: {
         toggleModal(state) {
-            // 모달 상태를 토글하는 mutation
             state.isModalVisible = !state.isModalVisible;
         },
         openModal(state) {
-            // 모달을 열기 위한 mutation
             state.isModalVisible = true;
         },
         closeModal(state) {
-            // 모달을 닫기 위한 mutation
             state.isModalVisible = false;
+            state.modalType = ''; // 모달 닫을 때 유형 초기화
+        },
+        setModalType(state, modalType) {
+            state.modalType = modalType;
         },
         setLikeList(state, likeList) {
-            state.likeList = likeList; // 좋아요 목록 업데이트
+            state.likeList = likeList;
+        },
+        setAlarmList(state, alarmList) {
+            state.alarmList = alarmList;
+        },
+        addAlarm(state, alarm) {
+            state.alarmList.push(alarm);
+        },
+        clearAlarms(state) {
+            state.alarmList = [];
         },
     },
     actions: {
@@ -33,18 +45,30 @@ const store = createStore({
                 console.error('Error fetching like list:', error);
             }
         },
+        async fetchAlarmList({ commit }) {
+            try {
+                console.log('알림 모달창 ');
+                commit('setModalType', 'alarm'); // 모달 유형 설정
+                commit('openModal'); // 모달 열기
+            } catch (error) {
+                console.error('Error fetching alarm list:', error);
+            }
+        },
         openModal({ commit }) {
-            commit('openModal'); // openModal mutation 호출
+            commit('openModal');
         },
         closeModal({ commit }) {
-            commit('closeModal'); // closeModal mutation 호출
+            commit('closeModal');
         },
         toggleModal({ commit }) {
-            commit('toggleModal'); // toggleModal mutation 호출
+            commit('toggleModal');
         },
     },
     getters: {
-        isModalVisible: (state) => state.isModalVisible, // 모달 상태를 반환하는 getter
+        isModalVisible: (state) => state.isModalVisible,
+        modalType: (state) => state.modalType,
+        likeList: (state) => state.likeList,
+        alarmList: (state) => state.alarmList,
     },
 });
 
