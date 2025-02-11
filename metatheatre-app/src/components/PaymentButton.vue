@@ -18,7 +18,7 @@ export default {
 	methods: {
 		async processPayment() {
 			console.log("playingId in PaymentButton:", this.playingId);
-			console.log("ticketType in PaymentButton:", this.ticketType);
+			console.log("ticketType in PaymentButton:", this.movie.userType);
 
 			console.log("결제 버튼 클릭됨 - 선택된 결제 수단:", this.method);
 			if (!this.method) {
@@ -75,7 +75,7 @@ export default {
 		},
 
 		async reserveTicket(receiptId) {
-			console.log("reserveTicket :: playingId, ticketType", this.playingId, this.ticketType);
+			console.log("reserveTicket :: playingId, ticketType", this.playingId, this.movie.userType);
 			try {
 				const response = await fetch("http://localhost:8080/payment", {
 					method: "POST",
@@ -87,7 +87,7 @@ export default {
 						playingId: this.playingId,
 						receiptId: receiptId,
 						paymentAmount: this.price,
-						ticketType: this.ticketType
+						ticketType: this.movie.userType
 					})
 				});
 
@@ -119,7 +119,7 @@ export default {
 <style scoped>
 .payment-bar {
 	position: fixed;
-	height: 80px;
+	height: 70px;
 	bottom: 0;
 	width: 100%;
 	max-width: 390px;
@@ -128,13 +128,16 @@ export default {
 	background-color: #281B7A;
 	color: white;
 	text-align: center;
-	padding: 12px;
+	padding: 0;
 	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 button {
 	width: 100%;
-	height: 80px;
+	height: 100%;
 	max-width: 360px;
 	font-size: 18px;
 	background-color: #281B7A;
@@ -142,5 +145,8 @@ button {
 	border: none;
 	cursor: pointer;
 	z-index: 10000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>
