@@ -34,11 +34,10 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import QRCode from "qrcode";
 import NavBar from "../components/NavBar.vue";
 
 const route = useRoute();
-const reservationId = ref(route.params.id);
+const reservationCode = ref(route.params.reservationCode);
 
 const watchGrade = ref("");
 const krName = ref("");
@@ -49,7 +48,6 @@ const cinemaName = ref("");
 const screenName = ref("");
 const seatName = ref("");
 const ticketType = ref("");
-const reservationCode = ref("");
 const qrUrl = ref("");
 
 const formattedPlayingDate = computed(() => formatDate(playingDate.value));
@@ -75,7 +73,7 @@ function formatTime(epochMs) {
 
 async function loadReservation() {
 	try {
-		const url = `http://localhost:8080/ticket/${reservationId.value}`;
+		const url = `http://localhost:8080/ticket/${reservationCode.value}`;
 		const response = await fetch(url, { credentials: "include" });
 		if (!response.ok) {
 			throw new Error("서버 에러 또는 예매 정보를 불러올 수 없습니다.");
@@ -105,8 +103,9 @@ async function cancelReservation() {
 	if (!confirm("정말 예매를 취소하시겠습니까?")) return;
 
 	try {
-		const url = `http://localhost:8080/ticket/cancel/${reservationId.value}`;
-		const response = await fetch(url, { method: "DELETE", credentials: "include" });
+		const url = `http://localhost:8080/ticket/${reservationCode.value}/cancel`;
+		console.log("예매 취소 URL:", url);
+		const response = await fetch(url, { method: "PATCH", credentials: "include" });
 		if (!response.ok) {
 			throw new Error("예매 취소에 실패했습니다.");
 		}

@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-overlay">
+    <div class="modal-overlay-style">
         <div class="modal-content">
             <h3 class="alarm-title">알림 목록</h3>
             <ul>
@@ -74,12 +74,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.modal-overlay {
+.modal-overlay-style {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 80%;
+    top: 50%;
+    left: 50%;
+    width: 390px;
     height: 100%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     /* 필요에 따라 center 정렬 조정 */
