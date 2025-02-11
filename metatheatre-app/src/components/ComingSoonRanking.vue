@@ -23,7 +23,11 @@
           :key="movie.id"
           class="custom-slide"
         >
-          <RankingCard :movie="movie" @movieClicked="goToDetailPage" />
+          <RankingCard
+            :movie="movie"
+            category="cs"
+            @movieClicked="goToDetailPage"
+          />
         </swiper-slide>
       </swiper>
     </div>

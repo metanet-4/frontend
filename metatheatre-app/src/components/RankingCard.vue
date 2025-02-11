@@ -6,8 +6,21 @@
         <img :src="getGradeImage(movie.watchGrade)" class="grade-icon" />
         <p class="title">{{ movie.krName }}</p>
       </div>
-      <p class="date">{{ formatDate(movie.releaseDate) }} 개봉</p>
-      <p class="time"><i class="bi bi-stopwatch"></i> {{ movie.showTime }}분</p>
+      <p class="info">
+        <i class="bi bi-calendar4-event"></i>
+        {{ formatDate(movie.releaseDate) }} · <i class="bi bi-stopwatch"></i>
+        {{ movie.showTime }}분
+      </p>
+      <p class="info">
+        <i class="bi bi-camera-reels"></i> {{ movie.directors }}
+      </p>
+      <p class="info"><i class="bi bi-globe"></i> {{ movie.nation }}</p>
+      <p v-if="category === 'bo'" class="count">
+        <i class="bi bi-people-fill"></i> {{ movie.totalAudience }}명
+      </p>
+      <p v-else-if="category === 'cs'" class="count">
+        <i class="bi bi-heart-fill"></i> {{ movie.likeCount }}개
+      </p>
     </div>
   </div>
 </template>
@@ -21,6 +34,7 @@ import none from "../assets/none.png";
 
 const props = defineProps({
   movie: Object,
+  category: String,
 });
 
 const emit = defineEmits(["movieClicked"]);
@@ -35,7 +49,9 @@ const formatDate = (timestamp) => {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date);
+  })
+    .format(date)
+    .replace(/\.$/, "");
 };
 
 const getGradeImage = (watchGrade) => {
@@ -70,11 +86,12 @@ const getGradeImage = (watchGrade) => {
 .card-content {
   display: flex;
   flex-direction: column;
-  margin-left: 8px;
+  margin-left: 10px;
 }
 
 .card-content-top {
   display: flex;
+  height: 30px;
 }
 
 .grade-icon {
@@ -84,21 +101,25 @@ const getGradeImage = (watchGrade) => {
 }
 
 .title {
-  margin: 0px;
   font-size: 16px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 160px;
+  margin: 0px;
 }
 
-.date {
-  font-size: 10px;
-  margin-top: 3px;
-}
-
-.time {
+.info {
   font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  color: #525252;
+}
+
+.count {
+  margin-top: auto;
+  margin-bottom: 0px;
+  font-size: 14px;
 }
 </style>
