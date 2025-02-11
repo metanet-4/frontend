@@ -1,7 +1,7 @@
 <template>
     <NavBar />
     <div class="wrapper">
-        <!-- 사용자 정보 -->
+        <h5>마이페이지</h5>
         <div class="user-info">
             <div class="profile-container">
                 <div class="profile-image">
@@ -15,9 +15,14 @@
                 </div>
             </div>
         </div>
-
+        <hr class="divider" />
+        <div class="user-actions">
+            <router-link to="/edit-profile" class="action-text">회원 정보 수정</router-link>
+            <router-link to="/logout" class="action-text">로그아웃</router-link>
+            <router-link to="/delete-account" class="action-text">회원 탈퇴</router-link>
+        </div>
         <!-- 예약 목록 -->
-        <h2>예약 목록</h2>
+        <h2 class="reservation-title">예매 내역</h2>
         <div v-if="mypageData.reserveList.length > 0">
             <ul class="reservation-list">
                 <li v-for="(reservation, index) in mypageData.reserveList" :key="index" class="reservation-item">
@@ -44,11 +49,11 @@
             </ul>
         </div>
         <div v-else>
-            <p>예약 내역이 없습니다.</p>
+            <p class="no-reservation-message">예매 내역이 없습니다.</p>
         </div>
 
         <!-- 취소된 예약 목록 -->
-        <h2>취소된 예약 목록</h2>
+        <h2 class="reservation-title">취소 내역</h2>
         <div v-if="mypageData.cancelList.length > 0">
             <ul class="reservation-list">
                 <li v-for="(cancel, index) in mypageData.cancelList" :key="index" class="reservation-item">
@@ -69,7 +74,7 @@
             </ul>
         </div>
         <div v-else>
-            <p>취소된 예약 내역이 없습니다.</p>
+            <p class="no-reservation-message">취소 내역이 없습니다.</p>
         </div>
     </div>
 </template>
@@ -232,5 +237,57 @@ h2 {
     font-size: 18px;
     color: #333;
     margin-bottom: 12px;
+}
+
+.reservation-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1c3788;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.no-reservation-message {
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.user-actions {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.action-text {
+    font-size: 14px;
+    color: #555555;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    margin: 4px 0;
+}
+
+.action-text:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #aaa; /* 연한 회색 */
+    margin: 16px 0; /* 위아래 여백 */
+}
+
+.wrapper h5 {
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    font-size: 20px;
+    color: #1c3688;
+    margin-bottom: 20px;
 }
 </style>
