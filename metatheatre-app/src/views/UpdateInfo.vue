@@ -1,185 +1,190 @@
-<script setup>
-import { ref, onMounted } from "vue";
-import api from "@/api";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-const userId = ref(""); // ID는 수정 불가
-const name = ref("");
-const email = ref("");
-const phone = ref("");
-const password = ref("");
-const password2 = ref("");
-const profilePic = ref(null);
-const profilePicUrl = ref("");
-const errorMessage = ref("");
-
-// 🔹 사용자 정보 불러오기
-const loadUserData = async () => {
-  try {
-    const response = await api.get("/user/profile");
-    const user = response.data;
-    userId.value = user.userId;
-    name.value = user.name;
-    email.value = user.email;
-    phone.value = user.phone;
-    if (user.profilePic) {
-      profilePicUrl.value = `data:image/png;base64,${user.profilePic}`;
-    }
-  } catch (error) {
-    console.error("회원 정보 불러오기 실패:", error);
-  }
-};
-
-// 🔹 프로필 사진 변경
-const handleFileUpload = (event) => {
-  profilePic.value = event.target.files[0];
-};
-
-const updateProfilePic = async () => {
-  if (!profilePic.value) return;
-
-  const formData = new FormData();
-  formData.append("file", profilePic.value);
-
-  try {
-    await api.put("/user/profile-pic", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    alert("프로필 사진이 변경되었습니다.");
-    loadUserData(); // 변경 후 다시 불러오기
-  } catch (error) {
-    errorMessage.value = "프로필 사진 변경 실패";
-  }
-};
-
-// 🔹 회원 정보 수정
-const updateUserInfo = async () => {
-  if (password.value && password.value !== password2.value) {
-    errorMessage.value = "비밀번호가 일치하지 않습니다.";
-    return;
-  }
-
-  const userData = {
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    password: password.value,
-    password2: password2.value,
-  };
-
-  try {
-    await api.put("/user/updateInfo", userData);
-    alert("회원 정보가 수정되었습니다.");
-    router.push("/mypage");
-  } catch (error) {
-    errorMessage.value = "회원 정보 수정 실패";
-  }
-};
-
-// 🔹 페이지 로드 시 사용자 정보 불러오기
-onMounted(loadUserData);
-</script>
-
 <template>
-  <div class="update-info-container">
-    <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+  <div>
+    <h1>회원 정보 수정</h1>
+
+    <!-- ✅ 프로필 사진 변경 -->
+    <h2>프로필 사진 변경</h2>
+    <img :src="profileImage" alt="프로필 사진" width="150" height="150" />
+    <input type="file" @change="handleProfileFileUpload" accept="image/*" />
+    <button @click="updateProfile">변경</button>
+    <p style="color: red;">{{ profileUploadMsg }}</p>
+
+    <!-- ✅ 회원 정보 수정 -->
     <h2>회원 정보 수정</h2>
+    <form @submit.prevent="updateUserInfo">
+      <label>아이디</label>
+      <input type="text" v-model="userId" readonly />
 
-    <div class="profile-section">
-      <img :src="profilePicUrl || '/default-profile.png'" alt="프로필 사진" class="profile-pic" />
-      <label class="file-upload">
-        <input type="file" @change="handleFileUpload" />
-        <button @click="updateProfilePic">사진 변경</button>
-      </label>
-    </div>
+      <label>이름</label>
+      <input type="text" v-model="name" required />
 
-    <input v-model="name" placeholder="이름" class="input-box" />
-    <input v-model="email" placeholder="이메일" class="input-box" />
-    <input v-model="phone" placeholder="전화번호" class="input-box" />
-    <input v-model="userId" placeholder="아이디" class="input-box" disabled />
+      <label>이메일</label>
+      <input type="email" v-model="email" required />
 
-    <input v-model="password" type="password" placeholder="비밀번호" class="input-box" />
-    <input v-model="password2" type="password" placeholder="비밀번호 확인" class="input-box" />
+      <label>새 비밀번호</label>
+      <input type="password" v-model="password" placeholder="새 비밀번호 입력" />
 
-    <button @click="updateUserInfo" class="update-btn">수정</button>
-    <button @click="router.push('/mypage')" class="cancel-btn">취소</button>
+      <label>비밀번호 확인</label>
+      <input type="password" v-model="password2" placeholder="비밀번호 확인 입력" />
 
-    <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
+      <button type="submit">정보 수정</button>
+    </form>
+
+    <!-- ✅ 장애인 인증서 변경 -->
+    <h2>장애인 인증서 변경</h2>
+    <img :src="certificateImage" alt="장애인 인증서" width="150" height="150" />
+    <input type="file" @change="handleCertificateFileUpload" accept="image/*" />
+    <button @click="updateCertificate">변경</button>
+    <p style="color: red;">{{ certificateUploadMsg }}</p>
+
+    <br /><br />
+    <router-link to="/user/profile"><button>프로필 페이지로 이동</button></router-link>
   </div>
 </template>
 
-<style scoped>
-.update-info-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #ffffff;
-}
+<script>
+import { ref, onMounted } from "vue";
 
-.logo {
-  width: 200px;
-  margin-bottom: 20px;
-}
+export default {
+  setup() {
+    const userId = ref("testUser"); // 예제용 값
+    const name = ref("");
+    const email = ref("");
+    const password = ref("");
+    const password2 = ref("");
+    const profileImage = ref("");
+    const certificateImage = ref("");
+    const profileUploadMsg = ref("");
+    const certificateUploadMsg = ref("");
+    const profileFile = ref(null);
+    const certificateFile = ref(null);
 
-h2 {
-  margin-bottom: 20px;
-}
+    const getJwtToken = () => {
+      const cookies = document.cookie.split("; ");
+      for (let cookie of cookies) {
+        if (cookie.startsWith("jwt=")) {
+          return cookie.split("=")[1];
+        }
+      }
+      return "";
+    };
 
-.profile-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
+    const loadProfileImage = async () => {
+      try {
+        const response = await fetch("/user/profile-pic", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${getJwtToken()}` },
+          credentials: "include",
+        });
+        const blob = await response.blob();
+        if (blob.size > 0) {
+          profileImage.value = URL.createObjectURL(blob);
+        }
+      } catch (error) {
+        console.error("프로필 사진 로드 실패:", error);
+      }
+    };
 
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
+    const loadCertificateImage = async () => {
+      try {
+        const response = await fetch("/user/certificate", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${getJwtToken()}` },
+          credentials: "include",
+        });
+        const blob = await response.blob();
+        if (blob.size > 0) {
+          certificateImage.value = URL.createObjectURL(blob);
+        } else {
+          certificateUploadMsg.value = "등록된 장애인 인증서가 없습니다.";
+        }
+      } catch (error) {
+        console.error("장애인 인증서 로드 실패:", error);
+      }
+    };
 
-.file-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    const updateUserInfo = async () => {
+      if (password.value !== password2.value) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+      const formData = {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      };
+      try {
+        const response = await fetch("/user/updateInfo", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${getJwtToken()}` },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        });
+        alert(response.ok ? "회원 정보가 성공적으로 수정되었습니다." : "회원 정보 수정 실패");
+      } catch (error) {
+        alert("회원 정보 수정 실패: " + error.message);
+      }
+    };
 
-.input-box {
-  width: 250px;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
+    const handleProfileFileUpload = (event) => {
+      profileFile.value = event.target.files[0];
+    };
 
-.update-btn {
-  width: 250px;
-  padding: 10px;
-  background-color: #0044cc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+    const updateProfile = async () => {
+      if (!profileFile.value) {
+        profileUploadMsg.value = "파일을 선택해주세요.";
+        return;
+      }
+      let formData = new FormData();
+      formData.append("file", profileFile.value);
+      try {
+        const response = await fetch("/user/profile-pic", {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${getJwtToken()}` },
+          credentials: "include",
+          body: formData,
+        });
+        const data = await response.json();
+        profileUploadMsg.value = data.message;
+        alert(data.message);
+        loadProfileImage();
+      } catch (error) {
+        alert("업로드 중 오류 발생: " + error.message);
+      }
+    };
 
-.cancel-btn {
-  width: 250px;
-  padding: 10px;
-  background-color: #777;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
+    const handleCertificateFileUpload = (event) => {
+      certificateFile.value = event.target.files[0];
+    };
 
-.error-msg {
-  color: red;
-  margin-top: 10px;
-}
-</style>
+    const updateCertificate = async () => {
+      if (!certificateFile.value) {
+        certificateUploadMsg.value = "파일을 선택해주세요.";
+        return;
+      }
+      let formData = new FormData();
+      formData.append("file", certificateFile.value);
+      try {
+        const response = await fetch("/user/certificate", {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${getJwtToken()}` },
+          credentials: "include",
+          body: formData,
+        });
+        const data = await response.json();
+        certificateUploadMsg.value = data.message;
+        alert(data.message);
+      } catch (error) {
+        alert("업로드 중 오류 발생: " + error.message);
+      }
+    };
+
+    onMounted(() => {
+      loadProfileImage();
+      loadCertificateImage();
+    });
+
+    return { userId, name, email, password, password2, profileImage, certificateImage, profileUploadMsg, certificateUploadMsg, handleProfileFileUpload, updateProfile, handleCertificateFileUpload, updateCertificate, updateUserInfo };
+  },
+};
+</script>
