@@ -40,7 +40,7 @@ const login = async () => {
 </script>
 
 <template>
-  <<<<<<< HEAD <div class="login-container">
+  <div class="login-container">
     <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
 
     <input v-model="userId" placeholder="아이디를 입력하세요" class="input-box" />
@@ -51,21 +51,7 @@ const login = async () => {
     <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
     <router-link to="/signup" class="signup-link">회원가입</router-link>
-    </div>
-    =======
-    <div class="login-container">
-      <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
-
-      <input v-model="userId" placeholder="아이디를 입력하세요" class="input-box" />
-      <input v-model="password" type="password" placeholder="비밀번호를 입력하세요" class="input-box" />
-
-      <button @click="login" class="login-btn">로그인</button>
-
-      <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
-
-      <router-link to="/signup" class="signup-link">회원가입</router-link>
-    </div>
-    >>>>>>> dev
+  </div>
 </template>
 
 <style scoped>
