@@ -38,7 +38,7 @@ const closeModal = () => {
     color: inherit;
 }
 
-/* 모달 배경 및 전체 스타일 */
+/* 모달 배경 */
 .like-modal {
     position: fixed;
     top: 50%;
@@ -46,7 +46,7 @@ const closeModal = () => {
     transform: translate(-50%, -50%);
     width: 380px;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 배경에 투명도 추가 */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,30 +57,35 @@ const closeModal = () => {
 .modal-content {
     background: white;
     border-radius: 12px;
-    padding: 30px;
+    padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     width: 100%;
-    height: 100%;
-    overflow-y: auto; /* 내용이 많을 경우 스크롤 추가 */
-    max-height: 80%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
     position: relative;
 }
 
-/* 모달 제목 스타일 */
+/* 모달 제목 */
 .modal-title {
     font-size: 1.5rem;
     font-weight: 600;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-/* 영화 목록 스타일 */
+/* 리스트 영역 */
 ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow-y: auto;
+    max-height: 60vh; /* 리스트가 길어지면 개별 스크롤 */
+    flex-grow: 1;
 }
 
+/* 개별 영화 항목 */
 .movie-item {
     display: flex;
     align-items: center;
@@ -99,10 +104,10 @@ ul {
 .movie-title {
     font-size: 1rem;
     color: #555;
-    flex: 1; /* 텍스트가 남은 공간을 차지하게 */
+    flex: 1;
 }
 
-/* 닫기 버튼 스타일 */
+/* 닫기 버튼 */
 .close-btn {
     background-color: #ff6b6b;
     color: white;
@@ -111,17 +116,16 @@ ul {
     padding: 10px 15px;
     font-size: 1rem;
     cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    margin-top: 15px; /* 리스트와 버튼 사이 여백 */
+    position: relative;
 }
 
 .close-btn:hover {
     background-color: #ff4d4d;
 }
 
-/* 작은 화면 대응 (반응형) */
+/* 반응형 */
 @media (max-width: 420px) {
     .like-modal {
         width: 90%;
