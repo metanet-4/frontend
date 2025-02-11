@@ -177,7 +177,7 @@ const signup = async () => {
   margin: 0 auto;
   background-color: #ffffff;
   padding: 10px;
-  height: 100vh;
+  height: 95vh;
   overflow-y: auto; /* ✅ 세로 스크롤 가능하도록 설정 */
 }
 

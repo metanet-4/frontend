@@ -15,8 +15,8 @@ import CertificateUpload from "../components/CertificateUpload.vue";
 import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import AdminUsersView from "../views/AdminUsersView.vue";
-import UpdateInfo from "../views/UpdateInfo.vue";
-import ProfileView from "../views/ProfileView.vue";
+import UpdateInfoView from "../views/UpdateInfoView.vue";
+import DeleteAccountView from "../views/DeleteAccountView.vue";
 
 const routes = [
   { path: "/", component: MainView },
@@ -49,8 +49,8 @@ const routes = [
   { path: "/login", component: LoginView },
   { path: "/signup", component: SignupView },
   { path: "/admin/users", component: AdminUsersView },
-  { path: "/updateinfo", component: UpdateInfo },
-  { path: "/user/profile", component: ProfileView },
+  { path: "/edit-profile", component: UpdateInfoView },
+  { path: "/delete", component: DeleteAccountView },
 ];
 
 const router = createRouter({
