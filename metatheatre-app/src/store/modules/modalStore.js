@@ -3,10 +3,10 @@ import axios from 'axios';
 
 const store = createStore({
     state: {
-        isModalVisible: false,  // 모달 상태
+        isModalVisible: false, // 모달 상태
         likeList: [],
         alarmList: [],
-        modalType: '',  // 모달의 유형 (like, alarm 등)
+        modalType: '', // 모달의 유형 (like, alarm 등)
     },
     mutations: {
         toggleModal(state) {
@@ -17,7 +17,7 @@ const store = createStore({
         },
         closeModal(state) {
             state.isModalVisible = false;
-            state.modalType = '';  // 모달 닫을 때 유형 초기화
+            state.modalType = ''; // 모달 닫을 때 유형 초기화
         },
         setModalType(state, modalType) {
             state.modalType = modalType;
@@ -38,19 +38,18 @@ const store = createStore({
     actions: {
         async fetchLikeList({ commit }) {
             try {
-                const response = await axios.get('http://localhost:8080/movie/likeList');
-                commit('setLikeList', response.data);
-                commit('setModalType', 'like');  // 모달 유형 설정
-                commit('openModal');  // 모달 열기
+                const response = await axios.get('http://localhost:8080/likeList');
+                commit('setLikeList', response.data); // 받아온 데이터를 상태에 저장
+                commit('openModal'); // 데이터 가져온 후 모달 열기
             } catch (error) {
                 console.error('Error fetching like list:', error);
             }
         },
         async fetchAlarmList({ commit }) {
             try {
-                console.log("알림 모달창 ");
-                commit('setModalType', 'alarm');  // 모달 유형 설정
-                commit('openModal');  // 모달 열기
+                console.log('알림 모달창 ');
+                commit('setModalType', 'alarm'); // 모달 유형 설정
+                commit('openModal'); // 모달 열기
             } catch (error) {
                 console.error('Error fetching alarm list:', error);
             }
@@ -63,7 +62,7 @@ const store = createStore({
         },
         toggleModal({ commit }) {
             commit('toggleModal');
-        }
+        },
     },
     getters: {
         isModalVisible: (state) => state.isModalVisible,
