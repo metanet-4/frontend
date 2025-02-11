@@ -9,7 +9,7 @@
             <span>예매</span>
         </router-link>
         <router-link
-            :to="role === null ? '/login' : role === 'ADMIN' ? '/admin' : '/mypage'"
+            :to="role === null ? '/login' : role === 'ADMIN' ? '/admin/users' : '/mypage'"
             class="bottom-link-button"
         >
             <i class="bi bi-person-lines-fill"></i>
