@@ -25,54 +25,11 @@ const store = useStore();
 const isModalVisible = computed(() => store.state.isModalVisible);
 const modalType = computed(() => store.state.modalType);
 const alarmList = computed(() => store.state.alarmList);
+
 // 모달 닫기 함수 (스토어에 closeModal 뮤테이션이 있다고 가정)
 const closeModal = () => {
     store.commit('closeModal');
 };
-
-// 웹소켓 연결 관련
-const socket = ref(null);
-
-const connectWebSocket = () => {
-    // 웹소켓 엔드포인트 (서버 주소에 맞게 변경)
-    socket.value = new WebSocket('ws://localhost:8080/ws');
-
-    socket.value.onopen = (event) => {
-        console.log('WebSocket 연결 성공:', event);
-    };
-
-    socket.value.onmessage = (event) => {
-        console.log('수신된 메시지:', event.data);
-        let data;
-        try {
-            data = event.data;
-        } catch (error) {
-            console.error('메시지 파싱 에러:', error.message);
-            // 파싱 실패 시 평문 메시지를 객체로 감싸서 처리
-            data = { message: event.data };
-        }
-        // Vuex 스토어의 alarmList에 추가
-        store.commit('addAlarm', data);
-    };
-
-    socket.value.onerror = (error) => {
-        console.error('WebSocket 에러 발생:', error);
-    };
-
-    socket.value.onclose = (event) => {
-        console.log('WebSocket 연결 종료:', event);
-    };
-};
-
-onMounted(() => {
-    connectWebSocket();
-});
-
-onBeforeUnmount(() => {
-    if (socket.value) {
-        socket.value.close();
-    }
-});
 </script>
 
 <style scoped>
