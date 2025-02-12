@@ -12,7 +12,7 @@
                 <div class="alarm-list">
                     <div v-for="(alarm, index) in alarmList" :key="alarm.id || index" class="alarm-item">
                         <i class="bi bi-ticket-perforated" style="font-size: 1.4rem"></i>
-                        <p class="alarm-message"> {{ alarm.message }}</p>
+                        <p class="alarm-message">{{ alarm.message }}</p>
                     </div>
                 </div>
             </section>
@@ -21,8 +21,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { computed } from "vue";
+import { useStore } from "vuex";
 const store = useStore();
 const isModalVisible = computed(() => store.state.isModalVisible);
 const modalType = computed(() => store.state.modalType);
@@ -30,7 +30,7 @@ const alarmList = computed(() => store.state.alarmList);
 
 // 모달 닫기 함수 (스토어에 closeModal 뮤테이션이 있다고 가정)
 const closeModal = () => {
-    store.commit('closeModal');
+    store.commit("closeModal");
 };
 </script>
 

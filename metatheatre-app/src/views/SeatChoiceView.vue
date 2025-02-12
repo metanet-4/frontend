@@ -45,79 +45,74 @@
             </div>
         </div>
         <!-- 총 가격 표시 -->
-        <div class="total-price">
-            {{ totalPrice }}원
-        </div>
+        <div class="total-price">{{ totalPrice }}원</div>
 
         <!-- 예매하기 버튼 -->
-        <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">
-            예매하기
-        </button>
+        <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">예매하기</button>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import SeatMap from '../components/SeatMap.vue'
-import allImg from '../assets/all.png'
-import age12Img from '../assets/12.png'
-import age15Img from '../assets/15.png'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
-import Swal from 'sweetalert2'
+import { ref, computed, onMounted } from "vue";
+import axios from "axios";
+import SeatMap from "../components/SeatMap.vue";
+import allImg from "../assets/all.png";
+import age12Img from "../assets/12.png";
+import age15Img from "../assets/15.png";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 
 const watchGradeImg = computed(() => {
-    if (watchGrade.value === '전체관람가') return allImg
-    if (watchGrade.value === '12세이상관람가') return age12Img
-    if (watchGrade.value === '15세이상관람가') return age15Img
-    return ''
-})
+    if (watchGrade.value === "전체관람가") return allImg;
+    if (watchGrade.value === "12세이상관람가") return age12Img;
+    if (watchGrade.value === "15세이상관람가") return age15Img;
+    return "";
+});
 
-
-const selectedSeats = ref([])       // v-model (선택된 좌석)
-const unavailableSeats = ref([])    // 이미 예약된 좌석 목록
-const youthCount = ref(0)
-const adultCount = ref(0)
-const seniorCount = ref(0)
-const preferentialCount = ref(0)
+const selectedSeats = ref([]); // v-model (선택된 좌석)
+const unavailableSeats = ref([]); // 이미 예약된 좌석 목록
+const youthCount = ref(0);
+const adultCount = ref(0);
+const seniorCount = ref(0);
+const preferentialCount = ref(0);
 
 // 영화 정보
-const movieTitle = ref('')
-const watchGrade = ref('')
-const startTimeRaw = ref('')
-const cinemaInfo = ref('')
-const playingId = ref()
-const movieId = ref('')
-const screenId = ref()
-const seatName = ref('')
+const movieTitle = ref("");
+const watchGrade = ref("");
+const startTimeRaw = ref("");
+const cinemaInfo = ref("");
+const playingId = ref();
+const movieId = ref("");
+const screenId = ref();
+const seatName = ref("");
 
 async function fetchSeats() {
     playingId.value = route.params.playingId;
     screenId.value = route.params.screenId;
-    console.log("pp : " + playingId.value)
-    console.log("ss : " + screenId.value)
+    console.log("pp : " + playingId.value);
+    console.log("ss : " + screenId.value);
     try {
         const response = await axios.get(`http://localhost:8080/ticket/seats?playingId=${playingId.value}`, {
-            withCredentials: true
-        })
-        const data = response.data
+            withCredentials: true,
+        });
+        const data = response.data;
 
         // 1) 예약된 좌석 목록
-        unavailableSeats.value = data.map(item => item.name)
+        unavailableSeats.value = data.map((item) => item.name);
 
         // 2) 영화 정보 (첫 번째 항목 기준)
         if (data.length > 0) {
-            const first = data[0]
-            screenId.value = first.screenId
-            movieId.value = first.movieId
-            movieTitle.value = first.krName
-            watchGrade.value = first.watchGrade
-            startTimeRaw.value = first.startTime
-            cinemaInfo.value = `${first.cinemaName} ${first.screenName} (${first.type})`.trim()
+            const first = data[0];
+            screenId.value = first.screenId;
+            movieId.value = first.movieId;
+            movieTitle.value = first.krName;
+            watchGrade.value = first.watchGrade;
+            startTimeRaw.value = first.startTime;
+            cinemaInfo.value = `${first.cinemaName} ${first.screenName} (${first.type})`.trim();
         }
     } catch (error) {
         // console.error(error)
@@ -125,58 +120,57 @@ async function fetchSeats() {
 }
 
 onMounted(() => {
-    fetchSeats()
-})
+    fetchSeats();
+});
 
 function increment(type) {
-    if (type === 'youth') {
-        youthCount.value++
-    } else if (type === 'adult') {
-        adultCount.value++
-    } else if (type === 'senior') {
-        seniorCount.value++
-    } else if (type === 'preferential') {
-        preferentialCount.value++
+    if (type === "youth") {
+        youthCount.value++;
+    } else if (type === "adult") {
+        adultCount.value++;
+    } else if (type === "senior") {
+        seniorCount.value++;
+    } else if (type === "preferential") {
+        preferentialCount.value++;
     }
 }
 function decrement(type) {
-    if (type === 'youth' && youthCount.value > 0) {
-        youthCount.value--
-    } else if (type === 'adult' && adultCount.value > 0) {
-        adultCount.value--
-    } else if (type === 'senior' && seniorCount.value > 0) {
-        seniorCount.value--
-    } else if (type === 'preferential' && preferentialCount.value > 0) {
-        preferentialCount.value--
+    if (type === "youth" && youthCount.value > 0) {
+        youthCount.value--;
+    } else if (type === "adult" && adultCount.value > 0) {
+        adultCount.value--;
+    } else if (type === "senior" && seniorCount.value > 0) {
+        seniorCount.value--;
+    } else if (type === "preferential" && preferentialCount.value > 0) {
+        preferentialCount.value--;
     }
 }
 
-const totalPersons = computed(() => youthCount.value + adultCount.value + seniorCount.value + preferentialCount.value)
+const totalPersons = computed(() => youthCount.value + adultCount.value + seniorCount.value + preferentialCount.value);
 const totalPrice = computed(() => {
     // 청소년: 10000원, 성인: 12000원
-    return youthCount.value * 10000 + adultCount.value * 12000 + seniorCount.value * 7000 + preferentialCount.value * 5000
-})
+    return (
+        youthCount.value * 10000 + adultCount.value * 12000 + seniorCount.value * 7000 + preferentialCount.value * 5000
+    );
+});
 
 const formattedStartTime = computed(() => {
-    if (!startTimeRaw.value) return ''
-    const d = new Date(startTimeRaw.value)
-    if (isNaN(d.getTime())) return startTimeRaw.value
+    if (!startTimeRaw.value) return "";
+    const d = new Date(startTimeRaw.value);
+    if (isNaN(d.getTime())) return startTimeRaw.value;
 
-    const yyyy = d.getFullYear()
-    const mm = String(d.getMonth() + 1).padStart(2, '0')
-    const dd = String(d.getDate()).padStart(2, '0')
-    const hh = String(d.getHours()).padStart(2, '0')
-    const min = String(d.getMinutes()).padStart(2, '0')
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
 
-    return `${yyyy}-${mm}-${dd} (${hh}:${min})`
-})
+    return `${yyyy}-${mm}-${dd} (${hh}:${min})`;
+});
 
 const canReserve = computed(() => {
-    return (
-        selectedSeats.value.length === totalPersons.value &&
-        totalPersons.value > 0
-    )
-})
+    return selectedSeats.value.length === totalPersons.value && totalPersons.value > 0;
+});
 
 // 예매하기
 function reserveTickets() {
@@ -185,32 +179,33 @@ function reserveTickets() {
     //     `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
     //     `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(', ')}\n` +
     //     `총금액: ${totalPrice.value}원\n` +
-    //     `예매 로직 처리 ...` 
+    //     `예매 로직 처리 ...`
     // )
-    console.log("movieId : " + movieId.value)
-    console.log("playingId : " + playingId.value)
-    console.log("adult : " + adultCount.value)
-    console.log("total : " + totalPrice.value)
-    console.log(selectedSeats.value.join(', '))
-    Swal.fire(`청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
-        `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
-        `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(', ')}\n` +
-        `총금액: ${totalPrice.value}원입니다`)
-        .then(() => {
-            router.push({
-                name: 'PaymentPage',
-                params: {
-                    movieId: movieId.value,
-                    playingId: playingId.value,
-                    seatName: selectedSeats.value.join(', '),
-                    youthCount: youthCount.value,
-                    adultCount: adultCount.value,
-                    seniorCount: seniorCount.value,
-                    preferentialCount: preferentialCount.value,
-                    totalPrice: totalPrice.value
-                }
-            })
-        })
+    console.log("movieId : " + movieId.value);
+    console.log("playingId : " + playingId.value);
+    console.log("adult : " + adultCount.value);
+    console.log("total : " + totalPrice.value);
+    console.log(selectedSeats.value.join(", "));
+    Swal.fire(
+        `청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
+            `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
+            `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(", ")}\n` +
+            `총금액: ${totalPrice.value}원입니다`
+    ).then(() => {
+        router.push({
+            name: "PaymentPage",
+            params: {
+                movieId: movieId.value,
+                playingId: playingId.value,
+                seatName: selectedSeats.value.join(", "),
+                youthCount: youthCount.value,
+                adultCount: adultCount.value,
+                seniorCount: seniorCount.value,
+                preferentialCount: preferentialCount.value,
+                totalPrice: totalPrice.value,
+            },
+        });
+    });
 }
 </script>
 
@@ -221,7 +216,6 @@ function reserveTickets() {
     vertical-align: middle;
     margin-right: 4px;
 }
-
 
 .seat-choice-view {
     width: 100%;

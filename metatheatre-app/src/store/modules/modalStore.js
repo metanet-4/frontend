@@ -1,13 +1,13 @@
-import { createStore } from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-import axios from 'axios';
+import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import axios from "axios";
 
 const store = createStore({
     state: {
         isModalVisible: false, // 모달 상태
         likeList: [],
         alarmList: [],
-        modalType: '', // 모달의 유형 (like, alarm 등)
+        modalType: "", // 모달의 유형 (like, alarm 등)
         isAuthenticated: false,
         user: null,
     },
@@ -20,7 +20,7 @@ const store = createStore({
         },
         closeModal(state) {
             state.isModalVisible = false;
-            state.modalType = ''; // 모달 닫을 때 유형 초기화
+            state.modalType = ""; // 모달 닫을 때 유형 초기화
         },
         setModalType(state, modalType) {
             state.modalType = modalType;
@@ -38,7 +38,7 @@ const store = createStore({
             state.alarmList = [];
         },
         LOGIN(state, userData) {
-            console.log('로그인중', userData);
+            console.log("로그인중", userData);
             state.isAuthenticated = true;
             state.user = userData;
         },
@@ -50,7 +50,7 @@ const store = createStore({
             state.isModalVisible = false;
             state.likeList = [];
             state.alarmList = [];
-            state.modalType = '';
+            state.modalType = "";
             state.isAuthenticated = false;
             state.user = null;
         },
@@ -58,30 +58,30 @@ const store = createStore({
     actions: {
         async fetchLikeList({ commit }) {
             try {
-                const response = await axios.get('http://localhost:8080/likeList');
-                commit('setLikeList', response.data); // 받아온 데이터를 상태에 저장
-                commit('openModal'); // 데이터 가져온 후 모달 열기
+                const response = await axios.get("http://localhost:8080/likeList");
+                commit("setLikeList", response.data); // 받아온 데이터를 상태에 저장
+                commit("openModal"); // 데이터 가져온 후 모달 열기
             } catch (error) {
-                console.error('Error fetching like list:', error);
+                console.error("Error fetching like list:", error);
             }
         },
         async fetchAlarmList({ commit }) {
             try {
-                console.log('알림 모달창 ');
-                commit('setModalType', 'alarm'); // 모달 유형 설정
-                commit('openModal'); // 모달 열기
+                console.log("알림 모달창 ");
+                commit("setModalType", "alarm"); // 모달 유형 설정
+                commit("openModal"); // 모달 열기
             } catch (error) {
-                console.error('Error fetching alarm list:', error);
+                console.error("Error fetching alarm list:", error);
             }
         },
         openModal({ commit }) {
-            commit('openModal');
+            commit("openModal");
         },
         closeModal({ commit }) {
-            commit('closeModal');
+            commit("closeModal");
         },
         toggleModal({ commit }) {
-            commit('toggleModal');
+            commit("toggleModal");
         },
         setModalType(state, modalType) {
             state.modalType = modalType;
@@ -99,13 +99,16 @@ const store = createStore({
             state.alarmList = [];
         },
         login({ commit }, userData) {
-            commit('LOGIN', userData);
+            commit("LOGIN", userData);
         },
         logout({ commit }) {
-            commit('LOGOUT');
+            commit("LOGOUT");
         },
         initializeStore({ commit }) {
-            commit('INITIALIZE');
+            commit("INITIALIZE");
+        },
+        initializeStore({ commit }) {
+            commit("INITIALIZE");
         },
     },
     getters: {
@@ -115,8 +118,8 @@ const store = createStore({
         alarmList: (state) => state.alarmList,
         isAuthenticated: (state) => state.isAuthenticated,
         user: (state) => state.user,
-        isUser: (state) => state.user === 'ROLE_USER',
-        isAdmin: (state) => state.user === 'ROLE_ADMIN',
+        isUser: (state) => state.user === "ROLE_USER",
+        isAdmin: (state) => state.user === "ROLE_ADMIN",
     },
     plugins: [
         createPersistedState({

@@ -13,14 +13,11 @@
     </div>
 </template>
 
-
 <script setup>
 import { ref } from "vue";
 import NavBar from "../components/NavBar.vue";
 import BoxOfficeMovies from "../components/BoxOfficeMovies.vue";
-
 </script>
-
 
 <style scoped>
 /* 공통 스타일 초기화 (예시) */

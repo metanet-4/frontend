@@ -1,8 +1,16 @@
 <template>
     <NavBar />
     <div class="wrapper">
-        <YouTube v-if="youtubeVideoId" class="youtube-player" :src="`https://www.youtube.com/watch?v=${youtubeVideoId}`"
-            @ready="onReady" ref="youtube" :width="390" :height="250" :key="youtubeVideoId" />
+        <YouTube
+            v-if="youtubeVideoId"
+            class="youtube-player"
+            :src="`https://www.youtube.com/watch?v=${youtubeVideoId}`"
+            @ready="onReady"
+            ref="youtube"
+            :width="390"
+            :height="250"
+            :key="youtubeVideoId"
+        />
 
         <div v-if="movie">
             <div class="movie-header">
@@ -11,7 +19,7 @@
                     <p class="movie-en-title">{{ movie.enName }}</p>
                 </div>
                 <button v-if="store.getters.isUser" @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
-                    {{ liked ? '❤️' : '🤍' }}
+                    {{ liked ? "❤️" : "🤍" }}
                 </button>
 
                 <button v-if="store.getters.isUser" @click="bookMovie" class="book-button">예매하기</button>
@@ -50,13 +58,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import YouTube from 'vue3-youtube';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import NavBar from '../components/NavBar.vue';
-import axios from 'axios';
+import { ref, onMounted, watch } from "vue";
+import YouTube from "vue3-youtube";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import NavBar from "../components/NavBar.vue";
+import axios from "axios";
 
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
 const router = useRouter();
@@ -68,28 +76,28 @@ const movieChart = ref(null);
 const liked = ref(null);
 const youtubeVideoId = ref(null);
 const totalAudience = ref(0);
-const seriesBar = ref([{ name: '누적 관객수', data: [0] }]);
+const seriesBar = ref([{ name: "누적 관객수", data: [0] }]);
 const seriesGender = ref([0, 0]);
 const seriesAge = ref([
     {
-        name: '연령대별 분포',
+        name: "연령대별 분포",
         data: [0, 0, 0, 0, 0],
     },
 ]);
 
 const chartOptionsAge = ref({
-    chart: { id: 'age-distribution-chart', toolbar: { show: false } },
+    chart: { id: "age-distribution-chart", toolbar: { show: false } },
     plotOptions: {
         bar: {
             horizontal: false,
-            columnWidth: '50%',
+            columnWidth: "50%",
             distributed: true,
         },
         borderRadius: 5,
     },
     xaxis: {
-        categories: ['10대', '20대', '30대', '40대', '50대'], // 5개의 나이대
-        labels: { show: true, style: { fontSize: '12px', fontWeight: 'bold' } },
+        categories: ["10대", "20대", "30대", "40대", "50대"], // 5개의 나이대
+        labels: { show: true, style: { fontSize: "12px", fontWeight: "bold" } },
         axisBorder: { show: false },
         axisTicks: { show: false },
     },
@@ -99,34 +107,34 @@ const chartOptionsAge = ref({
         axisTicks: { show: false },
     },
     grid: { show: false },
-    colors: ['#ff9800', '#e91e63', '#2196f3', '#4caf50', '#9c27b0'],
+    colors: ["#ff9800", "#e91e63", "#2196f3", "#4caf50", "#9c27b0"],
     legend: { show: false },
 });
 
 const chartOptionsGender = ref({
     chart: {
-        type: 'donut',
+        type: "donut",
         height: 550,
     },
-    labels: ['남', '녀'],
-    colors: ['#36A2EB', '#FF6384'],
+    labels: ["남", "녀"],
+    colors: ["#36A2EB", "#FF6384"],
     legend: { show: false },
     dataLabels: { enabled: true },
     plotOptions: {
         pie: {
             donut: {
-                size: '40%',
+                size: "40%",
             },
         },
     },
     title: {
-        text: '남녀 예매율', // 차트 하단에 표시할 텍스트
-        align: 'center', // 가운데 정렬
-        verticalAlign: 'top', // 하단에 배치
+        text: "남녀 예매율", // 차트 하단에 표시할 텍스트
+        align: "center", // 가운데 정렬
+        verticalAlign: "top", // 하단에 배치
         style: {
-            fontSize: '10px', // 글자 크기
-            fontWeight: 'bold', // 글자 두께
-            color: '#000', // 글자 색상
+            fontSize: "10px", // 글자 크기
+            fontWeight: "bold", // 글자 두께
+            color: "#000", // 글자 색상
         },
     },
 });
@@ -134,7 +142,7 @@ const chartOptionsGender = ref({
 // 영화 데이터 가져오기 함수
 const fetchMovieData = (movieId) => {
     fetch(`http://localhost:8080/movie/detail/${movieId}`, {
-        credentials: 'include',
+        credentials: "include",
     })
         .then((response) => response.json())
         .then((data) => {
@@ -143,7 +151,7 @@ const fetchMovieData = (movieId) => {
             movieChart.value = data.movieMemberForChart;
 
             const audienceCount = movie.value.totalAudience || 0;
-            seriesBar.value = [{ name: '누적 관객수', data: [audienceCount] }];
+            seriesBar.value = [{ name: "누적 관객수", data: [audienceCount] }];
 
             const manCount = movieChart.value?.man || 0;
             const womanCount = movieChart.value?.woman || 0;
@@ -151,7 +159,7 @@ const fetchMovieData = (movieId) => {
 
             seriesAge.value = [
                 {
-                    name: '연령대별 분포',
+                    name: "연령대별 분포",
                     data: [
                         movieChart.value?.age10th || 0,
                         movieChart.value?.age20th || 0,
@@ -168,37 +176,37 @@ const fetchMovieData = (movieId) => {
             //     fetchYouTubeVideo(movie.value.krName);
             // }
         })
-        .catch((error) => console.error('Error fetching movie:', error));
+        .catch((error) => console.error("Error fetching movie:", error));
 };
 
 const fetchLikeData = (movieId) => {
     fetch(`http://localhost:8080/movie/detail/${movieId}/like`, {
-        credentials: 'include',
+        credentials: "include",
     })
         .then((response) => response.json())
         .then((data) => {
             liked.value = data;
         })
-        .catch((error) => console.error('Error fetching movie:', error));
+        .catch((error) => console.error("Error fetching movie:", error));
 };
 
 const formatDate = (timestamp) => {
     const date = new Date(timestamp); // 타임스탬프를 Date 객체로 변환
-    return new Intl.DateTimeFormat('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
+    return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
     }).format(date); // 'yyyy.MM.dd' 형식으로 출력
 };
 
 const getWatchGrade = (watchGrade) => {
     const gradeImages = {
-        청소년관람불가: '청소년 관람 불가',
-        '12세이상관람가': '12세 이상 관람가',
-        '15세이상관람가': '15세 이상 관람가',
-        전체관람가: '전체 관람가',
+        청소년관람불가: "청소년 관람 불가",
+        "12세이상관람가": "12세 이상 관람가",
+        "15세이상관람가": "15세 이상 관람가",
+        전체관람가: "전체 관람가",
     };
-    return gradeImages[watchGrade] || '미정';
+    return gradeImages[watchGrade] || "미정";
 };
 
 // 초기 로딩 시 영화 데이터 가져오기
@@ -220,28 +228,27 @@ const toggleLike = async () => {
     try {
         const movieId = route.params.movieId;
         const response = await axios.post(`http://localhost:8080/movie/detail/${movieId}`, {
-            credentials: 'include',
+            credentials: "include",
         });
         if (response.status === 200) {
             liked.value = !liked.value; // 좋아요 상태 반전
         }
     } catch (error) {
-        console.error('좋아요 처리 중 오류 발생', error);
+        console.error("좋아요 처리 중 오류 발생", error);
     }
 };
 
 // 예매하기 버튼 클릭
 const bookMovie = () => {
     router.push({
-        name: 'CinemaChoice',
-        params: route.params.movieId
-    })
-    
+        name: "CinemaChoice",
+        params: route.params.movieId,
+    });
 };
 
 // YouTube API 호출을 위한 함수
 const fetchYouTubeVideo = (query) => {
-    const apiKey = 'AIzaSyBBMTorLdM7dwvSjjayraiT8CHXsyZ93t0';
+    const apiKey = "AIzaSyBBMTorLdM7dwvSjjayraiT8CHXsyZ93t0";
     const searchQuery = `${query} 예고편`; // ' 예고편' 추가
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(
         searchQuery
@@ -258,7 +265,7 @@ const fetchYouTubeVideo = (query) => {
             }
         })
         .catch((error) => {
-            console.error('Error fetching YouTube video:', error);
+            console.error("Error fetching YouTube video:", error);
             youtubeVideoId.value = null;
         });
 };
@@ -270,12 +277,12 @@ const posterDownload = async () => {
         const response = await axios.get(
             `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(movie.value.mainImage)}`,
             {
-                responseType: 'blob',
+                responseType: "blob",
             }
         );
 
         const url = URL.createObjectURL(response.data);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
 
         const filename = movie.value.krName;
@@ -287,7 +294,7 @@ const posterDownload = async () => {
 
         URL.revokeObjectURL(url);
     } catch (error) {
-        console.error('포스터 다운로드에 실패하였습니다.', error);
+        console.error("포스터 다운로드에 실패하였습니다.", error);
     }
 };
 </script>

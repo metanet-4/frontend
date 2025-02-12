@@ -11,7 +11,7 @@
                     <p>아이디: {{ mypageData.mypageMember.userId }}</p>
                     <p>이메일: {{ mypageData.mypageMember.email }}</p>
                     <p>생일: {{ formatDate(mypageData.mypageMember.birthday) }}</p>
-                    <p>성별: {{ mypageData.mypageMember.gender === 1 ? '남성' : '여성' }}</p>
+                    <p>성별: {{ mypageData.mypageMember.gender === 1 ? "남성" : "여성" }}</p>
                 </div>
             </div>
         </div>
@@ -81,20 +81,20 @@
 </template>
 
 <script setup>
-import NavBar from '../components/NavBar.vue';
-import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import ws from '../services/WebSocketService';
-import { useStore } from 'vuex';
+import NavBar from "../components/NavBar.vue";
+import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import ws from "../services/WebSocketService";
+import { useStore } from "vuex";
 
 const store = useStore();
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
 const profileImage = ref(null);
 const mypageData = ref({
     mypageMember: {
-        userId: '', // 사용자 아이디
-        email: '',
+        userId: "", // 사용자 아이디
+        email: "",
         birthday: 806166000000, // 예시 생일 (타임스탬프)
         image: null,
         gender: 1,
@@ -111,25 +111,25 @@ const formatDate = (timestamp) => {
 
 const handleLogout = async () => {
     try {
-        await fetch('http://localhost:8080/auth/logout', {
-            method: 'POST',
-            credentials: 'include',
+        await fetch("http://localhost:8080/auth/logout", {
+            method: "POST",
+            credentials: "include",
         });
         ws.disconnect();
-        store.dispatch('logout');
-        alert('로그아웃 되었습니다.');
-        window.sessionStorage.removeItem('vuex');
-        router.push('/');
+        store.dispatch("logout");
+        alert("로그아웃 되었습니다.");
+        window.sessionStorage.removeItem("vuex");
+        router.push("/");
     } catch (error) {
-        alert('로그아웃 실패: ' + error.message);
+        alert("로그아웃 실패: " + error.message);
     }
 };
 
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
     try {
-        const response = await fetch('http://localhost:8080/mypage', {
-            credentials: 'include',
+        const response = await fetch("http://localhost:8080/mypage", {
+            credentials: "include",
         });
         if (response.ok) {
             const data = await response.json();
@@ -137,7 +137,7 @@ onMounted(async () => {
             console.log(data);
             if (data.mypageMember.image) {
                 const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
-                    responseType: 'blob',
+                    responseType: "blob",
                 });
 
                 if (response.data) {
@@ -147,10 +147,10 @@ onMounted(async () => {
                 }
             }
         } else {
-            console.error('API 호출 실패');
+            console.error("API 호출 실패");
         }
     } catch (error) {
-        console.error('데이터를 가져오는 데 오류가 발생했습니다:', error);
+        console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
     }
 });
 </script>
@@ -170,7 +170,7 @@ onMounted(async () => {
     background-color: white;
     padding: 20px;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
 }
 
 .reservation-link {

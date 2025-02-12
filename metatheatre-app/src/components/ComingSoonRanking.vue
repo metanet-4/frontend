@@ -1,6 +1,6 @@
 <template>
     <div class="cs-ranking">
-        <p class="cs-title">{{ $t('title.cs-ranking') }}</p>
+        <p class="cs-title">{{ $t("title.cs-ranking") }}</p>
         <div class="cs-ranking-contents">
             <swiper
                 :grabCursor="true"
@@ -27,14 +27,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMovieList } from '../store/modules/movieListStore';
-import RankingCard from './RankingCard.vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { EffectCreative } from 'swiper/modules';
-import 'swiper/css/effect-cards';
-import 'swiper/css';
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { useMovieList } from "../store/modules/movieListStore";
+import RankingCard from "./RankingCard.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { EffectCreative } from "swiper/modules";
+import "swiper/css/effect-cards";
+import "swiper/css";
 
 const router = useRouter();
 const { csMovies, useAutoFetch } = useMovieList();
@@ -42,7 +42,7 @@ const top5 = computed(() => csMovies.value?.slice(0, 5) || []);
 const modules = [EffectCreative];
 
 const goToDetailPage = (movieId) => {
-    router.push({ name: 'Detail', params: { movieId } });
+    router.push({ name: "Detail", params: { movieId } });
 };
 
 useAutoFetch(10000);

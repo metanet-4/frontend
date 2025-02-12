@@ -10,7 +10,7 @@
             <p><span class="label">생일</span> {{ formatDate(userInfo.birthday) }}</p>
         </div>
 
-        <p class="warning-text">모든 정보가 삭제됩니다.<br>정말 탈퇴하시겠습니까?</p>
+        <p class="warning-text">모든 정보가 삭제됩니다.<br />정말 탈퇴하시겠습니까?</p>
 
         <div class="button-container">
             <button class="button delete-btn" @click="confirmDelete">탈퇴</button>
@@ -20,64 +20,64 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
 import NavBar from "../components/NavBar.vue";
 
 const router = useRouter();
 const userInfo = ref({
-    name: '',
-    userId: '',
-    email: '',
-    birthday: '',
+    name: "",
+    userId: "",
+    email: "",
+    birthday: "",
 });
 
 const formatDate = (timestamp) => {
-    if (!timestamp) return '-';
+    if (!timestamp) return "-";
     const date = new Date(timestamp);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
 };
 
 onMounted(async () => {
     try {
-        const response = await fetch('http://localhost:8080/mypage', { credentials: 'include' });
+        const response = await fetch("http://localhost:8080/mypage", { credentials: "include" });
         if (response.ok) {
             const data = await response.json();
             userInfo.value = data.mypageMember;
         } else {
-            console.error('사용자 정보 불러오기 실패');
+            console.error("사용자 정보 불러오기 실패");
         }
     } catch (error) {
-        console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
     }
 });
 
 const confirmDelete = async () => {
-    if (!confirm('정말로 회원 탈퇴를 진행하시겠습니까?')) {
+    if (!confirm("정말로 회원 탈퇴를 진행하시겠습니까?")) {
         return;
     }
     try {
-        const response = await fetch('http://localhost:8080/user/delete', {
-            method: 'DELETE',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
+        const response = await fetch("http://localhost:8080/user/delete", {
+            method: "DELETE",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
         });
         if (response.ok) {
-            alert('회원 탈퇴가 완료되었습니다.');
-            document.cookie = 'jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-            document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-            router.push('/');
+            alert("회원 탈퇴가 완료되었습니다.");
+            document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            document.cookie = "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            router.push("/");
         } else {
             const errorMessage = await response.text();
             throw new Error(errorMessage);
         }
     } catch (error) {
-        alert('회원 탈퇴 실패: ' + error.message);
+        alert("회원 탈퇴 실패: " + error.message);
     }
 };
 
 const cancelDelete = () => {
-    router.push('/mypage');
+    router.push("/mypage");
 };
 </script>
 
@@ -144,7 +144,7 @@ const cancelDelete = () => {
 }
 
 .delete-btn {
-    background-color: #1A237E;
+    background-color: #1a237e;
     color: white;
 }
 
