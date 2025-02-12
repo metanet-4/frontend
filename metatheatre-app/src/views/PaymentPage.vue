@@ -1,7 +1,6 @@
 <template>
     <div class="mobile-container">
         <header class="header">
-            <button @click="$router.go(-1)" class="back-button">⬅</button>
             <h1 class="title">결제하기</h1>
         </header>
         <MovieInfo :movie="movie" />
