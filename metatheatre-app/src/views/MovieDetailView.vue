@@ -236,7 +236,7 @@ const bookMovie = () => {
         name: 'CinemaChoice',
         params: route.params.movieId
     })
-    window.location.href = '/booking';
+    
 };
 
 // YouTube API 호출을 위한 함수
