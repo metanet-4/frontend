@@ -70,8 +70,7 @@ const store = createStore({
             commit('openModal');
         },
         closeModal({ commit }) {
-            state.isModalVisible = false;
-            state.modalType = '';
+            commit('closeModal');
         },
         toggleModal({ commit }) {
             commit('toggleModal');
