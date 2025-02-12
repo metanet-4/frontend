@@ -9,13 +9,22 @@
                 <h2>알람 목록</h2>
                 <button class="close-button" @click="closeModal">X</button>
             </header>
+            <hr />
             <section class="modal-body">
                 <!-- 알람 목록 출력 -->
-                <ul>
-                    <li v-for="(alarm, index) in alarmList" :key="index">
-                        {{ alarm.message }}
-                    </li>
-                </ul>
+                <div class="alarm-list">
+                    <div
+                        v-for="(alarm, index) in alarmList"
+                        :key="alarm.id || index"
+                        class="alarm-item"
+                    >
+                        <i
+                            class="bi bi-ticket-perforated"
+                            style="font-size: 1.4rem"
+                        ></i>
+                        <p class="alarm-message">{{ alarm.message }}</p>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -80,5 +89,15 @@ const closeModal = () => {
     font-size: 1.8rem;
     margin-bottom: 20px;
     text-align: center;
+}
+
+.alarm-item {
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+}
+
+.alarm-message {
+    margin-left: 10px;
 }
 </style>

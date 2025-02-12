@@ -24,9 +24,7 @@ const login = async () => {
         const role = response.data.role;
         store.dispatch("login", role);
         // 홈 페이지로 이동
-        router.push("/").then(() => {
-            window.location.reload(); // 강제 새로고침
-        });
+        router.push("/");
         ws.connect("ws://localhost:8080/ws");
         console.log("웹 소켓 연결 성공");
     } catch (error) {
@@ -37,7 +35,9 @@ const login = async () => {
 
 <template>
     <div class="login-container">
-        <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+        <router-link to="/" class="logo-link">
+            <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+        </router-link>
 
         <input
             v-model="userId"
@@ -56,6 +56,8 @@ const login = async () => {
         <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
         <router-link to="/signup" class="signup-link">회원가입</router-link>
+
+        <div class="white-overlay"></div>
     </div>
 </template>
 
@@ -68,7 +70,9 @@ const login = async () => {
     height: 100vh;
     background-color: #ffffff;
 }
-
+.logo-link {
+    display: inline-block;
+}
 .logo {
     width: 200px;
     margin-bottom: 30px;
@@ -85,7 +89,7 @@ const login = async () => {
 .login-btn {
     width: 250px;
     padding: 10px;
-    background-color: #0044cc;
+    background-color: #283593;
     color: white;
     border: none;
     border-radius: 5px;
@@ -106,5 +110,14 @@ const login = async () => {
     text-decoration: none;
     color: black;
     border-bottom: 1px solid black;
+}
+.white-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* 하단 바 높이만큼 설정 */
+    background-color: white;
+    z-index: 9999; /* 최대한 높은 값으로 설정 */
 }
 </style>

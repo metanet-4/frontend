@@ -99,11 +99,13 @@
 import { ref, onMounted, watch } from "vue";
 import YouTube from "vue3-youtube";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import NavBar from "../components/NavBar.vue";
 import axios from "axios";
 
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
+const router = useRouter();
 const store = useStore();
 
 // 데이터 및 상태 변수 설정
@@ -279,7 +281,10 @@ const toggleLike = async () => {
 
 // 예매하기 버튼 클릭
 const bookMovie = () => {
-    window.location.href = "/booking";
+    router.push({
+        name: "CinemaChoice",
+        params: route.params.movieId,
+    });
 };
 
 // YouTube API 호출을 위한 함수
@@ -374,20 +379,26 @@ const posterDownload = async () => {
 .youtube-player {
     max-width: 390px;
 }
+
 .chart-container {
     display: flex;
-    justify-content: space-between; /* 차트 사이에 간격을 두고 배치 */
+    justify-content: space-between;
+    /* 차트 사이에 간격을 두고 배치 */
     align-items: center;
     width: 100%;
-    padding-left: 20px; /* 내부 여백 추가 */
+    padding-left: 20px;
+    /* 내부 여백 추가 */
     padding-right: 20px;
-    gap: 20px; /* 차트 간격 */
+    gap: 20px;
+    /* 차트 간격 */
 }
 
 .chart-box {
-    width: 48%; /* 두 차트를 균등하게 배치 */
+    width: 48%;
+    /* 두 차트를 균등하게 배치 */
     display: flex;
-    justify-content: center; /* 차트 가운데 정렬 */
+    justify-content: center;
+    /* 차트 가운데 정렬 */
 }
 
 .apexcharts-svg {
@@ -400,24 +411,30 @@ const posterDownload = async () => {
     justify-content: space-between;
     width: 100%;
     padding: 10px;
-    gap: 10px; /* 제목과 버튼 사이 간격 */
+    gap: 10px;
+    /* 제목과 버튼 사이 간격 */
     margin-bottom: 20px;
 }
 
 .movie-header-info {
-    flex: 1; /* 버튼을 제외한 나머지 공간을 차지하도록 설정 */
-    min-width: 0; /* flex 사용 시, 글자가 넘치는 것 방지 */
+    flex: 1;
+    /* 버튼을 제외한 나머지 공간을 차지하도록 설정 */
+    min-width: 0;
+    /* flex 사용 시, 글자가 넘치는 것 방지 */
 }
 
 .movie-title {
-    font-size: 20px; /* 기존보다 살짝 작은 크기 */
+    font-size: 20px;
+    /* 기존보다 살짝 작은 크기 */
     font-weight: bold;
     margin: 0;
-    word-break: break-word; /* 긴 제목도 줄바꿈 가능하게 설정 */
+    word-break: break-word;
+    /* 긴 제목도 줄바꿈 가능하게 설정 */
 }
 
 .movie-en-title {
-    font-size: 14px; /* 영어 제목도 살짝 작은 크기로 조정 */
+    font-size: 14px;
+    /* 영어 제목도 살짝 작은 크기로 조정 */
     color: gray;
     margin: 0;
     word-break: break-word;
@@ -429,7 +446,8 @@ const posterDownload = async () => {
 }
 
 .book-button {
-    background-color: #281b7a; /* 예쁜 빨간색 버튼 */
+    background-color: #281b7a;
+    /* 예쁜 빨간색 버튼 */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -438,7 +456,8 @@ const posterDownload = async () => {
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
-    white-space: nowrap; /* 버튼은 한 줄 유지 */
+    white-space: nowrap;
+    /* 버튼은 한 줄 유지 */
 }
 
 .book-button2 {
@@ -451,7 +470,8 @@ const posterDownload = async () => {
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
-    white-space: nowrap; /* 버튼은 한 줄 유지 */
+    white-space: nowrap;
+    /* 버튼은 한 줄 유지 */
 }
 
 .book-button:hover {
@@ -464,44 +484,62 @@ const posterDownload = async () => {
 
 .movie-description {
     font-size: 14px;
-    line-height: 1.6; /* 줄 간격 */
-    color: #333; /* 글자 색 */
-    background-color: #f8f8f8; /* 부드러운 배경 */
-    padding: 10px; /* 안쪽 여백 */
-    border-radius: 8px; /* 둥근 모서리 */
-    word-break: break-word; /* 긴 단어 자동 줄바꿈 */
-    text-align: justify; /* 양쪽 정렬 */
+    line-height: 1.6;
+    /* 줄 간격 */
+    color: #333;
+    /* 글자 색 */
+    background-color: #f8f8f8;
+    /* 부드러운 배경 */
+    padding: 10px;
+    /* 안쪽 여백 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
+    word-break: break-word;
+    /* 긴 단어 자동 줄바꿈 */
+    text-align: justify;
+    /* 양쪽 정렬 */
 }
 
 .divider {
     border: none;
     height: 1px;
-    background-color: #aaa; /* 연한 회색 */
-    margin: 16px 0; /* 위아래 여백 */
+    background-color: #aaa;
+    /* 연한 회색 */
+    margin: 16px 0;
+    /* 위아래 여백 */
 }
 
 .liked,
 .unliked {
-    background: none; /* 배경 제거 */
-    border: none; /* 테두리 제거 */
-    font-size: 24px; /* 하트 크기 조절 */
-    cursor: pointer; /* 클릭 가능 표시 */
-    padding: 5px; /* 여백 추가 */
+    background: none;
+    /* 배경 제거 */
+    border: none;
+    /* 테두리 제거 */
+    font-size: 24px;
+    /* 하트 크기 조절 */
+    cursor: pointer;
+    /* 클릭 가능 표시 */
+    padding: 5px;
+    /* 여백 추가 */
 }
 
 .movie-info {
     display: flex;
-    align-items: center; /* 수평으로 정렬 */
+    align-items: center;
+    /* 수평으로 정렬 */
 }
 
 .movie-image {
-    width: 120px; /* 이미지 크기를 작게 설정 */
-    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+    width: 120px;
+    /* 이미지 크기를 작게 설정 */
+    margin-right: 10px;
+    /* 이미지와 텍스트 사이 간격 */
     margin-bottom: 15px;
 }
 
 .movie-details {
-    font-size: 15px; /* 텍스트 크기 설정 */
+    font-size: 15px;
+    /* 텍스트 크기 설정 */
     font-weight: bold;
     line-height: 1.3;
 }

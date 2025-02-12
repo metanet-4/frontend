@@ -37,7 +37,7 @@
                 로그아웃
             </button>
 
-            <router-link to="/delete-account" class="action-text"
+            <router-link to="/delete" class="action-text"
                 >회원 탈퇴</router-link
             >
         </div>
@@ -192,9 +192,7 @@ const handleLogout = async () => {
         store.dispatch("logout");
         alert("로그아웃 되었습니다.");
         window.sessionStorage.removeItem("vuex");
-        router.push("/").then(() => {
-            window.location.reload(); // 강제 새로고침
-        });
+        router.push("/");
     } catch (error) {
         alert("로그아웃 실패: " + error.message);
     }

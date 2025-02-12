@@ -85,6 +85,7 @@
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 // 서버에서 받아올 지역/극장 데이터를 저장할 객체
 const regionData = ref({});
@@ -95,6 +96,7 @@ const selectedTheaterIndex = ref(null);
 // 로딩 & 에러 상태
 const isLoading = ref(false);
 const errorMessage = ref("");
+const route = useRoute();
 
 // 선택된 지역의 극장 배열을 반환하는 computed
 const selectedRegionTheaters = computed(() => {
@@ -152,9 +154,10 @@ async function completeSelection() {
 async function fetchRegions() {
     isLoading.value = true;
     errorMessage.value = "";
+    const movieId = route.params.movieId;
     try {
         const response = await axios.get(
-            "http://localhost:8080/ticket/cinema?movieId=20223819",
+            `http://localhost:8080/ticket/cinema?movieId=${movieId}`,
             {
                 withCredentials: true,
             }

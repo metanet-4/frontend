@@ -92,14 +92,14 @@ export default {
                 });
 
                 if (!response.ok) {
-                    console.error("❌ 예매 요청 실패:", response);
+                    console.error("예매 요청 실패:", response);
                     throw new Error("예매 요청 실패");
                 }
 
                 const result = await response.json();
-                console.log("🎟️ 예매 완료:", result);
+                console.log("예매 완료:", result);
 
-                this.$router.push(`/reservation/${result.reservationId}`);
+                this.$router.push(`/reservation/${result.reservationCode}`);
             } catch (error) {
                 console.error("예매 요청 오류:", error);
                 alert("예매 요청 중 오류가 발생했습니다.");
@@ -132,7 +132,7 @@ button {
     width: 100%;
     height: 100%;
     max-width: 360px;
-    font-size: 18px;
+    font-size: 22px;
     background-color: #281b7a;
     color: white;
     border: none;

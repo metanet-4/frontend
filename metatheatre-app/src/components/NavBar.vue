@@ -50,7 +50,6 @@ import Modal from "./LikeModal.vue";
 import NotificationModal from "./NotificationModal.vue";
 import { EventBus } from "../services/EventBus";
 import ws from "../services/WebSocketService";
-import BackButton from "./BackButton.vue";
 
 const messages = ref([]);
 

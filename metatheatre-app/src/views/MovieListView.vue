@@ -16,7 +16,10 @@
             </button>
         </div>
         <div class="movie-list">
-            <BoxOfficeMovies v-if="currentTab === 'boxOffice'" />
+            <BoxOfficeMovies
+                v-if="currentTab === 'boxOffice'"
+                :targetRouteName="Detail"
+            />
             <ComingSoonMovies v-if="currentTab === 'comingSoon'" />
         </div>
     </div>
