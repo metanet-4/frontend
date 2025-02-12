@@ -85,6 +85,7 @@ import NavBar from '../components/NavBar.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import ws from '../services/WebSocketService';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -114,6 +115,7 @@ const handleLogout = async () => {
             method: 'POST',
             credentials: 'include',
         });
+        ws.disconnect();
         store.dispatch('logout');
         alert('로그아웃 되었습니다.');
         window.sessionStorage.removeItem('vuex');
@@ -299,8 +301,10 @@ h2 {
 .divider {
     border: none;
     height: 1px;
-    background-color: #aaa; /* 연한 회색 */
-    margin: 16px 0; /* 위아래 여백 */
+    background-color: #aaa;
+    /* 연한 회색 */
+    margin: 16px 0;
+    /* 위아래 여백 */
 }
 
 .wrapper h5 {
@@ -310,6 +314,7 @@ h2 {
     color: #1c3688;
     margin-bottom: 20px;
 }
+
 .logout-button {
     background: none;
     border: none;

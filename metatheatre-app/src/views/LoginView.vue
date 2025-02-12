@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import api from '@/api';
 import { useRouter } from 'vue-router';
+import ws from '../services/WebSocketService';
 import { useStore } from 'vuex';
 
 const userId = ref('');
@@ -23,8 +24,9 @@ const login = async () => {
         const role = response.data.role;
         store.dispatch('login', role);
         // 홈 페이지로 이동
-
         router.push('/');
+        ws.connect('ws://localhost:8080/ws');
+        console.log('웹 소켓 연결 성공');
     } catch (error) {
         errorMessage.value = error.response?.data || '로그인 실패';
     }
