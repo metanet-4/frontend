@@ -29,8 +29,12 @@
                 <li v-for="(reservation, index) in mypageData.reserveList" :key="index" class="reservation-item">
                     <router-link :to="`/reservation/${reservation.reservationCode}`" class="reservation-link">
                         <div class="movie-info">
-                            <img :src="reservation.mainImage" alt="영화 포스터" class="movie-poster"
-                                v-if="reservation.mainImage" />
+                            <img
+                                :src="reservation.mainImage"
+                                alt="영화 포스터"
+                                class="movie-poster"
+                                v-if="reservation.mainImage"
+                            />
                             <div class="movie-details">
                                 <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
                                 <div class="reservation-details">
@@ -81,9 +85,8 @@ import NavBar from '../components/NavBar.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import ws from '../services/WebSocketService'
+import ws from '../services/WebSocketService';
 import { useStore } from 'vuex';
-
 
 const store = useStore();
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
@@ -116,9 +119,7 @@ const handleLogout = async () => {
         store.dispatch('logout');
         alert('로그아웃 되었습니다.');
         window.sessionStorage.removeItem('vuex');
-        router.push('/').then(() => {
-            window.location.reload(); // 강제 새로고침
-        });
+        router.push('/');
     } catch (error) {
         alert('로그아웃 실패: ' + error.message);
     }

@@ -18,10 +18,11 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { watch, computed } from 'vue';
 
 const store = useStore();
-const role = computed(() => store.getters.user);
+const role = computed(() => store.getters.user || null);
+
 </script>
 
 <style scoped>
