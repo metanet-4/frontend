@@ -27,9 +27,10 @@ const login = async () => {
     const role = response.data.role;
     store.dispatch('login', role);
     // 홈 페이지로 이동
-    router.push('/').then(() => {
-      window.location.reload(); // 강제 새로고침
-    });
+    router.push('/');
+    // router.push('/').then(() => {
+    //   window.location.reload(); // 강제 새로고침
+    // });
     ws.connect('ws://localhost:8080/ws');
     console.log("웹 소켓 연결 성공")
   } catch (error) {
