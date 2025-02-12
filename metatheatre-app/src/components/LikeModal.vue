@@ -20,15 +20,15 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const store = useStore();
 const isModalVisible = computed(() => store.state.isModalVisible); // Vuex 상태에 따른 모달 표시 여부
 const likeList = computed(() => store.state.likeList);
 
 const closeModal = () => {
-    store.dispatch('closeModal'); // 모달 닫기
+    store.dispatch("closeModal"); // 모달 닫기
 };
 </script>
 

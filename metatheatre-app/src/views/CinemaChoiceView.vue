@@ -7,9 +7,7 @@
     </header>
 
     <!-- 로딩 중일 경우 표시 -->
-    <div v-if="isLoading" class="loading">
-      데이터를 불러오는 중입니다...
-    </div>
+    <div v-if="isLoading" class="loading">데이터를 불러오는 중입니다...</div>
 
     <!-- 에러가 있을 경우 표시 -->
     <div v-else-if="errorMessage" class="error">
@@ -44,87 +42,103 @@
     </div>
 
     <!-- 하단 버튼 -->
+    <!-- <div class="button-container"> -->
     <div class="button-container">
       <!-- 선택된 극장이 있을 때만 router-link를 렌더링 -->
       <router-link v-if="selectedRegionTheaters.length > 0 && selectedTheaterIndex !== null" :to="{
         name: 'ScreenChoiceView',
         params: {
           movieId: '20223819',
-          cinemaId: selectedRegionTheaters[selectedTheaterIndex].id
-        }
+          cinemaId: selectedRegionTheaters[selectedTheaterIndex].id,
+        },
       }">
-        <button class="complete-button" @click="completeSelection">
-          선택 완료
-        </button>
+        <button class="complete-button" @click="completeSelection">선택 완료</button>
       </router-link>
       <!-- 선택되지 않았을 경우 비활성화된 버튼 표시 -->
-      <button v-else class="complete-button" disabled>
-        극장을 선택해주세요
-      </button>
+      <button v-else class="complete-button" disabled>극장을 선택해주세요</button>
     </div>
     <!-- </div> -->
   </div>
+
+  <!-- 하단 버튼 -->
+  <div class="button-container">
+    <!-- 선택된 극장이 있을 때만 router-link를 렌더링 -->
+    <router-link v-if="selectedRegionTheaters.length > 0 && selectedTheaterIndex !== null" :to="{
+      name: 'ScreenChoiceView',
+      params: {
+        movieId: '20223819',
+        cinemaId: selectedRegionTheaters[selectedTheaterIndex].id
+      }
+    }">
+      <button class="complete-button" @click="completeSelection">
+        선택 완료
+      </button>
+    </router-link>
+    <!-- 선택되지 않았을 경우 비활성화된 버튼 표시 -->
+    <button v-else class="complete-button" disabled>
+      극장을 선택해주세요
+    </button>
+  </div>
+  <!-- </div> -->
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 // 서버에서 받아올 지역/극장 데이터를 저장할 객체
-const regionData = ref({})
+const regionData = ref({});
 // 현재 선택된 지역 (문자열)
-const selectedRegion = ref('')
+const selectedRegion = ref("");
 // 현재 선택된 극장 인덱스
-const selectedTheaterIndex = ref(null)
+const selectedTheaterIndex = ref(null);
 // 로딩 & 에러 상태
-const isLoading = ref(false)
-const errorMessage = ref('')
+const isLoading = ref(false);
+const errorMessage = ref("");
 const route = useRoute();
 
 // 선택된 지역의 극장 배열을 반환하는 computed
 const selectedRegionTheaters = computed(() => {
-  if (!selectedRegion.value) return []
-  const theaters = regionData.value[selectedRegion.value]
-  return theaters || []
-})
+  if (!selectedRegion.value) return [];
+  const theaters = regionData.value[selectedRegion.value];
+  return theaters || [];
+});
 
 /**
  * 지역 선택
  */
 function selectRegion(regionName) {
-  selectedRegion.value = regionName
-  selectedTheaterIndex.value = null
+  selectedRegion.value = regionName;
+  selectedTheaterIndex.value = null;
 }
 
 /**
  * 극장 선택
  */
 function selectTheater(index) {
-  selectedTheaterIndex.value = index
+  selectedTheaterIndex.value = index;
 }
 
 /**
  * 선택 완료
  */
-const router = useRouter()
+const router = useRouter();
 async function completeSelection() {
   try {
     if (!selectedRegion.value) {
-      alert('지역이 선택되지 않았습니다.')
-      return
+      alert("지역이 선택되지 않았습니다.");
+      return;
     }
-    const regionName = selectedRegion.value
-    const theatersArr = regionData.value[regionName] || []
+    const regionName = selectedRegion.value;
+    const theatersArr = regionData.value[regionName] || [];
 
-    let theaterName = '극장 미선택'
+    let theaterName = "극장 미선택";
     if (selectedTheaterIndex.value !== null && theatersArr[selectedTheaterIndex.value]) {
-      theaterName = theatersArr[selectedTheaterIndex.value].name
+      theaterName = theatersArr[selectedTheaterIndex.value].name;
     }
-
-
   } catch (error) {
-    console.error('선택 완료 처리 중 오류 발생', error)
+    console.error("선택 완료 처리 중 오류 발생", error);
   }
 }
 
@@ -132,33 +146,32 @@ async function completeSelection() {
  * 서버에서 regionData 받아오기
  */
 async function fetchRegions() {
-  isLoading.value = true
-  errorMessage.value = ''
+  isLoading.value = true;
+  errorMessage.value = "";
   const movieId = route.params.movieId;
   try {
     const response = await axios.get(`http://localhost:8080/ticket/cinema?movieId=${movieId}`, {
-      withCredentials: true
-    })
-    regionData.value = response.data
+      withCredentials: true,
+    });
+    regionData.value = response.data;
 
     // regionData가 비어 있지 않다면 첫 지역 자동 선택 (선택 사항)
-    const regionKeys = Object.keys(regionData.value)
+    const regionKeys = Object.keys(regionData.value);
     if (regionKeys.length > 0) {
-      selectedRegion.value = regionKeys[0]
+      selectedRegion.value = regionKeys[0];
     }
   } catch (error) {
-    console.error(error)
-    errorMessage.value = '지역 정보를 불러오는 데 실패했습니다.'
+    console.error(error);
+    errorMessage.value = "지역 정보를 불러오는 데 실패했습니다.";
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
 onMounted(() => {
-  fetchRegions()
-})
+  fetchRegions();
+});
 </script>
-
 
 <style scoped>
 /* 공통 스타일 초기화 (예시) */

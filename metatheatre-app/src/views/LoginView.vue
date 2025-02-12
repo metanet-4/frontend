@@ -1,41 +1,39 @@
 <script setup>
-import { ref } from 'vue';
-import api from '@/api';
-import { useRouter } from 'vue-router';
-import ws from '../services/WebSocketService';
-import { useStore } from 'vuex';
+import { ref } from "vue";
+import api from "@/api";
+import { useRouter } from "vue-router";
+import ws from "../services/WebSocketService";
+import { useStore } from "vuex";
 
-const userId = ref('');
-const password = ref('');
-const errorMessage = ref('');
+const userId = ref("");
+const password = ref("");
+const errorMessage = ref("");
 const router = useRouter();
 const store = useStore();
 
 const login = async () => {
+    errorMessage.value = "";
+    try {
+        const response = await api.post("/auth/login", {
+            userId: userId.value,
+            password: password.value,
+        });
 
-  errorMessage.value = '';
-  try {
-    const response = await api.post('/auth/login', {
-      userId: userId.value,
-      password: password.value,
-    });
-
-    // 로그인 성공 시 JWT 쿠키 저장 (Spring Boot가 Set-Cookie로 처리하면 자동 저장됨)
-    console.log('로그인 성공:', response.data);
-    const role = response.data.role;
-    store.dispatch('login', role);
-    // 홈 페이지로 이동
-    router.push('/');
-    ws.connect('ws://localhost:8080/ws');
-    console.log('웹 소켓 연결 성공');
-  } catch (error) {
-    errorMessage.value = error.response?.data || '로그인 실패';
-  }
+        // 로그인 성공 시 JWT 쿠키 저장 (Spring Boot가 Set-Cookie로 처리하면 자동 저장됨)
+        console.log("로그인 성공:", response.data);
+        const role = response.data.role;
+        store.dispatch("login", role);
+        // 홈 페이지로 이동
+        router.push("/");
+        ws.connect("ws://localhost:8080/ws");
+        console.log("웹 소켓 연결 성공");
+    } catch (error) {
+        errorMessage.value = error.response?.data || "로그인 실패";
+    }
 };
 </script>
 
 <template>
-
     <div class="login-container">
         <router-link to="/" class="logo-link">
             <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
@@ -52,39 +50,37 @@ const login = async () => {
 
         <div class="white-overlay"></div>
     </div>
-
 </template>
 
 <style scoped>
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #ffffff;
 }
 .logo-link {
     display: inline-block;
 }
 .logo {
-  width: 200px;
-  margin-bottom: 30px;
+    width: 200px;
+    margin-bottom: 30px;
 }
 
 .input-box {
-  width: 250px;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+    width: 250px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .login-btn {
-
     width: 250px;
     padding: 10px;
-    background-color:#283593;
+    background-color: #283593;
     color: white;
     border: none;
     border-radius: 5px;
@@ -92,19 +88,19 @@ const login = async () => {
 }
 
 .login-btn:hover {
-  background-color: #002a80;
+    background-color: #002a80;
 }
 
 .error-msg {
-  color: red;
-  margin-top: 10px;
+    color: red;
+    margin-top: 10px;
 }
 
 .signup-link {
-  margin-top: 20px;
-  text-decoration: none;
-  color: black;
-  border-bottom: 1px solid black;
+    margin-top: 20px;
+    text-decoration: none;
+    color: black;
+    border-bottom: 1px solid black;
 }
 .white-overlay {
     position: fixed;

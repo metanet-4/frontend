@@ -5,18 +5,18 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMovieList } from '../store/modules/movieListStore';
-import MovieCard from './MovieCard.vue';
+import { defineProps } from "vue";
+import { useRouter } from "vue-router";
+import { useMovieList } from "../store/modules/movieListStore";
+import MovieCard from "./MovieCard.vue";
 
 const router = useRouter();
 const { boMovies, useAutoFetch } = useMovieList();
 const props = defineProps({
     targetRouteName: {
         type: String,
-        default: 'Detail'
-    }
+        default: "Detail",
+    },
 });
 const goToDetailPage = (movieId) => {
     router.push({ name: props.targetRouteName, params: { movieId } });

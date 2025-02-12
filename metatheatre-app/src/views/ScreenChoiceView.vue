@@ -12,7 +12,7 @@
                 <li v-for="(day, index) in days" :key="day.fullDate" :class="{
                     active: selectedDayIndex === index,
                     saturday: day.dayName === '토',
-                    sunday: day.dayName === '일'
+                    sunday: day.dayName === '일',
                 }" @click="selectDay(index)">
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
@@ -22,9 +22,7 @@
         <!-- 해당 날짜에 대한 상영 정보 -->
         <div class="schedule-container">
             <div v-for="theater in currentDaySchedule.theaters" :key="theater.name" class="theater-block">
-                <h2>
-                    <span class="star-icon">★</span> {{ theater.name }}
-                </h2>
+                <h2><span class="star-icon">★</span> {{ theater.name }}</h2>
 
                 <div v-for="screen in theater.screens" :key="screen.screenNo" class="screen-info">
                     <!-- 상단 줄: 예) '1관' / 'IMAX' -->
@@ -37,6 +35,7 @@
                     <div class="time-buttons">
                         <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
                             :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
+
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -53,25 +52,23 @@
     </div>
 </template>
 
-
-
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import Swal from 'sweetalert2'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
-const days = ref([])
-const schedules = ref([])
+const days = ref([]);
+const schedules = ref([]);
 
 // 선택된 날짜 인덱스와 현재 날짜에 해당하는 스케줄
-const selectedDayIndex = ref(0)
-const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] })
+const selectedDayIndex = ref(0);
+const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] });
 
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 
 // API 데이터를 받아와서 기존 형식으로 가공하는 함수
 async function fetchSchedules() {
@@ -79,55 +76,58 @@ async function fetchSchedules() {
     const movieId = route.params.movieId;
 
     try {
-        const response = await axios.get(`http://localhost:8080/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`, {
-            withCredentials: true
-        })
-        console.log(response.data)
-        const data = response.data
+        const response = await axios.get(
+            `http://localhost:8080/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`,
+            {
+                withCredentials: true,
+            }
+        );
+        console.log(response.data);
+        const data = response.data;
 
-        let screenings = []
+        let screenings = [];
         for (const key in data) {
-            screenings = screenings.concat(data[key])
+            screenings = screenings.concat(data[key]);
         }
 
-        const scheduleByDate = {}
-        screenings.forEach(item => {
-            const date = item.playingDate
+        const scheduleByDate = {};
+        screenings.forEach((item) => {
+            const date = item.playingDate;
             if (!scheduleByDate[date]) {
-                scheduleByDate[date] = []
+                scheduleByDate[date] = [];
             }
-            scheduleByDate[date].push(item)
-        })
+            scheduleByDate[date].push(item);
+        });
 
         // 상영일자를 기준으로 정렬
-        const sortedDates = Object.keys(scheduleByDate).sort((a, b) => new Date(a) - new Date(b))
+        const sortedDates = Object.keys(scheduleByDate).sort((a, b) => new Date(a) - new Date(b));
 
         // 날짜 선택 버튼용 days 배열 생성 (날짜와 요일 표시)
-        days.value = sortedDates.map(dateStr => {
-            const dateObj = new Date(dateStr)
-            const day = dateObj.getDate()
-            const weekDayNames = ['일', '월', '화', '수', '목', '금', '토']
-            const dayName = weekDayNames[dateObj.getDay()]
-            return { date: day, dayName, fullDate: dateStr }
-        })
+        days.value = sortedDates.map((dateStr) => {
+            const dateObj = new Date(dateStr);
+            const day = dateObj.getDate();
+            const weekDayNames = ["일", "월", "화", "수", "목", "금", "토"];
+            const dayName = weekDayNames[dateObj.getDay()];
+            return { date: day, dayName, fullDate: dateStr };
+        });
 
         // 각 날짜별 스케줄을 기존 형식으로 가공
-        schedules.value = sortedDates.map(dateStr => {
-            const items = scheduleByDate[dateStr]
-            const theatersMap = {}
-            items.forEach(item => {
-                const theaterName = item.cinemaName
+        schedules.value = sortedDates.map((dateStr) => {
+            const items = scheduleByDate[dateStr];
+            const theatersMap = {};
+            items.forEach((item) => {
+                const theaterName = item.cinemaName;
                 if (!theatersMap[theaterName]) {
-                    theatersMap[theaterName] = {}
+                    theatersMap[theaterName] = {};
                 }
                 // 스크린 별 그룹화 (screenId를 기준으로)
-                const screenKey = item.screenId
+                const screenKey = item.screenId;
                 if (!theatersMap[theaterName][screenKey]) {
                     theatersMap[theaterName][screenKey] = {
                         screenNo: item.screenName,
                         format: item.type,
-                        timeSlots: []
-                    }
+                        timeSlots: [],
+                    };
                 }
                 // 시간 정보와 좌석 정보를 추가
                 theatersMap[theaterName][screenKey].timeSlots.push({
@@ -141,32 +141,31 @@ async function fetchSchedules() {
                 })
             })
 
+
             // 각 영화관 내 각 스크린의 timeSlots 배열을 start 시간을 기준으로 정렬
-            const theaters = Object.keys(theatersMap).map(theaterName => {
+            const theaters = Object.keys(theatersMap).map((theaterName) => {
                 return {
                     name: theaterName,
-                    screens: Object.values(theatersMap[theaterName]).map(screen => {
-                        screen.timeSlots.sort((a, b) => a.start.localeCompare(b.start))
-                        return screen
-                    })
-                }
-            })
+                    screens: Object.values(theatersMap[theaterName]).map((screen) => {
+                        screen.timeSlots.sort((a, b) => a.start.localeCompare(b.start));
+                        return screen;
+                    }),
+                };
+            });
 
-            return { theaters }
-        })
-
+            return { theaters };
+        });
     } catch (error) {
-        console.error('스케줄 데이터를 불러오는데 실패했습니다.', error)
+        console.error("스케줄 데이터를 불러오는데 실패했습니다.", error);
     }
 }
 
-
 // 날짜 선택 시 호출되는 함수
 function selectDay(index) {
-    selectedDayIndex.value = index
+    selectedDayIndex.value = index;
 }
 
-// 시간 버튼 클릭 시 다음 페이지로 이동 
+// 시간 버튼 클릭 시 다음 페이지로 이동
 function goToNextPage(timeSlot) {
     Swal.fire({
         icon: 'info',
@@ -194,8 +193,8 @@ function goToNextPage(timeSlot) {
 }
 
 onMounted(() => {
-    fetchSchedules()
-})
+    fetchSchedules();
+});
 </script>
 
 <style scoped>
@@ -355,8 +354,6 @@ onMounted(() => {
 .date-container li.sunday .date-day {
     color: red;
 }
-
-
 
 .time-range {
     font-size: 0.9rem;
