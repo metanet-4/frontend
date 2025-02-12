@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
+import { i18nStore } from "./i18nStore";
 
 const store = createStore({
     state: {
@@ -120,6 +121,9 @@ const store = createStore({
         user: (state) => state.user,
         isUser: (state) => state.user === "ROLE_USER",
         isAdmin: (state) => state.user === "ROLE_ADMIN",
+    },
+    modules: {
+        i18nStore,
     },
     plugins: [
         createPersistedState({

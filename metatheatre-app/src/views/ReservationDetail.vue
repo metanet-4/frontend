@@ -106,7 +106,10 @@ async function loadReservation() {
         ticketType.value = data.ticketType;
 
         const codeText = `ReservationCode: ${reservationCode.value}`;
-        qrUrl.value = await QRCode.toDataURL(codeText, { width: 180, margin: 1 });
+        qrUrl.value = await QRCode.toDataURL(codeText, {
+            width: 180,
+            margin: 1,
+        });
     } catch (err) {
         console.error("예매 상세 정보 로드 오류:", err);
         alert("예매 상세 정보를 불러오지 못했습니다.");
@@ -118,7 +121,10 @@ async function cancelReservation() {
 
     try {
         const url = `http://localhost:8080/ticket/${reservationCode.value}/cancel`;
-        const response = await fetch(url, { method: "PATCH", credentials: "include" });
+        const response = await fetch(url, {
+            method: "PATCH",
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error("예매 취소에 실패했습니다.");
         }

@@ -29,6 +29,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useMovieList } from "../store/modules/movieListStore";
 import RankingCard from "./RankingCard.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -38,8 +39,19 @@ import "swiper/css";
 
 const router = useRouter();
 const { boMovies, useAutoFetch } = useMovieList();
-const top5 = computed(() => boMovies.value?.slice(0, 5) || []);
 const modules = [EffectCreative];
+const { t } = useI18n();
+
+const top5 = computed(() => {
+    return (
+        boMovies.value?.slice(0, 5).map((movie) => ({
+            ...movie,
+            movieName: t(`bo-5.${movie.id}.name`, movie.krName),
+            movieDirector: t(`bo-5.${movie.id}.director`, movie.directors),
+            movieNation: t(`bo-5.${movie.id}.nation`, movie.nation),
+        })) || []
+    );
+});
 
 const goToDetailPage = (movieId) => {
     router.push({ name: "Detail", params: { movieId } });

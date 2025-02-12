@@ -4,13 +4,13 @@
         <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="../assets/main01.jpg" class="d-block w-100" alt="홍보 이미지 1" />
+                    <img src="../assets/main1.jpg" class="d-block w-100" alt="홍보 이미지 1" />
                 </div>
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="../assets/main02.jpg" class="d-block w-100" alt="홍보 이미지 2" />
+                    <img src="../assets/main2.jpg" class="d-block w-100" alt="홍보 이미지 2" />
                 </div>
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="../assets/main03.jpg" class="d-block w-100" alt="홍보 이미지 3" />
+                    <img src="../assets/main3.jpg" class="d-block w-100" alt="홍보 이미지 3" />
                 </div>
             </div>
             <button
@@ -48,16 +48,18 @@
 </template>
 
 <script setup>
-import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+import { useStore } from "vuex";
 import NavBar from "../components/NavBar.vue";
 import CustomButton from "../components/CustomButton.vue";
 import BoxOfficeRanking from "../components/BoxOfficeRanking.vue";
 import ComingSoonRanking from "../components/ComingSoonRanking.vue";
 
-const { locale } = useI18n();
+const store = useStore();
+const locale = computed(() => store.state.i18nStore.locale);
 
 const changeLanguage = (lang) => {
-    locale.value = lang;
+    store.dispatch("changeLanguage", lang);
 };
 
 const computedBgColor = (lang) => {

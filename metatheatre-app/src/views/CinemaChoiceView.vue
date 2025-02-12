@@ -70,6 +70,26 @@
         </div>
         <!-- </div> -->
     </div>
+
+    <!-- 하단 버튼 -->
+    <div class="button-container">
+        <!-- 선택된 극장이 있을 때만 router-link를 렌더링 -->
+        <router-link
+            v-if="selectedRegionTheaters.length > 0 && selectedTheaterIndex !== null"
+            :to="{
+                name: 'ScreenChoiceView',
+                params: {
+                    movieId: '20223819',
+                    cinemaId: selectedRegionTheaters[selectedTheaterIndex].id,
+                },
+            }"
+        >
+            <button class="complete-button" @click="completeSelection">선택 완료</button>
+        </router-link>
+        <!-- 선택되지 않았을 경우 비활성화된 버튼 표시 -->
+        <button v-else class="complete-button" disabled>극장을 선택해주세요</button>
+    </div>
+    <!-- </div> -->
 </template>
 <script setup>
 import { ref, computed, onMounted } from "vue";
@@ -127,9 +147,6 @@ async function completeSelection() {
         if (selectedTheaterIndex.value !== null && theatersArr[selectedTheaterIndex.value]) {
             theaterName = theatersArr[selectedTheaterIndex.value].name;
         }
-
-        alert(`${regionName} - ${theaterName} 선택됨`);
-        // 추가적인 로직이 있다면 여기서 실행
     } catch (error) {
         console.error("선택 완료 처리 중 오류 발생", error);
     }
@@ -179,7 +196,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     max-width: 600px;
     margin: 0 auto;
     font-family: sans-serif;
@@ -267,6 +284,12 @@ onMounted(() => {
     font-weight: bold;
 }
 
+.button-container {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+}
+
 /* 선택 완료 버튼 */
 .complete-button {
     background-color: #002060;
@@ -277,6 +300,7 @@ onMounted(() => {
     font-size: 1rem;
     cursor: pointer;
     align-self: center;
+    position: relative;
 }
 
 /* ----- 반응형(모바일) 스타일 ----- */

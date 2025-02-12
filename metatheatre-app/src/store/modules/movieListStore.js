@@ -42,6 +42,7 @@ const useAutoFetch = (interval = 20000) => {
             timer = null;
         }
     };
+
     onMounted(() => {
         if (document.visibilityState === "visible") {
             startFetching();

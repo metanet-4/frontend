@@ -30,7 +30,9 @@ const checkUserId = async () => {
         return;
     }
     try {
-        const response = await api.get("/auth/check-userId", { params: { userId: userId.value } });
+        const response = await api.get("/auth/check-userId", {
+            params: { userId: userId.value },
+        });
         userIdMessage.value = response.data ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.";
     } catch (error) {
         userIdMessage.value = "아이디 확인 실패";
@@ -40,7 +42,9 @@ const checkUserId = async () => {
 const checkPhone = async () => {
     if (!phone.value) return;
     try {
-        const response = await api.get("/auth/check-phone", { params: { phone: phone.value } });
+        const response = await api.get("/auth/check-phone", {
+            params: { phone: phone.value },
+        });
         phoneMessage.value = response.data ? "이미 등록된 전화번호입니다." : "사용 가능한 전화번호입니다.";
     } catch (error) {
         phoneMessage.value = "전화번호 확인 실패";
@@ -54,7 +58,9 @@ const sendAuthCode = async () => {
         return;
     }
     try {
-        const response = await api.post("/auth/send-code", null, { params: { email: email.value } });
+        const response = await api.post("/auth/send-code", null, {
+            params: { email: email.value },
+        });
         emailMessage.value = response.status === 200 ? "인증번호가 이메일로 전송되었습니다." : "이메일 전송 실패.";
     } catch (error) {
         emailMessage.value = "이메일 전송 실패.";

@@ -1,22 +1,22 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./routers/index";
 import "./style.css";
+import router from "./routers/index";
+import { i18n } from "./store/modules/i18nStore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import i18n from "./i18n";
 import VueApexCharts from "vue3-apexcharts";
 import store from "./store/modules/modalStore";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-axios.defaults.withCredentials = true;
-
 const app = createApp(App);
 
+axios.defaults.withCredentials = true;
+
 app.config.globalProperties.$axios = axios;
-app.use(store);
 app.use(router);
 app.use(i18n);
 app.use(VueApexCharts);
+app.use(store);
 app.mount("#app");

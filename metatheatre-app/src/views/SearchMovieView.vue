@@ -16,13 +16,29 @@
 
                         <!-- 📌 영화 정보 -->
                         <div class="movie-info">
-                            <h3 class="text-sm font-semibold text-gray-900 truncate">{{ movie.krName }}</h3>
-                            <p class="text-xs text-gray-500 italic truncate">{{ movie.enName }}</p>
+                            <h3 class="text-sm font-semibold text-gray-900 truncate">
+                                {{ movie.krName }}
+                            </h3>
+                            <p class="text-xs text-gray-500 italic truncate">
+                                {{ movie.enName }}
+                            </p>
                             <div class="mt-1 text-xs text-gray-600 space-y-0.5">
-                                <p><span class="font-medium">🎬 감독:</span> {{ movie.directors }}</p>
-                                <p><span class="font-medium">👥 출연:</span> {{ movie.actors }}</p>
-                                <p><span class="font-medium">📅 개봉:</span> {{ formatDate(movie.releaseDate) }}</p>
-                                <p><span class="font-medium">🌍 국가:</span> {{ movie.nation }}</p>
+                                <p>
+                                    <span class="font-medium">🎬 감독:</span>
+                                    {{ movie.directors }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">👥 출연:</span>
+                                    {{ movie.actors }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">📅 개봉:</span>
+                                    {{ formatDate(movie.releaseDate) }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">🌍 국가:</span>
+                                    {{ movie.nation }}
+                                </p>
                             </div>
                         </div>
                     </div>

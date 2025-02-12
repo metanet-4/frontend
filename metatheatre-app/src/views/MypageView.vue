@@ -11,7 +11,10 @@
                     <p>아이디: {{ mypageData.mypageMember.userId }}</p>
                     <p>이메일: {{ mypageData.mypageMember.email }}</p>
                     <p>생일: {{ formatDate(mypageData.mypageMember.birthday) }}</p>
-                    <p>성별: {{ mypageData.mypageMember.gender === 1 ? "남성" : "여성" }}</p>
+                    <p>
+                        성별:
+                        {{ mypageData.mypageMember.gender === 1 ? "남성" : "여성" }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -36,7 +39,8 @@
                                 v-if="reservation.mainImage"
                             />
                             <div class="movie-details">
-                                <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
+                                <strong>{{ reservation.movieTitle }}</strong>
+                                ({{ reservation.screenName }})
                                 <div class="reservation-details">
                                     <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
                                     <span>예약 코드: {{ reservation.reservationCode }}</span>

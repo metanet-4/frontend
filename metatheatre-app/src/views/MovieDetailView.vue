@@ -38,9 +38,18 @@
                 <div class="movie-details">
                     <p>{{ getWatchGrade(movie.watchGrade) }}</p>
                     <p>{{ formatDate(movie.releaseDate) }} {{ movie.openYn }} · {{ movie.showTime }}분</p>
-                    <p><strong style="color: #525252">감독</strong> {{ movie.directors }}</p>
-                    <p><strong style="color: #525252">배우</strong> {{ movie.actors }}</p>
-                    <p><strong style="color: #525252"> 관람객수 </strong> {{ totalAudience.toLocaleString() }}명</p>
+                    <p>
+                        <strong style="color: #525252">감독</strong>
+                        {{ movie.directors }}
+                    </p>
+                    <p>
+                        <strong style="color: #525252">배우</strong>
+                        {{ movie.actors }}
+                    </p>
+                    <p>
+                        <strong style="color: #525252"> 관람객수 </strong>
+                        {{ totalAudience.toLocaleString() }}명
+                    </p>
                 </div>
             </div>
             <div class="movie-extra-details"></div>

@@ -25,7 +25,11 @@ export default {
                 { id: "card", name: "카드결제", icon: "bi-credit-card" },
                 { id: "mobile", name: "휴대폰결제", icon: "bi-phone" },
                 { id: "bank", name: "계좌이체", icon: "bi-bank" },
-                { id: "virtual", name: "가상계좌", icon: "bi-file-earmark-text" },
+                {
+                    id: "virtual",
+                    name: "가상계좌",
+                    icon: "bi-file-earmark-text",
+                },
                 { id: "kakao", name: "카카오페이", icon: "bi-wallet2" },
                 { id: "payco", name: "페이코", icon: "bi-cash" },
             ],

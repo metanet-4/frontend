@@ -120,7 +120,9 @@ onMounted(() => {
         <div class="certificate-section">
             <h2>장애인 인증서</h2>
             <button @click="loadCertificate" class="certificate-btn">인증서 보기</button>
-            <p v-if="certificateError" class="error-msg">{{ certificateError }}</p>
+            <p v-if="certificateError" class="error-msg">
+                {{ certificateError }}
+            </p>
         </div>
 
         <!-- ✅ 모달 창 -->
