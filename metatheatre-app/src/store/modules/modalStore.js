@@ -51,7 +51,7 @@ const store = createStore({
             state.isModalVisible = false;
             state.likeList = [];
             state.alarmList = [];
-            state.modalType = '';
+            state.modalType = "";
             state.isAuthenticated = false;
             state.user = null;
         },
@@ -108,7 +108,10 @@ const store = createStore({
             commit("LOGOUT");
         },
         initializeStore({ commit }) {
-            commit('INITIALIZE');
+            commit("INITIALIZE");
+        },
+        initializeStore({ commit }) {
+            commit("INITIALIZE");
         },
     },
     getters: {

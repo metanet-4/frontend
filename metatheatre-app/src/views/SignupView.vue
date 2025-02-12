@@ -196,7 +196,7 @@ const signup = async () => {
 
         <!-- ✅ 장애인 인증서 업로드 UI 개선 -->
         <div class="file-upload">
-            <label for="disabilityCertificate">장애인 인증서 업로드</label>
+            <label for="disabilityCertificate">우대 인증서 업로드</label>
             <input
                 type="file"
                 id="disabilityCertificate"
@@ -207,67 +207,9 @@ const signup = async () => {
         <button @click="signup" class="signup-btn">회원가입</button>
         <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
-        <router-link to="/" class="home-link">홈으로 가기</router-link>
+        <router-link to="/" class="home-link">홈으로</router-link>
+        <div class="white-overlay"></div>
     </div>
-    <p v-if="userIdMessage" class="message">{{ userIdMessage }}</p>
-
-    <input v-model="name" placeholder="이름" class="input-box" />
-    <input
-        v-model="password"
-        type="password"
-        placeholder="비밀번호"
-        class="input-box"
-    />
-    <input
-        v-model="password2"
-        type="password"
-        placeholder="비밀번호 확인"
-        class="input-box"
-    />
-
-    <input
-        v-model="phone"
-        placeholder="전화번호"
-        class="input-box"
-        @blur="checkPhone"
-    />
-    <p v-if="phoneMessage" class="message">{{ phoneMessage }}</p>
-
-    <input
-        v-model="email"
-        type="email"
-        placeholder="이메일"
-        class="input-box"
-    />
-    <button @click="sendAuthCode" class="email-btn">인증번호 전송</button>
-    <p v-if="emailMessage" class="message">{{ emailMessage }}</p>
-
-    <input v-model="authCode" placeholder="인증번호 입력" class="input-box" />
-    <button @click="verifyAuthCode" class="verify-btn">인증번호 확인</button>
-    <p v-if="authCodeMessage" class="message">{{ authCodeMessage }}</p>
-
-    <input v-model="birthDate" type="date" class="input-box" />
-
-    <select v-model="gender" class="input-box">
-        <option :value="1">남성</option>
-        <option :value="0">여성</option>
-    </select>
-
-    <!-- ✅ 장애인 인증서 업로드 UI 개선 -->
-    <div class="file-upload">
-        <label for="disabilityCertificate">우대 인증서 업로드</label>
-        <input
-            type="file"
-            id="disabilityCertificate"
-            @change="handleFileUpload"
-        />
-    </div>
-
-    <button @click="signup" class="signup-btn">회원가입</button>
-    <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
-
-    <router-link to="/" class="home-link">홈으로</router-link>
-    <div class="white-overlay"></div>
 </template>
 
 <style scoped>

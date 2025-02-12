@@ -50,6 +50,7 @@
                             v-for="timeSlot in screen.timeSlots"
                             :key="timeSlot.start"
                             class="time-button"
+                            :disabled="timeSlot.availableSeats === 0"
                             @click="goToNextPage(timeSlot)"
                         >
                             <div class="time-range">
@@ -159,6 +160,7 @@ async function fetchSchedules() {
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
+                    availableSeats: item.capacity - item.reservedSeat,
                 });
             });
 
@@ -191,16 +193,25 @@ function selectDay(index) {
 
 // 시간 버튼 클릭 시 다음 페이지로 이동
 function goToNextPage(timeSlot) {
-    Swal.fire(
-        `${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`
-    ).then(() => {
-        router.push({
-            name: "SeatChoiceView",
-            params: {
-                playingId: timeSlot.playingId,
-                screenId: timeSlot.screenId,
-            },
-        });
+    Swal.fire({
+        icon: "info",
+        title: "확인 창.",
+        text: `${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`,
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        confirmButtonColor: "#429f50",
+        cancelButtonColor: "#d33",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push({
+                name: "SeatChoiceView",
+                params: {
+                    playingId: timeSlot.playingId,
+                    screenId: timeSlot.screenId,
+                },
+            });
+        }
     });
 }
 
@@ -346,6 +357,13 @@ onMounted(() => {
 
 .time-button:hover {
     background-color: #dde3ff;
+}
+
+.time-button:disabled {
+    background-color: #eee;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* 토요일: 파란색 글씨 */
