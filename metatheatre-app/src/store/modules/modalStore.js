@@ -47,6 +47,14 @@ const store = createStore({
             state.isAuthenticated = false;
             state.user = null;
         },
+        INITIALIZE(state) {
+            state.isModalVisible = false;
+            state.likeList = [];
+            state.alarmList = [];
+            state.modalType = '';
+            state.isAuthenticated = false;
+            state.user = null;
+        },
     },
     actions: {
         async fetchLikeList({ commit }) {
@@ -98,6 +106,9 @@ const store = createStore({
         },
         logout({ commit }) {
             commit("LOGOUT");
+        },
+        initializeStore({ commit }) {
+            commit('INITIALIZE');
         },
     },
     getters: {
