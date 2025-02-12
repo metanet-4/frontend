@@ -134,7 +134,6 @@ onMounted(async () => {
         if (response.ok) {
             const data = await response.json();
             mypageData.value = data; // 받은 데이터를 반영
-            console.log(data);
             if (data.mypageMember.image) {
                 const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
                     responseType: "blob",
