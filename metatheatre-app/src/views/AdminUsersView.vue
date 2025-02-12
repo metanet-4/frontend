@@ -184,40 +184,21 @@ onMounted(loadUsers);
                         <td>{{ user.name }}</td>
                         <td>
                             <span v-if="user.isDiscounted === 1">✅ 승인</span>
-                            <span v-else-if="user.isDiscounted === 0"
-                                >❌ 거절</span
-                            >
+                            <span v-else-if="user.isDiscounted === 0">❌ 거절</span>
                             <span v-else>⏳ 대기 중</span>
                             <div class="button-group">
-                                <button
-                                    @click="
-                                        updateDiscountStatus(user.userId, 1)
-                                    "
-                                >
-                                    승인
-                                </button>
-                                <button
-                                    @click="
-                                        updateDiscountStatus(user.userId, 0)
-                                    "
-                                >
-                                    거절
-                                </button>
+                                <button @click="updateDiscountStatus(user.userId, 1)">승인</button>
+                                <button @click="updateDiscountStatus(user.userId, 0)">거절</button>
                             </div>
                         </td>
                         <td>
-                            <button
-                                v-if="user.disabilityCertificate"
-                                @click="showCertificate(user.userId)"
-                            >
+                            <button v-if="user.disabilityCertificate" @click="showCertificate(user.userId)">
                                 확인
                             </button>
                             <span v-else>없음</span>
                         </td>
                         <td>
-                            <button @click="deleteUser(user.userId)">
-                                삭제
-                            </button>
+                            <button @click="deleteUser(user.userId)">삭제</button>
                         </td>
                     </tr>
                 </tbody>

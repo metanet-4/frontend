@@ -7,9 +7,7 @@
         </div>
         <div class="card-bottom">
             <p class="date">{{ formatDate(movie.releaseDate) }} 개봉</p>
-            <p class="time">
-                <i class="bi bi-stopwatch"></i> {{ movie.showTime }}분
-            </p>
+            <p class="time"><i class="bi bi-stopwatch"></i> {{ movie.showTime }}분</p>
         </div>
     </div>
 </template>

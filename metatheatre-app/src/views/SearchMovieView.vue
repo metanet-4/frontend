@@ -1,32 +1,22 @@
 <template>
     <NavBar />
     <div class="wrapper">
-        <h6 class="text-xl font-bold text-gray-800 mb-4">
-            "{{ keyword }}" 검색 결과
-        </h6>
+        <h6 class="text-xl font-bold text-gray-800 mb-4">"{{ keyword }}" 검색 결과</h6>
 
         <div v-if="movies.length > 0" class="grid gap-6">
             <div v-for="movie in movies" :key="movie.id" class="movie-card">
-                <router-link
-                    :to="{ name: 'Detail', params: { movieId: movie.id } }"
-                    class="movie-card-link"
-                >
+                <router-link :to="{ name: 'Detail', params: { movieId: movie.id } }" class="movie-card-link">
                     <div class="movie-card-content">
                         <!-- 🎬 영화 포스터 -->
                         <img
-                            :src="
-                                movie.mainImage ||
-                                'https://via.placeholder.com/120x180?text=No+Image'
-                            "
+                            :src="movie.mainImage || 'https://via.placeholder.com/120x180?text=No+Image'"
                             alt="영화 포스터"
                             class="poster-img"
                         />
 
                         <!-- 📌 영화 정보 -->
                         <div class="movie-info">
-                            <h3
-                                class="text-sm font-semibold text-gray-900 truncate"
-                            >
+                            <h3 class="text-sm font-semibold text-gray-900 truncate">
                                 {{ movie.krName }}
                             </h3>
                             <p class="text-xs text-gray-500 italic truncate">
@@ -75,15 +65,10 @@ let intervalId = null;
 // 🔹 API 호출 함수
 const fetchMovies = async (searchKeyword) => {
     try {
-        const response = await fetch(
-            `http://localhost:8080/movie/search/${encodeURIComponent(
-                searchKeyword
-            )}`,
-            {
-                method: "GET",
-                credentials: "include",
-            }
-        );
+        const response = await fetch(`http://localhost:8080/movie/search/${encodeURIComponent(searchKeyword)}`, {
+            method: "GET",
+            credentials: "include",
+        });
         if (response.ok) {
             const data = await response.json();
             movies.value = data;

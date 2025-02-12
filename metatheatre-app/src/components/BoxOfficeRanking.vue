@@ -18,16 +18,8 @@
                 :modules="modules"
                 class="mySwiper2 custom-swiper"
             >
-                <swiper-slide
-                    v-for="movie in top5"
-                    :key="movie.id"
-                    class="custom-slide"
-                >
-                    <RankingCard
-                        :movie="movie"
-                        category="bo"
-                        @movieClicked="goToDetailPage"
-                    />
+                <swiper-slide v-for="movie in top5" :key="movie.id" class="custom-slide">
+                    <RankingCard :movie="movie" category="bo" @movieClicked="goToDetailPage" />
                 </swiper-slide>
             </swiper>
         </div>

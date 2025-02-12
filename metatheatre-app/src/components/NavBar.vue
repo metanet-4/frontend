@@ -8,12 +8,12 @@
             </router-link>
             <div class="icon-group">
                 <!-- 좋아요 리스트 열기 (기존 기능) -->
-                <button @click="openLikeList" class="icon-button">
+                <button v-if="userRole === 'ROLE_USER'" @click="openLikeList" class="icon-button">
                     <i class="bi bi-heart-fill"></i>
                 </button>
 
                 <!-- 알림 기능 버튼 (새로 추가) -->
-                <button @click="openAlarmList" class="icon-button">
+                <button v-if="userRole === 'ROLE_USER'" @click="openAlarmList" class="icon-button">
                     <i class="bi bi-bell"></i>
                 </button>
             </div>
@@ -21,18 +21,9 @@
 
         <!-- 검색창 영역 -->
         <div class="search-box">
-            <input
-                v-model="keyword"
-                type="text"
-                placeholder="검색어를 입력하세요."
-                @keyup.enter="searchMovie"
-            />
+            <input v-model="keyword" type="text" placeholder="검색어를 입력하세요." @keyup.enter="searchMovie" />
             <button @click="searchMovie" class="icon-button">
-                <img
-                    src="@/assets/search-icon.png"
-                    alt="검색 아이콘"
-                    class="search-icon"
-                />
+                <img src="@/assets/search-icon.png" alt="검색 아이콘" class="search-icon" />
             </button>
         </div>
     </nav>
@@ -73,6 +64,7 @@ const router = useRouter();
 
 // 검색어 상태
 const keyword = ref("");
+const userRole = computed(() => store.getters.user);
 
 // Vuex 상태 가져오기
 const modalType = computed(() => store.state.modalType);
@@ -142,6 +134,7 @@ const searchMovie = () => {
     display: flex;
     align-items: center;
     gap: 5px;
+    width: 69px;
 }
 
 .icon-button {

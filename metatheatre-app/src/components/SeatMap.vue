@@ -12,9 +12,7 @@
                     selected: selectedSeatIds.includes(seat.id),
                     unavailable: isUnavailable(seat.id),
                 }"
-                :disabled="
-                    isUnavailable(seat.id) && !isAlreadySelected(seat.id)
-                "
+                :disabled="isUnavailable(seat.id) && !isAlreadySelected(seat.id)"
                 @click="toggleSeat(seat)"
             >
                 <!-- 사용 불가 좌석이면 텍스트 표시 X -->
@@ -96,10 +94,7 @@ function toggleSeat(seat) {
     }
 
     // (4-3) 이미 인원 수만큼 다 선택했으면 추가 선택 불가
-    if (
-        selectedSeatIds.value.length >= props.totalPersons &&
-        props.totalPersons > 0
-    ) {
+    if (selectedSeatIds.value.length >= props.totalPersons && props.totalPersons > 0) {
         alert("좌석이 모두 선택되었습니다.");
         return;
     }

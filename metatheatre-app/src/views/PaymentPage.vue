@@ -53,9 +53,7 @@ const ticketType = ref("");
 const fetchMovieInfo = async () => {
     console.log("fetchMovieInfo 함수 실행됨, playingId:", playingId.value);
     try {
-        const response = await axios.get(
-            `http://localhost:8080/ticket/playing/${playingId.value}`
-        );
+        const response = await axios.get(`http://localhost:8080/ticket/playing/${playingId.value}`);
         const data = response.data;
 
         // movie 상태 업데이트
@@ -79,8 +77,7 @@ const userType = computed(() => {
     if (adultCount.value > 0) types.push(`성인 ${adultCount.value}`);
     if (youthCount.value > 0) types.push(`청소년 ${youthCount.value}`);
     if (seniorCount.value > 0) types.push(`경로 ${seniorCount.value}`);
-    if (preferentialCount.value > 0)
-        types.push(`우대 ${preferentialCount.value}`);
+    if (preferentialCount.value > 0) types.push(`우대 ${preferentialCount.value}`);
     return types.join(", "); // 예: "성인 1, 청소년 1"
 });
 
