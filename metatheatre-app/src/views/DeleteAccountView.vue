@@ -23,6 +23,7 @@
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import NavBar from "../components/NavBar.vue";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const userInfo = ref({
@@ -52,29 +53,59 @@ onMounted(async () => {
     }
 });
 
+
 const confirmDelete = async () => {
-    if (!confirm("정말로 회원 탈퇴를 진행하시겠습니까?")) {
-        return;
-    }
+    // ✅ SweetAlert2 확인 메시지 (기존 confirm 대체)
+    const result = await Swal.fire({
+        title: "정말로 회원 탈퇴를 진행하시겠습니까?",
+        text: "탈퇴 후에는 복구할 수 없습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33", // 🔴 삭제 버튼 색상
+        cancelButtonColor: "#6A5ACD", // 💜 취소 버튼 색상 (사용자 선호 반영)
+        confirmButtonText: "탈퇴하기",
+        cancelButtonText: "취소",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
         const response = await fetch("http://localhost:8080/user/delete", {
             method: "DELETE",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
         });
+
         if (response.ok) {
-            alert("회원 탈퇴가 완료되었습니다.");
+            // ✅ SweetAlert2 성공 메시지
+            await Swal.fire({
+                icon: "success",
+                title: "회원 탈퇴 완료",
+                text: "회원 탈퇴가 성공적으로 처리되었습니다.",
+                confirmButtonColor: "#6A5ACD",
+            });
+
+            // ✅ 쿠키 삭제
             document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+            // ✅ 홈으로 이동
             router.push("/");
         } else {
             const errorMessage = await response.text();
             throw new Error(errorMessage);
         }
     } catch (error) {
-        alert("회원 탈퇴 실패: " + error.message);
+        // ✅ SweetAlert2 오류 메시지
+        Swal.fire({
+            icon: "error",
+            title: "회원 탈퇴 실패",
+            text: error.message || "회원 탈퇴 중 문제가 발생했습니다.",
+            confirmButtonColor: "#FF6347",
+        });
     }
 };
+
 
 const cancelDelete = () => {
     router.push("/mypage");

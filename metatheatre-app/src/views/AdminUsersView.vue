@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import api from "@/api";
+import Swal from "sweetalert2";
 
 const users = ref([]);
 const modalVisible = ref(false);
@@ -49,6 +50,7 @@ const showCertificate = async (userId) => {
     }
 };
 
+
 const updateDiscountStatus = async (userId, status) => {
     try {
         await api.put(
@@ -58,27 +60,64 @@ const updateDiscountStatus = async (userId, status) => {
                 headers: { Authorization: `Bearer ${getJwtToken()}` },
             }
         );
-        alert(
-            status === 1
-                ? "우대 여부가 승인되었습니다."
-                : "우대 여부가 거절되었습니다."
-        );
+
+        // ✅ SweetAlert2 성공 메시지
+        Swal.fire({
+            icon: "success",
+            title: "우대 여부 변경 완료",
+            text: status === 1 ? "우대 여부가 승인되었습니다." : "우대 여부가 거절되었습니다.",
+            confirmButtonColor: "#6A5ACD", // 💜 사용자 선호 색상
+        });
+
         loadUsers();
     } catch (error) {
-        alert("우대 여부 변경 실패");
+        // ✅ SweetAlert2 오류 메시지
+        Swal.fire({
+            icon: "error",
+            title: "우대 여부 변경 실패",
+            text: "다시 시도해 주세요.",
+            confirmButtonColor: "#FF6347", // 🔴 오류 색상
+        });
     }
 };
 
 const deleteUser = async (userId) => {
-    if (!confirm("정말로 삭제하시겠습니까?")) return;
+    // ✅ SweetAlert2 확인 메시지
+    const result = await Swal.fire({
+        title: "정말로 삭제하시겠습니까?",
+        text: "이 작업은 되돌릴 수 없습니다!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33", // 🔴 삭제 버튼 색상
+        cancelButtonColor: "#6A5ACD", // 💜 취소 버튼 색상
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
         await api.delete(`/admin/users/${userId}`, {
             headers: { Authorization: `Bearer ${getJwtToken()}` },
         });
-        alert("사용자가 삭제되었습니다.");
+
+        // ✅ SweetAlert2 성공 메시지
+        Swal.fire({
+            icon: "success",
+            title: "사용자 삭제 완료",
+            text: "사용자가 성공적으로 삭제되었습니다.",
+            confirmButtonColor: "#6A5ACD",
+        });
+
         loadUsers();
     } catch (error) {
-        alert("사용자 삭제 실패");
+        // ✅ SweetAlert2 오류 메시지
+        Swal.fire({
+            icon: "error",
+            title: "사용자 삭제 실패",
+            text: "삭제를 실패했습니다. 다시 시도해 주세요.",
+            confirmButtonColor: "#FF6347",
+        });
     }
 };
 
@@ -88,16 +127,33 @@ const handleLogout = async () => {
             method: "POST",
             credentials: "include",
         });
+
         store.dispatch("logout");
-        alert("로그아웃 되었습니다.");
         window.sessionStorage.removeItem("vuex");
-        router.push("/").then(() => {
-            window.location.reload(); // 강제 새로고침
+
+        // ✅ SweetAlert2 성공 메시지 + 페이지 이동
+        Swal.fire({
+            icon: "success",
+            title: "로그아웃 완료",
+            text: "로그아웃되었습니다.",
+            confirmButtonColor: "#6A5ACD",
+        }).then(() => {
+            router.push("/").then(() => {
+                window.location.reload(); // 강제 새로고침
+            });
         });
+
     } catch (error) {
-        alert("로그아웃 실패: " + error.message);
+        // ✅ SweetAlert2 오류 메시지
+        Swal.fire({
+            icon: "error",
+            title: "로그아웃 실패",
+            text: error.message,
+            confirmButtonColor: "#FF6347",
+        });
     }
 };
+
 
 onMounted(loadUsers);
 </script>

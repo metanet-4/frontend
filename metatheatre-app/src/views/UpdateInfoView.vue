@@ -54,6 +54,7 @@ import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const userInfo = ref({ userId: "", name: "", email: "" });
@@ -149,7 +150,6 @@ const updateUserInfo = async () => {
 
     try {
         const response = await fetch("http://localhost:8080/user/updateInfo", {
-            // ✅ URL 확인
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -163,10 +163,24 @@ const updateUserInfo = async () => {
             throw new Error(`서버 응답 오류: ${response.status}`);
         }
 
-        alert("회원 정보가 성공적으로 수정되었습니다.");
-        router.push("/mypage"); // ✅ 마이페이지로 이동
+        // ✅ SweetAlert2로 성공 메시지 표시
+        Swal.fire({
+            icon: "success",
+            title: "회원 정보 수정 완료",
+            text: "회원 정보가 성공적으로 수정되었습니다.",
+            confirmButtonColor: "#6A5ACD", // 💜 보라색 버튼 (사용자 선호 반영)
+        }).then(() => {
+            router.push("/mypage"); // ✅ 마이페이지로 이동
+        });
+
     } catch (error) {
-        alert("회원 정보 수정 실패: " + error.message);
+        // ✅ SweetAlert2로 오류 메시지 표시
+        Swal.fire({
+            icon: "error",
+            title: "회원 정보 수정 실패",
+            text: error.message,
+            confirmButtonColor: "#FF6347", // 🔴 빨간색 버튼
+        });
     }
 };
 
@@ -199,7 +213,7 @@ const updateProfile = async (event) => {
 
         const data = await response.json();
         profileUploadMsg.value = data.message;
-        alert(data.message);
+        
     } catch (error) {
         alert("업로드 중 오류 발생: " + error.message);
     }
@@ -234,7 +248,6 @@ const updateCertificate = async (event) => {
 
         const data = await response.json();
         certificateUploadMsg.value = data.message;
-        alert(data.message);
     } catch (error) {
         alert("업로드 중 오류 발생: " + error.message);
     }
