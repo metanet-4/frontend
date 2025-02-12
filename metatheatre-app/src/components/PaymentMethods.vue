@@ -1,15 +1,10 @@
 <template>
 	<div class="payment-methods">
-		<p>결제 수단</p>
+		<p class="payment-title">결제 수단</p>
 		<div class="methods-grid">
-			<div 
-				v-for="method in methods" 
-				:key="method.id" 
-				class="method-item"
-				:class="{ selected: selectedMethod === method.id }"
-				@click="selectMethod(method.id)"
-			>
-				<i :class="['bi', method.icon, 'method-icon']"></i> 
+			<div v-for="method in methods" :key="method.id" class="method-item"
+				:class="{ selected: selectedMethod === method.id }" @click="selectMethod(method.id)">
+				<i :class="['bi', method.icon, 'method-icon']"></i>
 				<span class="method-text">{{ method.name }}</span>
 			</div>
 		</div>
@@ -45,6 +40,22 @@ export default {
 	padding: 16px;
 }
 
+.payment-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+	text-align: left;
+	/* 왼쪽 정렬 */
+	margin-left: 12px;
+	/* 왼쪽으로 너무 붙지 않게 적절한 여백 */
+	padding-bottom: 6px;
+	border-bottom: 2px solid #007bff;
+	display: inline-block;
+	/* border 길이 조정 */
+	transition: border-color 0.3s ease-in-out;
+}
+
+/* 결제 수단 아이콘 및 텍스트 스타일 */
 .methods-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -56,12 +67,12 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	gap: 4px;
-	cursor: pointer; /* 클릭 가능하도록 변경 */
+	cursor: pointer;
 	transition: transform 0.2s ease-in-out;
 }
 
 .method-item:hover {
-	transform: scale(1.05); /* 마우스 올렸을 때 약간 확대 */
+	transform: scale(1.05);
 }
 
 .method-icon {
@@ -79,7 +90,6 @@ export default {
 	font-size: 16px;
 }
 
-/* 선택된 텍스트 스타일 */
 .method-item.selected .method-text {
 	font-weight: bold;
 	color: #007bff;
