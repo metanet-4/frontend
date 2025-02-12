@@ -9,11 +9,16 @@
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
             <ul>
-                <li v-for="(day, index) in days" :key="day.fullDate" :class="{
-                    active: selectedDayIndex === index,
-                    saturday: day.dayName === '토',
-                    sunday: day.dayName === '일',
-                }" @click="selectDay(index)">
+                <li
+                    v-for="(day, index) in days"
+                    :key="day.fullDate"
+                    :class="{
+                        active: selectedDayIndex === index,
+                        saturday: day.dayName === '토',
+                        sunday: day.dayName === '일',
+                    }"
+                    @click="selectDay(index)"
+                >
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
                 </li>
@@ -33,8 +38,13 @@
 
                     <!-- 시간 버튼들 (가로 스크롤) -->
                     <div class="time-buttons">
-                        <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
-                            :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
+                        <button
+                            v-for="timeSlot in screen.timeSlots"
+                            :key="timeSlot.start"
+                            class="time-button"
+                            :disabled="timeSlot.availableSeats === 0"
+                            @click="goToNextPage(timeSlot)"
+                        >
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -65,9 +75,7 @@ const schedules = ref([]);
 
 // 선택된 날짜 인덱스와 현재 날짜에 해당하는 스케줄
 const selectedDayIndex = ref(0);
-const currentDaySchedule = computed(
-    () => schedules.value[selectedDayIndex.value] || { theaters: [] }
-);
+const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] });
 
 const route = useRoute();
 const router = useRouter();
@@ -102,9 +110,7 @@ async function fetchSchedules() {
         });
 
         // 상영일자를 기준으로 정렬
-        const sortedDates = Object.keys(scheduleByDate).sort(
-            (a, b) => new Date(a) - new Date(b)
-        );
+        const sortedDates = Object.keys(scheduleByDate).sort((a, b) => new Date(a) - new Date(b));
 
         // 날짜 선택 버튼용 days 배열 생성 (날짜와 요일 표시)
         days.value = sortedDates.map((dateStr) => {
@@ -137,8 +143,7 @@ async function fetchSchedules() {
                 theatersMap[theaterName][screenKey].timeSlots.push({
                     start: item.startTime.substring(11, 16), // HH:mm 형식으로 자름
                     end: item.endTime.substring(11, 16),
-                    seats: `${item.capacity - item.reservedSeat}/${item.capacity
-                        }`,
+                    seats: `${item.capacity - item.reservedSeat}/${item.capacity}`,
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
@@ -150,14 +155,10 @@ async function fetchSchedules() {
             const theaters = Object.keys(theatersMap).map((theaterName) => {
                 return {
                     name: theaterName,
-                    screens: Object.values(theatersMap[theaterName]).map(
-                        (screen) => {
-                            screen.timeSlots.sort((a, b) =>
-                                a.start.localeCompare(b.start)
-                            );
-                            return screen;
-                        }
-                    ),
+                    screens: Object.values(theatersMap[theaterName]).map((screen) => {
+                        screen.timeSlots.sort((a, b) => a.start.localeCompare(b.start));
+                        return screen;
+                    }),
                 };
             });
 

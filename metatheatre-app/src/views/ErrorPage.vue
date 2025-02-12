@@ -1,8 +1,9 @@
 <template>
     <div class="error-container">
-        <h1>403 - 접근 권한이 없습니다</h1>
+        <div class="icon"><i class="bi bi-exclamation-square"></i></div>
+        <h1>접근 오류</h1>
         <p>이 페이지에 접근할 권한이 없습니다.</p>
-        <router-link to="/" class="home-link">🏠 홈으로 이동</router-link>
+        <router-link to="/" class="home-link">🏠 메인 페이지로 이동</router-link>
     </div>
 </template>
 
@@ -20,6 +21,13 @@ h1 {
 p {
     font-size: 1.2rem;
     color: #555;
+    margin-bottom: 10px;
+}
+
+.icon {
+    color: #cd1d1d;
+    font-size: 120px;
+    margin-top: 150px;
 }
 
 .home-link {

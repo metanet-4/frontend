@@ -33,9 +33,7 @@ const checkUserId = async () => {
         const response = await api.get("/auth/check-userId", {
             params: { userId: userId.value },
         });
-        userIdMessage.value = response.data
-            ? "이미 존재하는 아이디입니다."
-            : "사용 가능한 아이디입니다.";
+        userIdMessage.value = response.data ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.";
     } catch (error) {
         userIdMessage.value = "아이디 확인 실패";
     }
@@ -47,9 +45,7 @@ const checkPhone = async () => {
         const response = await api.get("/auth/check-phone", {
             params: { phone: phone.value },
         });
-        phoneMessage.value = response.data
-            ? "이미 등록된 전화번호입니다."
-            : "사용 가능한 전화번호입니다.";
+        phoneMessage.value = response.data ? "이미 등록된 전화번호입니다." : "사용 가능한 전화번호입니다.";
     } catch (error) {
         phoneMessage.value = "전화번호 확인 실패";
     }
@@ -65,10 +61,7 @@ const sendAuthCode = async () => {
         const response = await api.post("/auth/send-code", null, {
             params: { email: email.value },
         });
-        emailMessage.value =
-            response.status === 200
-                ? "인증번호가 이메일로 전송되었습니다."
-                : "이메일 전송 실패.";
+        emailMessage.value = response.status === 200 ? "인증번호가 이메일로 전송되었습니다." : "이메일 전송 실패.";
     } catch (error) {
         emailMessage.value = "이메일 전송 실패.";
     }
@@ -84,8 +77,7 @@ const verifyAuthCode = async () => {
         const response = await api.post("/auth/verify-code", null, {
             params: { email: email.value, authCode: authCode.value },
         });
-        authCodeMessage.value =
-            response.data === true ? "인증 성공!" : "잘못된 인증번호입니다.";
+        authCodeMessage.value = response.data === true ? "인증 성공!" : "잘못된 인증번호입니다.";
     } catch (error) {
         authCodeMessage.value = "인증 확인 실패.";
     }
@@ -147,44 +139,18 @@ const signup = async () => {
         <p v-if="userIdMessage" class="message">{{ userIdMessage }}</p>
 
         <input v-model="name" placeholder="이름" class="input-box" />
-        <input
-            v-model="password"
-            type="password"
-            placeholder="비밀번호"
-            class="input-box"
-        />
-        <input
-            v-model="password2"
-            type="password"
-            placeholder="비밀번호 확인"
-            class="input-box"
-        />
+        <input v-model="password" type="password" placeholder="비밀번호" class="input-box" />
+        <input v-model="password2" type="password" placeholder="비밀번호 확인" class="input-box" />
 
-        <input
-            v-model="phone"
-            placeholder="전화번호"
-            class="input-box"
-            @blur="checkPhone"
-        />
+        <input v-model="phone" placeholder="전화번호" class="input-box" @blur="checkPhone" />
         <p v-if="phoneMessage" class="message">{{ phoneMessage }}</p>
 
-        <input
-            v-model="email"
-            type="email"
-            placeholder="이메일"
-            class="input-box"
-        />
+        <input v-model="email" type="email" placeholder="이메일" class="input-box" />
         <button @click="sendAuthCode" class="email-btn">인증번호 전송</button>
         <p v-if="emailMessage" class="message">{{ emailMessage }}</p>
 
-        <input
-            v-model="authCode"
-            placeholder="인증번호 입력"
-            class="input-box"
-        />
-        <button @click="verifyAuthCode" class="verify-btn">
-            인증번호 확인
-        </button>
+        <input v-model="authCode" placeholder="인증번호 입력" class="input-box" />
+        <button @click="verifyAuthCode" class="verify-btn">인증번호 확인</button>
         <p v-if="authCodeMessage" class="message">{{ authCodeMessage }}</p>
 
         <input v-model="birthDate" type="date" class="input-box" />
@@ -197,11 +163,7 @@ const signup = async () => {
         <!-- ✅ 장애인 인증서 업로드 UI 개선 -->
         <div class="file-upload">
             <label for="disabilityCertificate">우대 인증서 업로드</label>
-            <input
-                type="file"
-                id="disabilityCertificate"
-                @change="handleFileUpload"
-            />
+            <input type="file" id="disabilityCertificate" @change="handleFileUpload" />
         </div>
 
         <button @click="signup" class="signup-btn">회원가입</button>

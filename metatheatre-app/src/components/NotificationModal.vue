@@ -1,9 +1,6 @@
 <template>
     <!-- 모달이 열려 있고, 모달 타입이 'alarm'일 때만 표시 -->
-    <div
-        v-if="isModalVisible && modalType === 'alarm'"
-        class="modal-overlay-style"
-    >
+    <div v-if="isModalVisible && modalType === 'alarm'" class="modal-overlay-style">
         <div class="modal-content">
             <header class="modal-header">
                 <h2>알람 목록</h2>
@@ -13,15 +10,8 @@
             <section class="modal-body">
                 <!-- 알람 목록 출력 -->
                 <div class="alarm-list">
-                    <div
-                        v-for="(alarm, index) in alarmList"
-                        :key="alarm.id || index"
-                        class="alarm-item"
-                    >
-                        <i
-                            class="bi bi-ticket-perforated"
-                            style="font-size: 1.4rem"
-                        ></i>
+                    <div v-for="(alarm, index) in alarmList" :key="alarm.id || index" class="alarm-item">
+                        <i class="bi bi-ticket-perforated" style="font-size: 1.4rem"></i>
                         <p class="alarm-message">{{ alarm.message }}</p>
                     </div>
                 </div>

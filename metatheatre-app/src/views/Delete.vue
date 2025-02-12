@@ -53,9 +53,7 @@ onMounted(loadUserData);
             <p><strong>생일:</strong> {{ birthDate }}</p>
         </div>
 
-        <p class="warning">
-            모든 정보가 삭제됩니다.<br />정말 탈퇴하시겠습니까?
-        </p>
+        <p class="warning">모든 정보가 삭제됩니다.<br />정말 탈퇴하시겠습니까?</p>
 
         <button @click="deleteUser" class="delete-btn">탈퇴</button>
         <button @click="router.push('/mypage')" class="cancel-btn">취소</button>
