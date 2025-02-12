@@ -15,9 +15,8 @@ axios.defaults.withCredentials = true;
 const app = createApp(App);
 
 app.config.globalProperties.$axios = axios;
-
+app.use(store);
 app.use(router);
 app.use(i18n);
 app.use(VueApexCharts);
-app.use(store);
 app.mount('#app');
