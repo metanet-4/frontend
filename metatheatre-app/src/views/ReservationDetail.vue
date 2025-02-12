@@ -20,19 +20,14 @@
                 />
                 <span class="movie-title">{{ krName }}</span>
             </li>
-            <li>
-                상영 시간 {{ formattedPlayingDate }} ({{ formattedStartTime }} ~
-                {{ formattedEndTime }})
-            </li>
+            <li>상영 시간 {{ formattedPlayingDate }} ({{ formattedStartTime }} ~ {{ formattedEndTime }})</li>
             <li>상영관 {{ cinemaName }}/{{ screenName }}</li>
             <li>좌석 {{ seatName }} ({{ ticketType }})</li>
             <li>예매 번호 {{ reservationCode }}</li>
         </ul>
 
         <!-- 예매 취소 버튼 -->
-        <button class="cancel-button" @click="cancelReservation">
-            예매 취소하기
-        </button>
+        <button class="cancel-button" @click="cancelReservation">예매 취소하기</button>
     </div>
 </template>
 

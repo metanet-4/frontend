@@ -26,18 +26,10 @@
         </div>
         <!-- 해당 날짜에 대한 상영 정보 -->
         <div class="schedule-container">
-            <div
-                v-for="theater in currentDaySchedule.theaters"
-                :key="theater.name"
-                class="theater-block"
-            >
+            <div v-for="theater in currentDaySchedule.theaters" :key="theater.name" class="theater-block">
                 <h2><span class="star-icon">★</span> {{ theater.name }}</h2>
 
-                <div
-                    v-for="screen in theater.screens"
-                    :key="screen.screenNo"
-                    class="screen-info"
-                >
+                <div v-for="screen in theater.screens" :key="screen.screenNo" class="screen-info">
                     <!-- 상단 줄: 예) '1관' / 'IMAX' -->
                     <div class="screen-top-row">
                         <div class="screen-title">{{ screen.screenNo }}</div>
@@ -76,15 +68,14 @@ import Swal from "sweetalert2";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 
+const role = computed(() => store.getters.user || null);
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
 const days = ref([]);
 const schedules = ref([]);
 
 // 선택된 날짜 인덱스와 현재 날짜에 해당하는 스케줄
 const selectedDayIndex = ref(0);
-const currentDaySchedule = computed(
-    () => schedules.value[selectedDayIndex.value] || { theaters: [] }
-);
+const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] });
 
 const route = useRoute();
 const router = useRouter();
@@ -119,9 +110,7 @@ async function fetchSchedules() {
         });
 
         // 상영일자를 기준으로 정렬
-        const sortedDates = Object.keys(scheduleByDate).sort(
-            (a, b) => new Date(a) - new Date(b)
-        );
+        const sortedDates = Object.keys(scheduleByDate).sort((a, b) => new Date(a) - new Date(b));
 
         // 날짜 선택 버튼용 days 배열 생성 (날짜와 요일 표시)
         days.value = sortedDates.map((dateStr) => {
@@ -154,9 +143,7 @@ async function fetchSchedules() {
                 theatersMap[theaterName][screenKey].timeSlots.push({
                     start: item.startTime.substring(11, 16), // HH:mm 형식으로 자름
                     end: item.endTime.substring(11, 16),
-                    seats: `${item.capacity - item.reservedSeat}/${
-                        item.capacity
-                    }`,
+                    seats: `${item.capacity - item.reservedSeat}/${item.capacity}`,
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
@@ -168,14 +155,10 @@ async function fetchSchedules() {
             const theaters = Object.keys(theatersMap).map((theaterName) => {
                 return {
                     name: theaterName,
-                    screens: Object.values(theatersMap[theaterName]).map(
-                        (screen) => {
-                            screen.timeSlots.sort((a, b) =>
-                                a.start.localeCompare(b.start)
-                            );
-                            return screen;
-                        }
-                    ),
+                    screens: Object.values(theatersMap[theaterName]).map((screen) => {
+                        screen.timeSlots.sort((a, b) => a.start.localeCompare(b.start));
+                        return screen;
+                    }),
                 };
             });
 
@@ -204,13 +187,17 @@ function goToNextPage(timeSlot) {
         cancelButtonColor: "#d33",
     }).then((result) => {
         if (result.isConfirmed) {
-            router.push({
-                name: "SeatChoiceView",
-                params: {
-                    playingId: timeSlot.playingId,
-                    screenId: timeSlot.screenId,
-                },
-            });
+            if (role.value === "user") {
+                router.push({
+                    name: "SeatChoiceView",
+                    params: {
+                        playingId: timeSlot.playingId,
+                        screenId: timeSlot.screenId,
+                    },
+                });
+            } else {
+                router.push({ name: "LoginView" });
+            }
         }
     });
 }

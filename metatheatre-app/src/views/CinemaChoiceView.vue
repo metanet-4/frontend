@@ -7,9 +7,7 @@
         </header>
 
         <!-- 로딩 중일 경우 표시 -->
-        <div v-if="isLoading" class="loading">
-            데이터를 불러오는 중입니다...
-        </div>
+        <div v-if="isLoading" class="loading">데이터를 불러오는 중입니다...</div>
 
         <!-- 에러가 있을 경우 표시 -->
         <div v-else-if="errorMessage" class="error">
@@ -56,27 +54,19 @@
         <div class="button-container">
             <!-- 선택된 극장이 있을 때만 router-link를 렌더링 -->
             <router-link
-                v-if="
-                    selectedRegionTheaters.length > 0 &&
-                    selectedTheaterIndex !== null
-                "
+                v-if="selectedRegionTheaters.length > 0 && selectedTheaterIndex !== null"
                 :to="{
                     name: 'ScreenChoiceView',
                     params: {
                         movieId: '20223819',
-                        cinemaId:
-                            selectedRegionTheaters[selectedTheaterIndex].id,
+                        cinemaId: selectedRegionTheaters[selectedTheaterIndex].id,
                     },
                 }"
             >
-                <button class="complete-button" @click="completeSelection">
-                    선택 완료
-                </button>
+                <button class="complete-button" @click="completeSelection">선택 완료</button>
             </router-link>
             <!-- 선택되지 않았을 경우 비활성화된 버튼 표시 -->
-            <button v-else class="complete-button" disabled>
-                극장을 선택해주세요
-            </button>
+            <button v-else class="complete-button" disabled>극장을 선택해주세요</button>
         </div>
         <!-- </div> -->
     </div>
@@ -85,10 +75,7 @@
     <div class="button-container">
         <!-- 선택된 극장이 있을 때만 router-link를 렌더링 -->
         <router-link
-            v-if="
-                selectedRegionTheaters.length > 0 &&
-                selectedTheaterIndex !== null
-            "
+            v-if="selectedRegionTheaters.length > 0 && selectedTheaterIndex !== null"
             :to="{
                 name: 'ScreenChoiceView',
                 params: {
@@ -97,14 +84,10 @@
                 },
             }"
         >
-            <button class="complete-button" @click="completeSelection">
-                선택 완료
-            </button>
+            <button class="complete-button" @click="completeSelection">선택 완료</button>
         </router-link>
         <!-- 선택되지 않았을 경우 비활성화된 버튼 표시 -->
-        <button v-else class="complete-button" disabled>
-            극장을 선택해주세요
-        </button>
+        <button v-else class="complete-button" disabled>극장을 선택해주세요</button>
     </div>
     <!-- </div> -->
 </template>
@@ -161,10 +144,7 @@ async function completeSelection() {
         const theatersArr = regionData.value[regionName] || [];
 
         let theaterName = "극장 미선택";
-        if (
-            selectedTheaterIndex.value !== null &&
-            theatersArr[selectedTheaterIndex.value]
-        ) {
+        if (selectedTheaterIndex.value !== null && theatersArr[selectedTheaterIndex.value]) {
             theaterName = theatersArr[selectedTheaterIndex.value].name;
         }
     } catch (error) {
@@ -180,12 +160,9 @@ async function fetchRegions() {
     errorMessage.value = "";
     const movieId = route.params.movieId;
     try {
-        const response = await axios.get(
-            `http://localhost:8080/ticket/cinema?movieId=${movieId}`,
-            {
-                withCredentials: true,
-            }
-        );
+        const response = await axios.get(`http://localhost:8080/ticket/cinema?movieId=${movieId}`, {
+            withCredentials: true,
+        });
         regionData.value = response.data;
 
         // regionData가 비어 있지 않다면 첫 지역 자동 선택 (선택 사항)

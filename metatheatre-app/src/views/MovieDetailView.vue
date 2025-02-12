@@ -18,45 +18,26 @@
                     <h5 class="movie-title">{{ movie.krName }}</h5>
                     <p class="movie-en-title">{{ movie.enName }}</p>
                 </div>
-                <button
-                    v-if="store.getters.isUser"
-                    @click="toggleLike"
-                    :class="liked ? 'liked' : 'unliked'"
-                >
+                <button v-if="store.getters.isUser" @click="toggleLike" :class="liked ? 'liked' : 'unliked'">
                     {{ liked ? "❤️" : "🤍" }}
                 </button>
 
-                <button
-                    v-if="store.getters.isUser"
-                    @click="bookMovie"
-                    class="book-button"
-                >
-                    예매하기
-                </button>
+                <button @click="bookMovie" class="book-button">예매하기</button>
             </div>
             <p class="movie-description">{{ movie.description }}</p>
             <div class="movie-header">
                 <h5 class="movie-title">상세 정보</h5>
-                <button @click="posterDownload" class="book-button2">
-                    포스터 다운로드
-                </button>
+                <button @click="posterDownload" class="book-button2">포스터 다운로드</button>
             </div>
 
             <div class="movie-info">
                 <!-- 이미지 크기를 작게 설정 -->
-                <img
-                    :src="movie.mainImage"
-                    alt="영화 이미지"
-                    class="movie-image"
-                />
+                <img :src="movie.mainImage" alt="영화 이미지" class="movie-image" />
 
                 <!-- 영화 정보 표시 -->
                 <div class="movie-details">
                     <p>{{ getWatchGrade(movie.watchGrade) }}</p>
-                    <p>
-                        {{ formatDate(movie.releaseDate) }} {{ movie.openYn }} ·
-                        {{ movie.showTime }}분
-                    </p>
+                    <p>{{ formatDate(movie.releaseDate) }} {{ movie.openYn }} · {{ movie.showTime }}분</p>
                     <p>
                         <strong style="color: #525252">감독</strong>
                         {{ movie.directors }}
@@ -76,20 +57,10 @@
         <hr class="divider" />
         <div class="chart-container">
             <div class="chart-box">
-                <apexchart
-                    type="donut"
-                    width="130"
-                    :options="chartOptionsGender"
-                    :series="seriesGender"
-                />
+                <apexchart type="donut" width="130" :options="chartOptionsGender" :series="seriesGender" />
             </div>
             <div>
-                <apexchart
-                    width="220"
-                    type="bar"
-                    :options="chartOptionsAge"
-                    :series="seriesAge"
-                ></apexchart>
+                <apexchart width="220" type="bar" :options="chartOptionsAge" :series="seriesAge"></apexchart>
             </div>
         </div>
     </div>
@@ -147,6 +118,7 @@ const chartOptionsAge = ref({
     grid: { show: false },
     colors: ["#ff9800", "#e91e63", "#2196f3", "#4caf50", "#9c27b0"],
     legend: { show: false },
+    dataLabels: { enabled: false },
 });
 
 const chartOptionsGender = ref({
@@ -265,12 +237,9 @@ watch(
 const toggleLike = async () => {
     try {
         const movieId = route.params.movieId;
-        const response = await axios.post(
-            `http://localhost:8080/movie/detail/${movieId}`,
-            {
-                credentials: "include",
-            }
-        );
+        const response = await axios.post(`http://localhost:8080/movie/detail/${movieId}`, {
+            credentials: "include",
+        });
         if (response.status === 200) {
             liked.value = !liked.value; // 좋아요 상태 반전
         }
@@ -316,9 +285,7 @@ const posterDownload = async () => {
     console.log(movie.value.mainImage);
     try {
         const response = await axios.get(
-            `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(
-                movie.value.mainImage
-            )}`,
+            `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(movie.value.mainImage)}`,
             {
                 responseType: "blob",
             }
