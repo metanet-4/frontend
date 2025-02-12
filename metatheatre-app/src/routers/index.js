@@ -15,8 +15,9 @@ import CertificateUpload from "../components/CertificateUpload.vue";
 import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import AdminUsersView from "../views/AdminUsersView.vue";
-import UpdateInfo from "../views/UpdateInfo.vue";
-import ProfileView from "../views/ProfileView.vue";
+import UpdateInfoView from "../views/UpdateInfoView.vue";
+import DeleteAccountView from "../views/DeleteAccountView.vue";
+import ErrorPage from '@/views/ErrorPage.vue';
 import MovieChoiceView from "../views/MovieChoiceView.vue";
 
 const routes = [
@@ -52,11 +53,14 @@ const routes = [
     { path: "/profileUpload", component: ProfileUpload },
     { path: "/certificateUpload", component: CertificateUpload },
 
-    { path: "/login", component: LoginView },
-    { path: "/signup", component: SignupView },
-    { path: "/admin/users", component: AdminUsersView },
-    { path: "/updateinfo", component: UpdateInfo },
-    { path: "/user/profile", component: ProfileView },
+
+  { path: "/login", component: LoginView },
+  { path: "/signup", component: SignupView },
+  { path: "/admin/users", component: AdminUsersView,meta: { requiresAuth: true, role: 'ROLE_ADMIN' } },
+  { path: "/edit-profile", component: UpdateInfoView },
+  { path: "/delete", component: DeleteAccountView },
+  { path: '/error/403', component: ErrorPage },
+
 ];
 
 const router = createRouter({

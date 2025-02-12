@@ -1,13 +1,16 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import api from "@/api";
 
 const users = ref([]);
 const modalVisible = ref(false);
 const certificateImage = ref("");
 const errorMessage = ref("");
+const router = useRouter();
+const store = useStore();
 
-// ✅ JWT 토큰 가져오기
 const getJwtToken = () => {
   const cookies = document.cookie.split("; ");
   for (let cookie of cookies) {
@@ -18,7 +21,6 @@ const getJwtToken = () => {
   return "";
 };
 
-// ✅ 사용자 목록 불러오기
 const loadUsers = async () => {
   try {
     const response = await api.get("/admin/users", {
@@ -31,24 +33,22 @@ const loadUsers = async () => {
   }
 };
 
-// ✅ 장애인 인증서 보기 (모달)
 const showCertificate = async (userId) => {
   try {
     const response = await api.get(`/admin/users/${userId}/certificate`, {
       headers: { Authorization: `Bearer ${getJwtToken()}` },
     });
     if (!response.data) {
-      alert("장애인 인증서가 등록되지 않았습니다.");
+      alert("우대 인증서가 등록되지 않았습니다.");
       return;
     }
     certificateImage.value = `data:image/png;base64,${response.data}`;
     modalVisible.value = true;
   } catch (error) {
-    alert("장애인 인증서 불러오기 실패");
+    alert("우대 인증서 불러오기 실패");
   }
 };
 
-// ✅ 우대 여부 승인/거절
 const updateDiscountStatus = async (userId, status) => {
   try {
     await api.put(`/admin/users/${userId}/discount-status`, { status }, {
@@ -61,7 +61,6 @@ const updateDiscountStatus = async (userId, status) => {
   }
 };
 
-// ✅ 사용자 삭제
 const deleteUser = async (userId) => {
   if (!confirm("정말로 삭제하시겠습니까?")) return;
   try {
@@ -75,14 +74,32 @@ const deleteUser = async (userId) => {
   }
 };
 
-// ✅ 페이지 로드 시 사용자 목록 불러오기
+const handleLogout = async () => {
+  try {
+    await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    store.dispatch("logout");
+    alert("로그아웃 되었습니다.");
+    window.sessionStorage.removeItem("vuex");
+    router.push("/").then(() => {
+      window.location.reload(); // 강제 새로고침
+    });
+  } catch (error) {
+    alert("로그아웃 실패: " + error.message);
+  }
+};
+
 onMounted(loadUsers);
 </script>
 
 <template>
   <div class="admin-container">
     <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
-    <h2>사용자 관리</h2>
+    <h2 class="title">사용자 관리</h2>
+
+    <button @click="handleLogout" class="logout-button">로그아웃</button>
 
     <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
@@ -92,9 +109,8 @@ onMounted(loadUsers);
           <tr>
             <th>아이디</th>
             <th>이름</th>
-            <th>이메일</th>
             <th>우대 여부</th>
-            <th>장애인 인증서</th>
+            <th>우대 인증서</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -102,10 +118,9 @@ onMounted(loadUsers);
           <tr v-for="user in users" :key="user.userId">
             <td>{{ user.userId }}</td>
             <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
             <td>
-              <span v-if="user.isDiscounted === 1">✅ 승인됨</span>
-              <span v-else-if="user.isDiscounted === 0">❌ 거절됨</span>
+              <span v-if="user.isDiscounted === 1">✅ 승인</span>
+              <span v-else-if="user.isDiscounted === 0">❌ 거절</span>
               <span v-else>⏳ 대기 중</span>
               <div class="button-group">
                 <button @click="updateDiscountStatus(user.userId, 1)">승인</button>
@@ -126,12 +141,11 @@ onMounted(loadUsers);
       </table>
     </div>
 
-    <!-- ✅ 장애인 인증서 모달 -->
     <div v-if="modalVisible" class="modal">
       <div class="modal-content">
         <span class="close" @click="modalVisible = false">&times;</span>
-        <h2>장애인 인증서</h2>
-        <img :src="certificateImage" alt="장애인 인증서 없음" />
+        <h2>우대 인증서</h2>
+        <img :src="certificateImage" alt="우대 인증서 없음" />
       </div>
     </div>
   </div>
@@ -147,18 +161,43 @@ onMounted(loadUsers);
   margin: 0 auto;
   background-color: #ffffff;
   padding: 10px;
-  height: 100vh;
-  overflow-y: auto; /* ✅ 세로 스크롤 가능하도록 설정 */
+  height: 90vh;
+  overflow-y: auto;
 }
-
+.title {
+    margin-top: 15px;
+    color: #283593;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px; /* 밑줄 두께 조정 (일부 브라우저 지원) */
+    text-underline-offset: 8px; /* 밑줄과 글자 간격 조정 (일부 브라우저 지원) */
+}
 .logo {
   width: 150px;
   margin-bottom: 10px;
 }
 
+.logout-button {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+
+.logout-button:hover {
+  background-color: #b71c1c;
+}
+
 .table-container {
   width: 100%;
-  overflow-x: auto; /* ✅ 가로 스크롤 가능하도록 설정 */
+  overflow-x: auto;
 }
 
 table {
@@ -176,15 +215,21 @@ th, td {
 }
 
 th {
-  background-color: #0044cc;
+  background-color: #283593;
   color: white;
+}
+
+td:first-child {
+  max-width: 7ch;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 button {
   padding: 5px;
   font-size: 12px;
   border: none;
-  background-color: #0044cc;
+  background-color: #283593;
   color: white;
   cursor: pointer;
   border-radius: 3px;
@@ -192,7 +237,7 @@ button {
 }
 
 button:hover {
-  background-color: #002a80;
+  background-color: #1a237e;
 }
 
 .button-group {
@@ -201,7 +246,6 @@ button:hover {
   gap: 3px;
 }
 
-/* ✅ 스크롤 가능하도록 모달 스타일 */
 .modal {
   display: flex;
   position: fixed;

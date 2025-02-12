@@ -111,6 +111,8 @@ const signup = async () => {
       withCredentials: true, // ✅ 쿠키 포함 요청 설정
     });
     console.log("회원가입 성공:", response.data);
+    // ✅ 회원가입 성공 시 alert 띄우기
+    alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
     router.push("/login");
   } catch (error) {
     errorMessage.value = error.response?.data?.error || "회원가입 실패";
@@ -122,7 +124,6 @@ const signup = async () => {
 <template>
   <div class="signup-container">
     <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
-    <h2>회원가입</h2>
 
     <div class="input-group">
       <input v-model="userId" placeholder="아이디" class="input-box" />
@@ -155,14 +156,15 @@ const signup = async () => {
 
     <!-- ✅ 장애인 인증서 업로드 UI 개선 -->
     <div class="file-upload">
-      <label for="disabilityCertificate">장애인 인증서 업로드</label>
+      <label for="disabilityCertificate">우대 인증서 업로드</label>
       <input type="file" id="disabilityCertificate" @change="handleFileUpload" />
     </div>
 
     <button @click="signup" class="signup-btn">회원가입</button>
     <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
-    <router-link to="/" class="home-link">홈으로 가기</router-link>
+    <router-link to="/" class="home-link">홈으로</router-link>
+    <div class="white-overlay"></div>
   </div>
 </template>
 
@@ -171,20 +173,55 @@ const signup = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* 상단에서부터 배치 */
   width: 100%;
   max-width: 390px;
+  max-height: 90vh;
+  min-height: 80vh; /* 전체 화면 높이 확보 */
   margin: 0 auto;
   background-color: #ffffff;
   padding: 10px;
-  height: 100vh;
-  overflow-y: auto; /* ✅ 세로 스크롤 가능하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 가능 */
 }
 
-.logo {
-  width: 150px;
-  margin-bottom: 15px;
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
+
+.input-group .input-box {
+  flex: 0.7;
+  min-width: 180px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 5px; /* 전체 모서리 둥글게 */
+  border: 1px solid #ccc;
+}
+
+.check-btn {
+  flex: 0.3;
+  height: 40px;
+  padding: 10px;
+  border-radius: 5px; /* 버튼도 전체 모서리 둥글게 */
+  border: none;
+  background-color: #283593;
+  color: white;
+  cursor: pointer;
+}
+
+
+
+
+.logo {
+  width: 100%;
+  max-width: 150px; /* 기존 크기 유지 */
+  height: auto; /* 높이를 자동으로 조정 */
+  object-fit: contain; /* 이미지 비율 유지하면서 잘리지 않도록 설정 */
+  margin-bottom: 15px;
+  display: block; /* 블록 요소로 변경하여 여백 확보 */
+}
+
 
 .input-box {
   width: 100%;
@@ -196,7 +233,7 @@ const signup = async () => {
 
 .check-btn, .email-btn, .verify-btn {
   padding: 8px;
-  background-color: #0044cc;
+  background-color: #283593;
   color: white;
   border: none;
   border-radius: 5px;
@@ -208,6 +245,7 @@ const signup = async () => {
   flex-direction: column;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 20px; 
 }
 
 .file-upload label {
@@ -218,10 +256,19 @@ const signup = async () => {
 .signup-btn {
   width: 100%;
   padding: 12px;
-  background-color: #0044cc;
+  background-color: #283593;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.white-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* 하단 바 높이만큼 설정 */
+    background-color: white;
+    z-index: 9999; /* 최대한 높은 값으로 설정 */
 }
 </style>

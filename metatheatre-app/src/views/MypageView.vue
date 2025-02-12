@@ -20,7 +20,7 @@
             <router-link to="/edit-profile" class="action-text">회원 정보 수정</router-link>
             <button @click="handleLogout" class="action-text logout-button">로그아웃</button>
 
-            <router-link to="/delete-account" class="action-text">회원 탈퇴</router-link>
+            <router-link to="/delete" class="action-text">회원 탈퇴</router-link>
         </div>
         <!-- 예약 목록 -->
         <h2 class="reservation-title">예매 내역</h2>
