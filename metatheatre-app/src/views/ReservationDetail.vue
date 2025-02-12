@@ -34,6 +34,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import QRCode from "qrcode";
 import NavBar from "../components/NavBar.vue";
 
 const route = useRoute();

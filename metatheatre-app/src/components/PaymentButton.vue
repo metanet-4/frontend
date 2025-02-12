@@ -133,7 +133,7 @@ button {
 	width: 100%;
 	height: 100%;
 	max-width: 360px;
-	font-size: 18px;
+	font-size: 22px;
 	background-color: #281B7A;
 	color: white;
 	border: none;
