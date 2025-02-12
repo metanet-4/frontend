@@ -26,6 +26,7 @@
 </template>
 
 <script setup>
+import { useI18n } from "vue-i18n";
 import all from "../assets/all.png";
 import grade12 from "../assets/12.png";
 import grade15 from "../assets/15.png";
@@ -34,8 +35,13 @@ import none from "../assets/none.png";
 
 const props = defineProps({
   movie: Object,
+  movieName: String,
+  movieDirector: String,
+  movieNation: String,
   category: String,
 });
+
+const { t } = useI18n();
 
 const emit = defineEmits(["movieClicked"]);
 

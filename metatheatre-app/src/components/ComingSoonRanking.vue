@@ -25,6 +25,9 @@
         >
           <RankingCard
             :movie="movie"
+            :movieName="movie.krName"
+            :movieDirector="movie.directors"
+            :movieNation="movie.nation"
             category="cs"
             @movieClicked="goToDetailPage"
           />

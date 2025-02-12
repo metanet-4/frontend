@@ -8,5 +8,6 @@ export default createStore({
   modules: {
     modalStore,
     movieListStore,
+    i18nStore,
   },
 });

@@ -64,16 +64,16 @@
 </template>
 
 <script setup>
-import { useI18n } from "vue-i18n";
 import NavBar from "../components/NavBar.vue";
 import CustomButton from "../components/CustomButton.vue";
 import BoxOfficeRanking from "../components/BoxOfficeRanking.vue";
 import ComingSoonRanking from "../components/ComingSoonRanking.vue";
 
-const { locale } = useI18n();
+const store = useStore();
+const locale = computed(() => store.state.i18n.locale);
 
 const changeLanguage = (lang) => {
-  locale.value = lang;
+  store.dispatch("i18nStore/changeLanguage", lang);
 };
 
 const computedBgColor = (lang) => {
