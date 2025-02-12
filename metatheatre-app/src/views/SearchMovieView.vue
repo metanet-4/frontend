@@ -1,28 +1,54 @@
 <template>
     <NavBar />
     <div class="wrapper">
-        <h6 class="text-xl font-bold text-gray-800 mb-4">"{{ keyword }}" 검색 결과</h6>
+        <h6 class="text-xl font-bold text-gray-800 mb-4">
+            "{{ keyword }}" 검색 결과
+        </h6>
 
         <div v-if="movies.length > 0" class="grid gap-6">
             <div v-for="movie in movies" :key="movie.id" class="movie-card">
-                <router-link :to="{ name: 'Detail', params: { movieId: movie.id } }" class="movie-card-link">
+                <router-link
+                    :to="{ name: 'Detail', params: { movieId: movie.id } }"
+                    class="movie-card-link"
+                >
                     <div class="movie-card-content">
                         <!-- 🎬 영화 포스터 -->
                         <img
-                            :src="movie.mainImage || 'https://via.placeholder.com/120x180?text=No+Image'"
+                            :src="
+                                movie.mainImage ||
+                                'https://via.placeholder.com/120x180?text=No+Image'
+                            "
                             alt="영화 포스터"
                             class="poster-img"
                         />
 
                         <!-- 📌 영화 정보 -->
                         <div class="movie-info">
-                            <h3 class="text-sm font-semibold text-gray-900 truncate">{{ movie.krName }}</h3>
-                            <p class="text-xs text-gray-500 italic truncate">{{ movie.enName }}</p>
+                            <h3
+                                class="text-sm font-semibold text-gray-900 truncate"
+                            >
+                                {{ movie.krName }}
+                            </h3>
+                            <p class="text-xs text-gray-500 italic truncate">
+                                {{ movie.enName }}
+                            </p>
                             <div class="mt-1 text-xs text-gray-600 space-y-0.5">
-                                <p><span class="font-medium">🎬 감독:</span> {{ movie.directors }}</p>
-                                <p><span class="font-medium">👥 출연:</span> {{ movie.actors }}</p>
-                                <p><span class="font-medium">📅 개봉:</span> {{ formatDate(movie.releaseDate) }}</p>
-                                <p><span class="font-medium">🌍 국가:</span> {{ movie.nation }}</p>
+                                <p>
+                                    <span class="font-medium">🎬 감독:</span>
+                                    {{ movie.directors }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">👥 출연:</span>
+                                    {{ movie.actors }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">📅 개봉:</span>
+                                    {{ formatDate(movie.releaseDate) }}
+                                </p>
+                                <p>
+                                    <span class="font-medium">🌍 국가:</span>
+                                    {{ movie.nation }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -37,9 +63,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import NavBar from '../components/NavBar.vue';
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRoute } from "vue-router";
+import NavBar from "../components/NavBar.vue";
 
 const router = useRoute();
 const keyword = ref(router.params.keyword);
@@ -49,18 +75,23 @@ let intervalId = null;
 // 🔹 API 호출 함수
 const fetchMovies = async (searchKeyword) => {
     try {
-        const response = await fetch(`http://localhost:8080/movie/search/${encodeURIComponent(searchKeyword)}`, {
-            method: 'GET',
-            credentials: 'include',
-        });
+        const response = await fetch(
+            `http://localhost:8080/movie/search/${encodeURIComponent(
+                searchKeyword
+            )}`,
+            {
+                method: "GET",
+                credentials: "include",
+            }
+        );
         if (response.ok) {
             const data = await response.json();
             movies.value = data;
         } else {
-            console.error('API 호출 실패');
+            console.error("API 호출 실패");
         }
     } catch (error) {
-        console.error('데이터를 가져오는 중 오류 발생:', error);
+        console.error("데이터를 가져오는 중 오류 발생:", error);
     }
 };
 
@@ -68,11 +99,11 @@ const formatDate = (timestamp) => {
     if (timestamp) {
         const date = new Date(parseInt(timestamp));
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
         return `${year}-${month}-${day}`;
     }
-    return '';
+    return "";
 };
 
 // 🔹 컴포넌트 마운트 시 API 호출 및 10초마다 갱신

@@ -1,65 +1,65 @@
 {
-  "title": {
-    "bo-ranking": "박스오피스 TOP 5",
-    "cs-ranking": "상영예정작 TOP 5"
-  },
-  "bo-5": {
-    "top1": {
-      "name": "청설",
-      "director": "조선호",
-      "nation": "한국"
+    "title": {
+        "bo-ranking": "박스오피스 TOP 5",
+        "cs-ranking": "상영예정작 TOP 5"
     },
-    "top2": {
-      "name": "서바이브",
-      "director": "프레데릭쟈댕",
-      "nation": "프랑스"
+    "bo-5": {
+        "20233261": {
+            "name": "청설",
+            "director": "조선호",
+            "nation": "한국"
+        },
+        "20249647": {
+            "name": "서바이브",
+            "director": "프레데릭쟈댕",
+            "nation": "프랑스"
+        },
+        "20246330": {
+            "name": "메모리",
+            "director": "미셸 프랑코",
+            "nation": "미국"
+        },
+        "20248552": {
+            "name": "은빛살구",
+            "director": "장만민",
+            "nation": "한국"
+        },
+        "20113795": {
+            "name": "벌집의 정령",
+            "director": "빅토르 에리세",
+            "nation": "스페인"
+        }
     },
-    "top3": {
-      "name": "메모리",
-      "director": "미셸 프랑코",
-      "nation": "미국"
+    "cs-5": {
+        "20244821": {
+            "name": "미키 17",
+            "director": "봉준호",
+            "nation": "미국"
+        },
+        "20241812": {
+            "name": "아카디안",
+            "director": "니콜라스 케이지",
+            "nation": "미국"
+        },
+        "20212430": {
+            "name": "두 사람",
+            "director": "반박지은",
+            "nation": "한국"
+        },
+        "20241389": {
+            "name": "보더랜드",
+            "director": "일라이 로스",
+            "nation": "미국"
+        },
+        "20233944": {
+            "name": "브로큰",
+            "director": "김진황",
+            "nation": "한국"
+        }
     },
-    "top4": {
-      "name": "은빛살구",
-      "director": "장만민",
-      "nation": "한국"
-    },
-    "top5": {
-      "name": "벌집의 정령",
-      "director": "빅토르 에리세",
-      "nation": "스페인"
+    "etc": {
+        "minute": "분",
+        "audience": "명",
+        "like": "개"
     }
-  },
-  "cs-5": {
-    "top1": {
-      "name": "미키 17",
-      "director": "봉준호",
-      "nation": "미국"
-    },
-    "top2": {
-      "name": "아카디안",
-      "director": "니콜라스 케이지",
-      "nation": "미국"
-    },
-    "top3": {
-      "name": "두 사람",
-      "director": "반박지은",
-      "nation": "한국"
-    },
-    "top4": {
-      "name": "보더랜드",
-      "director": "일라이 로스",
-      "nation": "미국"
-    },
-    "top5": {
-      "name": "브로큰",
-      "director": "김진황",
-      "nation": "한국"
-    }
-  },
-  "etc": {
-    "minute": "분",
-    "audience": "명",
-    "like": "개"
-  }
 }

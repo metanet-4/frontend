@@ -1,6 +1,9 @@
 <template>
     <!-- 모달이 열려 있고, 모달 타입이 'alarm'일 때만 표시 -->
-    <div v-if="isModalVisible && modalType === 'alarm'" class="modal-overlay-style">
+    <div
+        v-if="isModalVisible && modalType === 'alarm'"
+        class="modal-overlay-style"
+    >
         <div class="modal-content">
             <header class="modal-header">
                 <h2>알람 목록</h2>
@@ -19,8 +22,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { computed } from "vue";
+import { useStore } from "vuex";
 const store = useStore();
 const isModalVisible = computed(() => store.state.isModalVisible);
 const modalType = computed(() => store.state.modalType);
@@ -28,7 +31,7 @@ const alarmList = computed(() => store.state.alarmList);
 
 // 모달 닫기 함수 (스토어에 closeModal 뮤테이션이 있다고 가정)
 const closeModal = () => {
-    store.commit('closeModal');
+    store.commit("closeModal");
 };
 </script>
 

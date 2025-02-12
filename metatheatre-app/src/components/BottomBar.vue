@@ -9,17 +9,29 @@
             <span>예매</span>
         </router-link>
         <router-link
-            :to="role === null ? '/login' : role === 'ROLE_ADMIN' ? '/admin/users' : '/mypage'"
+            :to="
+                role === null
+                    ? '/login'
+                    : role === 'ROLE_ADMIN'
+                    ? '/admin/users'
+                    : '/mypage'
+            "
             class="bottom-link-button"
         >
             <i class="bi bi-person-lines-fill"></i>
-            <span>{{ role === null ? '로그인' : role === 'ROLE_ADMIN' ? '관리자페이지' : '마이페이지' }}</span>
+            <span>{{
+                role === null
+                    ? "로그인"
+                    : role === "ROLE_ADMIN"
+                    ? "관리자페이지"
+                    : "마이페이지"
+            }}</span>
         </router-link>
     </div>
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 
 const store = useStore();
 const role = store.getters.user;

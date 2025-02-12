@@ -3,13 +3,21 @@
         <div class="modal-content">
             <h3 class="modal-title">좋아요한 목록</h3>
             <ul>
-                <li v-for="movie in likeList" :key="movie.movie_id" class="movie-item">
+                <li
+                    v-for="movie in likeList"
+                    :key="movie.movie_id"
+                    class="movie-item"
+                >
                     <router-link
                         :to="{ name: 'Detail', params: { movieId: movie.id } }"
                         class="movie-card-link"
                         @click.native="closeModal"
                     >
-                        <img :src="movie.mainImage" alt="영화 이미지" class="movie-image" />
+                        <img
+                            :src="movie.mainImage"
+                            alt="영화 이미지"
+                            class="movie-image"
+                        />
                         <span class="movie-title">{{ movie.krName }}</span>
                     </router-link>
                 </li>
@@ -20,15 +28,15 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 const store = useStore();
 const isModalVisible = computed(() => store.state.isModalVisible); // Vuex 상태에 따른 모달 표시 여부
 const likeList = computed(() => store.state.likeList);
 
 const closeModal = () => {
-    store.dispatch('closeModal'); // 모달 닫기
+    store.dispatch("closeModal"); // 모달 닫기
 };
 </script>
 
