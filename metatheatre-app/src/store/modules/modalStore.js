@@ -107,6 +107,9 @@ const store = createStore({
         initializeStore({ commit }) {
             commit("INITIALIZE");
         },
+        initializeStore({ commit }) {
+            commit("INITIALIZE");
+        },
     },
     getters: {
         isModalVisible: (state) => state.isModalVisible,

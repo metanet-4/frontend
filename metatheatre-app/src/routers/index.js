@@ -39,6 +39,19 @@ const routes = [
         meta: { authRequired: true, requiredRole: "ROLE_USER" },
     },
     {
+        path: "/cinema/:movieId",
+        component: CinemaChoiceView,
+        name: "CinemaChoice",
+        meta: { authRequired: true, requiredRole: "ROLE_USER" },
+    },
+    { path: "/mypage", component: MypageView, meta: { authRequired: true, requiredRole: "ROLE_USER" } },
+    {
+        path: "/movieList",
+        component: MovieChoiceView,
+        name: "MovieList",
+        meta: { authRequired: true, requiredRole: "ROLE_USER" },
+    },
+    {
         path: "/screen?:cinemaId&:movieId",
         component: ScreenChoiceView,
         name: "ScreenChoiceView",
