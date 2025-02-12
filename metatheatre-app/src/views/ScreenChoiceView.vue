@@ -68,6 +68,7 @@ import Swal from "sweetalert2";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 
+const role = computed(() => store.getters.user || null);
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
 const days = ref([]);
 const schedules = ref([]);
@@ -186,13 +187,17 @@ function goToNextPage(timeSlot) {
         cancelButtonColor: "#d33",
     }).then((result) => {
         if (result.isConfirmed) {
-            router.push({
-                name: "SeatChoiceView",
-                params: {
-                    playingId: timeSlot.playingId,
-                    screenId: timeSlot.screenId,
-                },
-            });
+            if (role.value === "user") {
+                router.push({
+                    name: "SeatChoiceView",
+                    params: {
+                        playingId: timeSlot.playingId,
+                        screenId: timeSlot.screenId,
+                    },
+                });
+            } else {
+                router.push({ name: "LoginView" });
+            }
         }
     });
 }

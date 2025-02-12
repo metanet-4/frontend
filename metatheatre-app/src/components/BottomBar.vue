@@ -4,7 +4,7 @@
             <i class="bi bi-film"></i>
             <span>영화</span>
         </router-link>
-        <router-link :to="role ? '/movieList' : '/login'" class="bottom-link-button">
+        <router-link to="/movieList" class="bottom-link-button">
             <i class="bi bi-ticket-perforated-fill"></i>
             <span>예매</span>
         </router-link>

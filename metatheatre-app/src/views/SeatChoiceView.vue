@@ -48,7 +48,11 @@
         <div class="total-price">{{ totalPrice }}원</div>
 
         <!-- 예매하기 버튼 -->
+        <<<<<<< HEAD
         <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">예매하기</button>
+        =======
+        <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">예매하기</button>
+        >>>>>>> c5e3923ff00aa8c1da42feb330d3a575e0710a2a
     </div>
 </template>
 
@@ -61,7 +65,6 @@ import age12Img from "../assets/12.png";
 import age15Img from "../assets/15.png";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();
@@ -174,37 +177,18 @@ const canReserve = computed(() => {
 
 // 예매하기
 function reserveTickets() {
-    // alert(
-    //     `청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
-    //     `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
-    //     `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(', ')}\n` +
-    //     `총금액: ${totalPrice.value}원\n` +
-    //     `예매 로직 처리 ...`
-    // )
-    console.log("movieId : " + movieId.value);
-    console.log("playingId : " + playingId.value);
-    console.log("adult : " + adultCount.value);
-    console.log("total : " + totalPrice.value);
-    console.log(selectedSeats.value.join(", "));
-    Swal.fire(
-        `청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
-            `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
-            `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(", ")}\n` +
-            `총금액: ${totalPrice.value}원입니다`
-    ).then(() => {
-        router.push({
-            name: "PaymentPage",
-            params: {
-                movieId: movieId.value,
-                playingId: playingId.value,
-                seatName: selectedSeats.value.join(", "),
-                youthCount: youthCount.value,
-                adultCount: adultCount.value,
-                seniorCount: seniorCount.value,
-                preferentialCount: preferentialCount.value,
-                totalPrice: totalPrice.value,
-            },
-        });
+    router.push({
+        name: "PaymentPage",
+        params: {
+            movieId: movieId.value,
+            playingId: playingId.value,
+            seatName: selectedSeats.value.join(", "),
+            youthCount: youthCount.value,
+            adultCount: adultCount.value,
+            seniorCount: seniorCount.value,
+            preferentialCount: preferentialCount.value,
+            totalPrice: totalPrice.value,
+        },
     });
 }
 </script>
