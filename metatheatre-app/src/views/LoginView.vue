@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import api from '@/api';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
@@ -23,9 +23,8 @@ const login = async () => {
         const role = response.data.role;
         store.dispatch('login', role);
         // 홈 페이지로 이동
-        router.push('/').then(() => {
-            window.location.reload(); // 강제 새로고침
-        });
+
+        router.push('/');
     } catch (error) {
         errorMessage.value = error.response?.data || '로그인 실패';
     }

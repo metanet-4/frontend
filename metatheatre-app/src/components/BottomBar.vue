@@ -20,9 +20,10 @@
 
 <script setup>
 import { useStore } from 'vuex';
+import { watch, computed } from 'vue';
 
 const store = useStore();
-const role = store.getters.user;
+const role = computed(() => store.getters.user || null);
 </script>
 
 <style scoped>
