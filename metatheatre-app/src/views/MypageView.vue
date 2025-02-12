@@ -5,8 +5,13 @@
         <div class="user-info">
             <div class="profile-container">
                 <div class="profile-image">
-                    <img :src="profileImage" alt="사용자 이미지" class="profile-img" />
+                    <img
+                        :src="profileImage || '/src/assets/basicprofile.jpg'"
+                        alt="사용자 이미지"
+                        class="profile-img"
+                    />
                 </div>
+
                 <div class="profile-details">
                     <p>아이디: {{ mypageData.mypageMember.userId }}</p>
                     <p>이메일: {{ mypageData.mypageMember.email }}</p>
@@ -71,7 +76,6 @@
                                 <span>예약 코드: {{ cancel.reservationCode }}</span>
                                 <span>좌석: {{ cancel.seatName }}</span>
                                 <span>결제 금액: {{ cancel.paymentAmount }} 원</span>
-                                <span>취소 시간: {{ new Date(cancel.cancelTime).toLocaleString() }}</span>
                             </div>
                         </div>
                     </div>
@@ -138,6 +142,7 @@ onMounted(async () => {
         if (response.ok) {
             const data = await response.json();
             mypageData.value = data; // 받은 데이터를 반영
+            console.log("프로필 여부 보기", mypageData.value);
             if (data.mypageMember.image) {
                 const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
                     responseType: "blob",
@@ -262,6 +267,10 @@ h2 {
     font-size: 18px;
     color: #333;
     margin-bottom: 12px;
+}
+
+h5 {
+    font-weight: bold;
 }
 
 .reservation-title {

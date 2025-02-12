@@ -22,7 +22,7 @@
                     {{ liked ? "❤️" : "🤍" }}
                 </button>
 
-                <button v-if="store.getters.isUser" @click="bookMovie" class="book-button">예매하기</button>
+                <button @click="bookMovie" class="book-button">예매하기</button>
             </div>
             <p class="movie-description">{{ movie.description }}</p>
             <div class="movie-header">
@@ -118,6 +118,7 @@ const chartOptionsAge = ref({
     grid: { show: false },
     colors: ["#ff9800", "#e91e63", "#2196f3", "#4caf50", "#9c27b0"],
     legend: { show: false },
+    dataLabels: { enabled: false },
 });
 
 const chartOptionsGender = ref({
