@@ -9,16 +9,11 @@
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
             <ul>
-                <li
-                    v-for="(day, index) in days"
-                    :key="day.fullDate"
-                    :class="{
-                        active: selectedDayIndex === index,
-                        saturday: day.dayName === '토',
-                        sunday: day.dayName === '일',
-                    }"
-                    @click="selectDay(index)"
-                >
+                <li v-for="(day, index) in days" :key="day.fullDate" :class="{
+                    active: selectedDayIndex === index,
+                    saturday: day.dayName === '토',
+                    sunday: day.dayName === '일',
+                }" @click="selectDay(index)">
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
                 </li>
@@ -26,18 +21,10 @@
         </div>
         <!-- 해당 날짜에 대한 상영 정보 -->
         <div class="schedule-container">
-            <div
-                v-for="theater in currentDaySchedule.theaters"
-                :key="theater.name"
-                class="theater-block"
-            >
+            <div v-for="theater in currentDaySchedule.theaters" :key="theater.name" class="theater-block">
                 <h2><span class="star-icon">★</span> {{ theater.name }}</h2>
 
-                <div
-                    v-for="screen in theater.screens"
-                    :key="screen.screenNo"
-                    class="screen-info"
-                >
+                <div v-for="screen in theater.screens" :key="screen.screenNo" class="screen-info">
                     <!-- 상단 줄: 예) '1관' / 'IMAX' -->
                     <div class="screen-top-row">
                         <div class="screen-title">{{ screen.screenNo }}</div>
@@ -46,13 +33,8 @@
 
                     <!-- 시간 버튼들 (가로 스크롤) -->
                     <div class="time-buttons">
-                        <button
-                            v-for="timeSlot in screen.timeSlots"
-                            :key="timeSlot.start"
-                            class="time-button"
-                            :disabled="timeSlot.availableSeats === 0"
-                            @click="goToNextPage(timeSlot)"
-                        >
+                        <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
+                            :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -76,6 +58,7 @@ import Swal from "sweetalert2";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 
+const role = computed(() => store.getters.user || null);
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
 const days = ref([]);
 const schedules = ref([]);
@@ -154,9 +137,8 @@ async function fetchSchedules() {
                 theatersMap[theaterName][screenKey].timeSlots.push({
                     start: item.startTime.substring(11, 16), // HH:mm 형식으로 자름
                     end: item.endTime.substring(11, 16),
-                    seats: `${item.capacity - item.reservedSeat}/${
-                        item.capacity
-                    }`,
+                    seats: `${item.capacity - item.reservedSeat}/${item.capacity
+                        }`,
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
@@ -204,13 +186,17 @@ function goToNextPage(timeSlot) {
         cancelButtonColor: "#d33",
     }).then((result) => {
         if (result.isConfirmed) {
-            router.push({
-                name: "SeatChoiceView",
-                params: {
-                    playingId: timeSlot.playingId,
-                    screenId: timeSlot.screenId,
-                },
-            });
+            if (role.value === "user") {
+                router.push({
+                    name: "SeatChoiceView",
+                    params: {
+                        playingId: timeSlot.playingId,
+                        screenId: timeSlot.screenId,
+                    },
+                });
+            } else {
+                router.push({ name: "LoginView" });
+            }
         }
     });
 }

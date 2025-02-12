@@ -3,12 +3,7 @@
         <!-- 상단: 영화 정보 (등급 + 제목) -->
         <div class="movie-info">
             <h2>
-                <img
-                    :src="watchGradeImg"
-                    alt="관람등급"
-                    class="grade-icon"
-                    v-if="watchGradeImg"
-                />
+                <img :src="watchGradeImg" alt="관람등급" class="grade-icon" v-if="watchGradeImg" />
                 {{ movieTitle }}
             </h2>
             <p>{{ formattedStartTime }}</p>
@@ -17,11 +12,7 @@
 
         <!-- 좌석 맵 (스크롤 영역) -->
         <div class="seat-scroll-wrapper">
-            <SeatMap
-                v-model="selectedSeats"
-                :total-persons="totalPersons"
-                :unavailable-seats="unavailableSeats"
-            />
+            <SeatMap v-model="selectedSeats" :total-persons="totalPersons" :unavailable-seats="unavailableSeats" />
         </div>
 
         <!-- 인원 선택 -->
@@ -57,11 +48,7 @@
         <div class="total-price">{{ totalPrice }}원</div>
 
         <!-- 예매하기 버튼 -->
-        <button
-            class="reserve-button"
-            :disabled="!canReserve"
-            @click="reserveTickets"
-        >
+        <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">
             예매하기
         </button>
     </div>
@@ -76,7 +63,6 @@ import age12Img from "../assets/12.png";
 import age15Img from "../assets/15.png";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();
@@ -205,39 +191,18 @@ const canReserve = computed(() => {
 
 // 예매하기
 function reserveTickets() {
-    // alert(
-    //     `청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
-    //     `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
-    //     `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(', ')}\n` +
-    //     `총금액: ${totalPrice.value}원\n` +
-    //     `예매 로직 처리 ...`
-    // )
-    console.log("movieId : " + movieId.value);
-    console.log("playingId : " + playingId.value);
-    console.log("adult : " + adultCount.value);
-    console.log("total : " + totalPrice.value);
-    console.log(selectedSeats.value.join(", "));
-    Swal.fire(
-        `청소년: ${youthCount.value}, 성인: ${adultCount.value}\n` +
-            `경로: ${seniorCount.value}, 우대: ${preferentialCount.value}\n` +
-            `좌석(${selectedSeats.value.length}개): ${selectedSeats.value.join(
-                ", "
-            )}\n` +
-            `총금액: ${totalPrice.value}원입니다`
-    ).then(() => {
-        router.push({
-            name: "PaymentPage",
-            params: {
-                movieId: movieId.value,
-                playingId: playingId.value,
-                seatName: selectedSeats.value.join(", "),
-                youthCount: youthCount.value,
-                adultCount: adultCount.value,
-                seniorCount: seniorCount.value,
-                preferentialCount: preferentialCount.value,
-                totalPrice: totalPrice.value,
-            },
-        });
+    router.push({
+        name: "PaymentPage",
+        params: {
+            movieId: movieId.value,
+            playingId: playingId.value,
+            seatName: selectedSeats.value.join(", "),
+            youthCount: youthCount.value,
+            adultCount: adultCount.value,
+            seniorCount: seniorCount.value,
+            preferentialCount: preferentialCount.value,
+            totalPrice: totalPrice.value,
+        },
     });
 }
 </script>
