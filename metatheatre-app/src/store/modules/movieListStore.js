@@ -6,7 +6,9 @@ const csMovies = ref([]);
 
 const fetchBoxOffice = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/movie/boxoffice");
+        const response = await axios.get(
+            "http://localhost:8080/movie/boxoffice"
+        );
         boMovies.value = response.data;
     } catch (error) {
         console.error("박스오피스 목록 가져오기 실패하였습니다.", error);
@@ -15,7 +17,9 @@ const fetchBoxOffice = async () => {
 
 const fetchComingSoon = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/movie/comingsoon");
+        const response = await axios.get(
+            "http://localhost:8080/movie/comingsoon"
+        );
         csMovies.value = response.data;
     } catch (error) {
         console.error("상영예정작 목록 가져오기 실패하였습니다.", error);
@@ -42,6 +46,7 @@ const useAutoFetch = (interval = 20000) => {
             timer = null;
         }
     };
+
     onMounted(() => {
         if (document.visibilityState === "visible") {
             startFetching();

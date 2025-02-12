@@ -2,11 +2,24 @@
     <NavBar />
     <div class="wrapper">
         <div class="showButtons">
-            <button @click="showBoxOffice" :class="{ active: currentTab === 'boxOffice' }">박스오피스</button>
-            <button @click="showComingSoon" :class="{ active: currentTab === 'comingSoon' }">상영예정작</button>
+            <button
+                @click="showBoxOffice"
+                :class="{ active: currentTab === 'boxOffice' }"
+            >
+                박스오피스
+            </button>
+            <button
+                @click="showComingSoon"
+                :class="{ active: currentTab === 'comingSoon' }"
+            >
+                상영예정작
+            </button>
         </div>
         <div class="movie-list">
-            <BoxOfficeMovies v-if="currentTab === 'boxOffice'" :targetRouteName="Detail" />
+            <BoxOfficeMovies
+                v-if="currentTab === 'boxOffice'"
+                :targetRouteName="Detail"
+            />
             <ComingSoonMovies v-if="currentTab === 'comingSoon'" />
         </div>
     </div>

@@ -9,11 +9,16 @@
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
             <ul>
-                <li v-for="(day, index) in days" :key="day.fullDate" :class="{
-                    active: selectedDayIndex === index,
-                    saturday: day.dayName === '토',
-                    sunday: day.dayName === '일',
-                }" @click="selectDay(index)">
+                <li
+                    v-for="(day, index) in days"
+                    :key="day.fullDate"
+                    :class="{
+                        active: selectedDayIndex === index,
+                        saturday: day.dayName === '토',
+                        sunday: day.dayName === '일',
+                    }"
+                    @click="selectDay(index)"
+                >
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
                 </li>
@@ -21,10 +26,18 @@
         </div>
         <!-- 해당 날짜에 대한 상영 정보 -->
         <div class="schedule-container">
-            <div v-for="theater in currentDaySchedule.theaters" :key="theater.name" class="theater-block">
+            <div
+                v-for="theater in currentDaySchedule.theaters"
+                :key="theater.name"
+                class="theater-block"
+            >
                 <h2><span class="star-icon">★</span> {{ theater.name }}</h2>
 
-                <div v-for="screen in theater.screens" :key="screen.screenNo" class="screen-info">
+                <div
+                    v-for="screen in theater.screens"
+                    :key="screen.screenNo"
+                    class="screen-info"
+                >
                     <!-- 상단 줄: 예) '1관' / 'IMAX' -->
                     <div class="screen-top-row">
                         <div class="screen-title">{{ screen.screenNo }}</div>
@@ -33,9 +46,13 @@
 
                     <!-- 시간 버튼들 (가로 스크롤) -->
                     <div class="time-buttons">
-                        <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
-                            :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
-
+                        <button
+                            v-for="timeSlot in screen.timeSlots"
+                            :key="timeSlot.start"
+                            class="time-button"
+                            :disabled="timeSlot.availableSeats === 0"
+                            @click="goToNextPage(timeSlot)"
+                        >
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -65,7 +82,9 @@ const schedules = ref([]);
 
 // 선택된 날짜 인덱스와 현재 날짜에 해당하는 스케줄
 const selectedDayIndex = ref(0);
-const currentDaySchedule = computed(() => schedules.value[selectedDayIndex.value] || { theaters: [] });
+const currentDaySchedule = computed(
+    () => schedules.value[selectedDayIndex.value] || { theaters: [] }
+);
 
 const route = useRoute();
 const router = useRouter();
@@ -100,7 +119,9 @@ async function fetchSchedules() {
         });
 
         // 상영일자를 기준으로 정렬
-        const sortedDates = Object.keys(scheduleByDate).sort((a, b) => new Date(a) - new Date(b));
+        const sortedDates = Object.keys(scheduleByDate).sort(
+            (a, b) => new Date(a) - new Date(b)
+        );
 
         // 날짜 선택 버튼용 days 배열 생성 (날짜와 요일 표시)
         days.value = sortedDates.map((dateStr) => {
@@ -133,23 +154,28 @@ async function fetchSchedules() {
                 theatersMap[theaterName][screenKey].timeSlots.push({
                     start: item.startTime.substring(11, 16), // HH:mm 형식으로 자름
                     end: item.endTime.substring(11, 16),
-                    seats: `${item.capacity - item.reservedSeat}/${item.capacity}`,
+                    seats: `${item.capacity - item.reservedSeat}/${
+                        item.capacity
+                    }`,
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
-                    availableSeats: item.capacity - item.reservedSeat
-                })
-            })
-
+                    availableSeats: item.capacity - item.reservedSeat,
+                });
+            });
 
             // 각 영화관 내 각 스크린의 timeSlots 배열을 start 시간을 기준으로 정렬
             const theaters = Object.keys(theatersMap).map((theaterName) => {
                 return {
                     name: theaterName,
-                    screens: Object.values(theatersMap[theaterName]).map((screen) => {
-                        screen.timeSlots.sort((a, b) => a.start.localeCompare(b.start));
-                        return screen;
-                    }),
+                    screens: Object.values(theatersMap[theaterName]).map(
+                        (screen) => {
+                            screen.timeSlots.sort((a, b) =>
+                                a.start.localeCompare(b.start)
+                            );
+                            return screen;
+                        }
+                    ),
                 };
             });
 
@@ -168,28 +194,25 @@ function selectDay(index) {
 // 시간 버튼 클릭 시 다음 페이지로 이동
 function goToNextPage(timeSlot) {
     Swal.fire({
-        icon: 'info',
-        title: '확인 창.',
+        icon: "info",
+        title: "확인 창.",
         text: `${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`,
         showCancelButton: true,
-        confirmButtonText: '예',
-        cancelButtonText: '아니오',
-        confirmButtonColor: '#429f50',
-        cancelButtonColor: '#d33',
-
-    })
-        .then((result) => {
-            if (result.isConfirmed) {
-                router.push({
-                    name: 'SeatChoiceView',
-                    params: {
-                        playingId: timeSlot.playingId,
-                        screenId: timeSlot.screenId
-                    }
-                })
-            }
-
-        })
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        confirmButtonColor: "#429f50",
+        cancelButtonColor: "#d33",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push({
+                name: "SeatChoiceView",
+                params: {
+                    playingId: timeSlot.playingId,
+                    screenId: timeSlot.screenId,
+                },
+            });
+        }
+    });
 }
 
 onMounted(() => {

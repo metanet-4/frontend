@@ -22,9 +22,12 @@ onMounted(() => {
 // 인증서 이미지 가져오기
 const fetchCertificateImage = async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/file/member/${memberId.value}/certificate`, {
-            responseType: "blob",
-        });
+        const response = await axios.get(
+            `http://localhost:8080/file/member/${memberId.value}/certificate`,
+            {
+                responseType: "blob",
+            }
+        );
 
         if (response.data) {
             certificateImage.value = URL.createObjectURL(response.data);
@@ -55,7 +58,10 @@ const certificateChange = async () => {
     formData.append("file", selectedImage.value);
 
     try {
-        await axios.put(`http://localhost:8080/file/member/${memberId.value}/certificate`, formData);
+        await axios.put(
+            `http://localhost:8080/file/member/${memberId.value}/certificate`,
+            formData
+        );
 
         certificateImage.value = URL.createObjectURL(selectedImage.value);
     } catch (error) {
@@ -66,7 +72,9 @@ const certificateChange = async () => {
 // 인증서 이미지 삭제
 const deleteCertificate = async () => {
     try {
-        await axios.delete(`http://localhost:8080/file/member/${memberId.value}/certificate`);
+        await axios.delete(
+            `http://localhost:8080/file/member/${memberId.value}/certificate`
+        );
         certificateImage.value = null;
         console.log("인증서 이미지가 삭제되었습니다.");
     } catch (error) {

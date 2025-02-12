@@ -1,20 +1,65 @@
 {
-  "title": {
-    "bo-ranking": "Box Office TOP 5",
-    "cs-ranking": "Upcoming Movies TOP 5"
-  },
-  "bo-10": {
-    "top1": "영화 1",
-    "top2": "영화 2",
-    "top3": "영화 3",
-    "top4": "영화 4",
-    "top5": "영화 5"
-  },
-  "cs-10": {
-    "top1": "영화 1",
-    "top2": "영화 2",
-    "top3": "영화 3",
-    "top4": "영화 4",
-    "top5": "영화 5"
-  }
+    "title": {
+        "bo-ranking": "Box Office TOP 5",
+        "cs-ranking": "Upcoming Movies TOP 5"
+    },
+    "bo-5": {
+        "20233261": {
+            "name": "Hear Me: Our Summer",
+            "director": "Cho Seonho",
+            "nation": "Korea"
+        },
+        "20249647": {
+            "name": "SURVIVE",
+            "director": "Frédéric Jannin",
+            "nation": "France"
+        },
+        "20246330": {
+            "name": "Memory",
+            "director": "Michel Franco",
+            "nation": "America"
+        },
+        "20248552": {
+            "name": "Silver Apricot",
+            "director": "Jang Manmin",
+            "nation": "Korea"
+        },
+        "20113795": {
+            "name": "The Spirit Of The Beehive",
+            "director": "Victor Erice",
+            "nation": "Spain"
+        }
+    },
+    "cs-5": {
+        "20244821": {
+            "name": "Mickey 17",
+            "director": "Bong Joonho",
+            "nation": "America"
+        },
+        "20241812": {
+            "name": "Arcadian",
+            "director": "Nicolas Cage",
+            "nation": "America"
+        },
+        "20212430": {
+            "name": "Life Unrehearsed",
+            "director": "BanBak jieun",
+            "nation": "Korea"
+        },
+        "20241389": {
+            "name": "Borderlands",
+            "director": "Eli Roth",
+            "nation": "America"
+        },
+        "20233944": {
+            "name": "Utopia",
+            "director": "Kim Jinhwang",
+            "nation": "Korea"
+        }
+    },
+    "etc": {
+        "minute": "m",
+        "audience": " audience",
+        "like": " likes"
+    }
 }

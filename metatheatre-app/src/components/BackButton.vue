@@ -1,5 +1,7 @@
 <template>
-    <button class="back-button" @click="$router.go(-1)">←</button>
+    <button class="back-button" @click="$router.go(-1)">
+        <i class="bi bi-arrow-left"></i>
+    </button>
 </template>
 
 <style scoped>
@@ -8,5 +10,6 @@
     border: none;
     background: none;
     cursor: pointer;
+    color: #1c3788;
 }
 </style>

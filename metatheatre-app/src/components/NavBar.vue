@@ -2,6 +2,7 @@
     <nav class="nav-bar">
         <!-- 상단: 로고 + 아이콘 그룹(하트, 벨) -->
         <div class="nav-top">
+            <BackButton />
             <router-link to="/">
                 <img :src="logo" alt="로고 이미지" class="logo" />
             </router-link>
@@ -20,9 +21,18 @@
 
         <!-- 검색창 영역 -->
         <div class="search-box">
-            <input v-model="keyword" type="text" placeholder="검색어를 입력하세요." @keyup.enter="searchMovie" />
+            <input
+                v-model="keyword"
+                type="text"
+                placeholder="검색어를 입력하세요."
+                @keyup.enter="searchMovie"
+            />
             <button @click="searchMovie" class="icon-button">
-                <img src="@/assets/search-icon.png" alt="검색 아이콘" class="search-icon" />
+                <img
+                    src="@/assets/search-icon.png"
+                    alt="검색 아이콘"
+                    class="search-icon"
+                />
             </button>
         </div>
     </nav>
@@ -40,6 +50,7 @@ import Modal from "./LikeModal.vue";
 import NotificationModal from "./NotificationModal.vue";
 import { EventBus } from "../services/EventBus";
 import ws from "../services/WebSocketService";
+import BackButton from "./BackButton.vue";
 
 const messages = ref([]);
 
@@ -102,31 +113,28 @@ const searchMovie = () => {
 .nav-bar {
     width: 100%;
     max-width: 390px;
-    /* 모바일 기준 가로폭 예시 */
     background: white;
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-
-    /* 상단/하단 구성용 패딩 등 */
     padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* 상단 로고 + 아이콘 그룹 */
 .nav-top {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    margin-left: 120px;
+    margin-left: 110px;
+    margin-right: 80px;
     width: 100px;
 }
 
@@ -142,7 +150,6 @@ const searchMovie = () => {
     background: none;
     border: none;
     cursor: pointer;
-    /* padding: 10; */
 }
 
 .icon-img {
@@ -150,7 +157,6 @@ const searchMovie = () => {
     height: 24px;
 }
 
-/* 검색 박스 */
 .search-box {
     width: 90%;
     margin-top: 10px;
@@ -165,14 +171,12 @@ const searchMovie = () => {
     outline: none;
     font-size: 0.9rem;
     padding-left: 15px;
-    /* 왼쪽 여백 */
 }
 
 .search-btn {
     background: none;
     border: none;
     margin-left: -40px;
-    /* 버튼을 오른쪽 안쪽에 겹치게 배치(예시) */
     cursor: pointer;
     padding: 0;
 }

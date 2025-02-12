@@ -1,6 +1,11 @@
 <template>
     <div class="cs-list">
-        <MovieCard v-for="movie in csMovies" :key="movie.id" :movie="movie" @movieClicked="goToDetailPage" />
+        <MovieCard
+            v-for="movie in csMovies"
+            :key="movie.id"
+            :movie="movie"
+            @movieClicked="goToDetailPage"
+        />
     </div>
 </template>
 

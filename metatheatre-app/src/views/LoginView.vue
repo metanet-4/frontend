@@ -39,8 +39,17 @@ const login = async () => {
             <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
         </router-link>
 
-        <input v-model="userId" placeholder="아이디를 입력하세요" class="input-box" />
-        <input v-model="password" type="password" placeholder="비밀번호를 입력하세요" class="input-box" />
+        <input
+            v-model="userId"
+            placeholder="아이디를 입력하세요"
+            class="input-box"
+        />
+        <input
+            v-model="password"
+            type="password"
+            placeholder="비밀번호를 입력하세요"
+            class="input-box"
+        />
 
         <button @click="login" class="login-btn">로그인</button>
 

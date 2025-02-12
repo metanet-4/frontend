@@ -13,17 +13,27 @@
         <ul class="ticket-info">
             <li>
                 <!-- ✅ watchGrade를 이미지로 표시 -->
-                <img v-if="watchGradeImg" :src="watchGradeImg" alt="관람 등급" class="watch-grade-image" />
+                <img
+                    v-if="watchGradeImg"
+                    :src="watchGradeImg"
+                    alt="관람 등급"
+                    class="watch-grade-image"
+                />
                 <span class="movie-title">{{ krName }}</span>
             </li>
-            <li>상영 시간 {{ formattedPlayingDate }} ({{ formattedStartTime }} ~ {{ formattedEndTime }})</li>
+            <li>
+                상영 시간 {{ formattedPlayingDate }} ({{ formattedStartTime }} ~
+                {{ formattedEndTime }})
+            </li>
             <li>상영관 {{ cinemaName }}/{{ screenName }}</li>
             <li>좌석 {{ seatName }} ({{ ticketType }})</li>
             <li>예매 번호 {{ reservationCode }}</li>
         </ul>
 
         <!-- 예매 취소 버튼 -->
-        <button class="cancel-button" @click="cancelReservation">예매 취소하기</button>
+        <button class="cancel-button" @click="cancelReservation">
+            예매 취소하기
+        </button>
     </div>
 </template>
 
@@ -106,7 +116,10 @@ async function loadReservation() {
         ticketType.value = data.ticketType;
 
         const codeText = `ReservationCode: ${reservationCode.value}`;
-        qrUrl.value = await QRCode.toDataURL(codeText, { width: 180, margin: 1 });
+        qrUrl.value = await QRCode.toDataURL(codeText, {
+            width: 180,
+            margin: 1,
+        });
     } catch (err) {
         console.error("예매 상세 정보 로드 오류:", err);
         alert("예매 상세 정보를 불러오지 못했습니다.");
@@ -118,7 +131,10 @@ async function cancelReservation() {
 
     try {
         const url = `http://localhost:8080/ticket/${reservationCode.value}/cancel`;
-        const response = await fetch(url, { method: "PATCH", credentials: "include" });
+        const response = await fetch(url, {
+            method: "PATCH",
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error("예매 취소에 실패했습니다.");
         }

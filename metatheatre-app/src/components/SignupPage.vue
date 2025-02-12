@@ -7,13 +7,42 @@
             </div>
             <form @submit.prevent="handleSubmit" class="form">
                 <div class="input-group">
-                    <input v-model="formData.name" type="text" placeholder="이름" class="input" />
-                    <input v-model="formData.birthdate" type="date" class="input" />
+                    <input
+                        v-model="formData.name"
+                        type="text"
+                        placeholder="이름"
+                        class="input"
+                    />
+                    <input
+                        v-model="formData.birthdate"
+                        type="date"
+                        class="input"
+                    />
                 </div>
-                <input v-model="formData.phone" type="tel" placeholder="전화번호" class="input full-width" />
-                <input v-model="formData.email" type="email" placeholder="이메일" class="input full-width" />
-                <input v-model="formData.username" type="text" placeholder="아이디" class="input full-width" />
-                <input v-model="formData.password" type="password" placeholder="비밀번호" class="input full-width" />
+                <input
+                    v-model="formData.phone"
+                    type="tel"
+                    placeholder="전화번호"
+                    class="input full-width"
+                />
+                <input
+                    v-model="formData.email"
+                    type="email"
+                    placeholder="이메일"
+                    class="input full-width"
+                />
+                <input
+                    v-model="formData.username"
+                    type="text"
+                    placeholder="아이디"
+                    class="input full-width"
+                />
+                <input
+                    v-model="formData.password"
+                    type="password"
+                    placeholder="비밀번호"
+                    class="input full-width"
+                />
                 <button type="submit" class="submit-btn">가입하기</button>
             </form>
         </div>

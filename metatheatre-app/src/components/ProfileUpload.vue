@@ -22,9 +22,12 @@ onMounted(() => {
 // 프로필 이미지 가져오기
 const fetchProfileImage = async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/file/member/${memberId.value}/profile`, {
-            responseType: "blob",
-        });
+        const response = await axios.get(
+            `http://localhost:8080/file/member/${memberId.value}/profile`,
+            {
+                responseType: "blob",
+            }
+        );
 
         if (response.data) {
             profileImage.value = URL.createObjectURL(response.data);
@@ -55,7 +58,10 @@ const profileChange = async () => {
     formData.append("file", selectedImage.value);
 
     try {
-        await axios.put(`http://localhost:8080/file/member/${memberId.value}/profile`, formData);
+        await axios.put(
+            `http://localhost:8080/file/member/${memberId.value}/profile`,
+            formData
+        );
 
         profileImage.value = URL.createObjectURL(selectedImage.value);
     } catch (error) {
@@ -66,7 +72,9 @@ const profileChange = async () => {
 // 프로필 이미지 삭제
 const deleteProfile = async () => {
     try {
-        await axios.delete(`http://localhost:8080/file/member/${memberId.value}/profile`);
+        await axios.delete(
+            `http://localhost:8080/file/member/${memberId.value}/profile`
+        );
         profileImage.value = null;
         console.log("프로필 이미지가 삭제되었습니다.");
     } catch (error) {

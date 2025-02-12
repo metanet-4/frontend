@@ -5,29 +5,55 @@
         <div class="user-info">
             <div class="profile-container">
                 <div class="profile-image">
-                    <img :src="profileImage" alt="사용자 이미지" class="profile-img" />
+                    <img
+                        :src="profileImage"
+                        alt="사용자 이미지"
+                        class="profile-img"
+                    />
                 </div>
                 <div class="profile-details">
                     <p>아이디: {{ mypageData.mypageMember.userId }}</p>
                     <p>이메일: {{ mypageData.mypageMember.email }}</p>
-                    <p>생일: {{ formatDate(mypageData.mypageMember.birthday) }}</p>
-                    <p>성별: {{ mypageData.mypageMember.gender === 1 ? "남성" : "여성" }}</p>
+                    <p>
+                        생일: {{ formatDate(mypageData.mypageMember.birthday) }}
+                    </p>
+                    <p>
+                        성별:
+                        {{
+                            mypageData.mypageMember.gender === 1
+                                ? "남성"
+                                : "여성"
+                        }}
+                    </p>
                 </div>
             </div>
         </div>
         <hr class="divider" />
         <div class="user-actions">
-            <router-link to="/edit-profile" class="action-text">회원 정보 수정</router-link>
-            <button @click="handleLogout" class="action-text logout-button">로그아웃</button>
+            <router-link to="/edit-profile" class="action-text"
+                >회원 정보 수정</router-link
+            >
+            <button @click="handleLogout" class="action-text logout-button">
+                로그아웃
+            </button>
 
-            <router-link to="/delete" class="action-text">회원 탈퇴</router-link>
+            <router-link to="/delete" class="action-text"
+                >회원 탈퇴</router-link
+            >
         </div>
         <!-- 예약 목록 -->
         <h2 class="reservation-title">예매 내역</h2>
         <div v-if="mypageData.reserveList.length > 0">
             <ul class="reservation-list">
-                <li v-for="(reservation, index) in mypageData.reserveList" :key="index" class="reservation-item">
-                    <router-link :to="`/reservation/${reservation.reservationCode}`" class="reservation-link">
+                <li
+                    v-for="(reservation, index) in mypageData.reserveList"
+                    :key="index"
+                    class="reservation-item"
+                >
+                    <router-link
+                        :to="`/reservation/${reservation.reservationCode}`"
+                        class="reservation-link"
+                    >
                         <div class="movie-info">
                             <img
                                 :src="reservation.mainImage"
@@ -36,12 +62,28 @@
                                 v-if="reservation.mainImage"
                             />
                             <div class="movie-details">
-                                <strong>{{ reservation.movieTitle }}</strong> ({{ reservation.screenName }})
+                                <strong>{{ reservation.movieTitle }}</strong>
+                                ({{ reservation.screenName }})
                                 <div class="reservation-details">
-                                    <span>상영 시간: {{ new Date(reservation.startTime).toLocaleString() }}</span>
-                                    <span>예약 코드: {{ reservation.reservationCode }}</span>
-                                    <span>좌석: {{ reservation.seatName }}</span>
-                                    <span>결제 금액: {{ reservation.paymentAmount }} 원</span>
+                                    <span
+                                        >상영 시간:
+                                        {{
+                                            new Date(
+                                                reservation.startTime
+                                            ).toLocaleString()
+                                        }}</span
+                                    >
+                                    <span
+                                        >예약 코드:
+                                        {{ reservation.reservationCode }}</span
+                                    >
+                                    <span
+                                        >좌석: {{ reservation.seatName }}</span
+                                    >
+                                    <span
+                                        >결제 금액:
+                                        {{ reservation.paymentAmount }} 원</span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -57,17 +99,48 @@
         <h2 class="reservation-title">취소 내역</h2>
         <div v-if="mypageData.cancelList.length > 0">
             <ul class="reservation-list">
-                <li v-for="(cancel, index) in mypageData.cancelList" :key="index" class="reservation-item">
+                <li
+                    v-for="(cancel, index) in mypageData.cancelList"
+                    :key="index"
+                    class="reservation-item"
+                >
                     <div class="movie-info">
-                        <img :src="cancel.mainImage" alt="영화 포스터" class="movie-poster" v-if="cancel.mainImage" />
+                        <img
+                            :src="cancel.mainImage"
+                            alt="영화 포스터"
+                            class="movie-poster"
+                            v-if="cancel.mainImage"
+                        />
                         <div class="movie-details">
-                            <strong>{{ cancel.movieTitle }}</strong> ({{ cancel.screenName }})
+                            <strong>{{ cancel.movieTitle }}</strong> ({{
+                                cancel.screenName
+                            }})
                             <div class="reservation-details">
-                                <span>상영 시간: {{ new Date(cancel.startTime).toLocaleString() }}</span>
-                                <span>예약 코드: {{ cancel.reservationCode }}</span>
+                                <span
+                                    >상영 시간:
+                                    {{
+                                        new Date(
+                                            cancel.startTime
+                                        ).toLocaleString()
+                                    }}</span
+                                >
+                                <span
+                                    >예약 코드:
+                                    {{ cancel.reservationCode }}</span
+                                >
                                 <span>좌석: {{ cancel.seatName }}</span>
-                                <span>결제 금액: {{ cancel.paymentAmount }} 원</span>
-                                <span>취소 시간: {{ new Date(cancel.cancelTime).toLocaleString() }}</span>
+                                <span
+                                    >결제 금액:
+                                    {{ cancel.paymentAmount }} 원</span
+                                >
+                                <span
+                                    >취소 시간:
+                                    {{
+                                        new Date(
+                                            cancel.cancelTime
+                                        ).toLocaleString()
+                                    }}</span
+                                >
                             </div>
                         </div>
                     </div>
@@ -136,9 +209,12 @@ onMounted(async () => {
             mypageData.value = data; // 받은 데이터를 반영
             console.log(data);
             if (data.mypageMember.image) {
-                const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
-                    responseType: "blob",
-                });
+                const response = await axios.get(
+                    `http://localhost:8080/file/member/${data.mypageMember.id}/profile`,
+                    {
+                        responseType: "blob",
+                    }
+                );
 
                 if (response.data) {
                     profileImage.value = URL.createObjectURL(response.data);

@@ -102,7 +102,12 @@ onMounted(() => {
         <!-- ✅ 프로필 사진 -->
         <div class="profile-section">
             <h2>프로필 사진</h2>
-            <img v-if="profileImage" :src="profileImage" alt="등록된 프로필 사진" class="profile-img" />
+            <img
+                v-if="profileImage"
+                :src="profileImage"
+                alt="등록된 프로필 사진"
+                class="profile-img"
+            />
             <p v-else class="no-image">등록된 프로필 사진이 없습니다.</p>
         </div>
 
@@ -111,7 +116,9 @@ onMounted(() => {
             <p><strong>아이디:</strong> {{ user.userId }}</p>
             <p><strong>이름:</strong> {{ user.name }}</p>
             <p><strong>이메일:</strong> {{ user.email }}</p>
-            <p><strong>성별:</strong> {{ user.gender === 1 ? "남성" : "여성" }}</p>
+            <p>
+                <strong>성별:</strong> {{ user.gender === 1 ? "남성" : "여성" }}
+            </p>
             <p><strong>전화번호:</strong> {{ user.phone }}</p>
             <p><strong>생년월일:</strong> {{ user.birthday }}</p>
         </div>
@@ -119,27 +126,41 @@ onMounted(() => {
         <!-- ✅ 장애인 인증서 -->
         <div class="certificate-section">
             <h2>장애인 인증서</h2>
-            <button @click="loadCertificate" class="certificate-btn">인증서 보기</button>
-            <p v-if="certificateError" class="error-msg">{{ certificateError }}</p>
+            <button @click="loadCertificate" class="certificate-btn">
+                인증서 보기
+            </button>
+            <p v-if="certificateError" class="error-msg">
+                {{ certificateError }}
+            </p>
         </div>
 
         <!-- ✅ 모달 창 -->
         <div v-if="isModalOpen" class="modal">
             <div class="modal-content">
                 <button @click="closeModal" class="close-btn">&times;</button>
-                <img :src="certificateImage" class="certificate-img" alt="장애인 인증서" />
+                <img
+                    :src="certificateImage"
+                    class="certificate-img"
+                    alt="장애인 인증서"
+                />
             </div>
         </div>
 
         <!-- ✅ 설정 -->
         <div class="settings-section">
-            <router-link to="/user/updateInfo"><button class="update-btn">회원 정보 수정</button></router-link>
-            <router-link to="/user/delete"><button class="delete-btn">회원 탈퇴</button></router-link>
+            <router-link to="/user/updateInfo"
+                ><button class="update-btn">회원 정보 수정</button></router-link
+            >
+            <router-link to="/user/delete"
+                ><button class="delete-btn">회원 탈퇴</button></router-link
+            >
         </div>
 
         <!-- ✅ 홈으로 이동 -->
         <div class="home-section">
-            <router-link to="/"><button class="home-btn">홈으로 이동</button></router-link>
+            <router-link to="/"
+                ><button class="home-btn">홈으로 이동</button></router-link
+            >
         </div>
     </div>
 

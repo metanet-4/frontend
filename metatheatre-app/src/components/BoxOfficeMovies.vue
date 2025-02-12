@@ -1,6 +1,11 @@
 <template>
     <div class="bo-list">
-        <MovieCard v-for="movie in boMovies" :key="movie.id" :movie="movie" @movieClicked="goToDetailPage" />
+        <MovieCard
+            v-for="movie in boMovies"
+            :key="movie.id"
+            :movie="movie"
+            @movieClicked="goToDetailPage"
+        />
     </div>
 </template>
 
