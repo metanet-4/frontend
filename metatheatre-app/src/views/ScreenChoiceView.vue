@@ -9,16 +9,11 @@
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
             <ul>
-                <li
-                    v-for="(day, index) in days"
-                    :key="day.fullDate"
-                    :class="{
-                        active: selectedDayIndex === index,
-                        saturday: day.dayName === '토',
-                        sunday: day.dayName === '일',
-                    }"
-                    @click="selectDay(index)"
-                >
+                <li v-for="(day, index) in days" :key="day.fullDate" :class="{
+                    active: selectedDayIndex === index,
+                    saturday: day.dayName === '토',
+                    sunday: day.dayName === '일',
+                }" @click="selectDay(index)">
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
                 </li>
@@ -38,12 +33,9 @@
 
                     <!-- 시간 버튼들 (가로 스크롤) -->
                     <div class="time-buttons">
-                        <button
-                            v-for="timeSlot in screen.timeSlots"
-                            :key="timeSlot.start"
-                            class="time-button"
-                            @click="goToNextPage(timeSlot)"
-                        >
+                        <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
+                            :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
+
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -145,8 +137,10 @@ async function fetchSchedules() {
                     playingId: item.playingId,
                     movieId: item.movieId,
                     screenId: item.screenId,
-                });
-            });
+                    availableSeats: item.capacity - item.reservedSeat
+                })
+            })
+
 
             // 각 영화관 내 각 스크린의 timeSlots 배열을 start 시간을 기준으로 정렬
             const theaters = Object.keys(theatersMap).map((theaterName) => {
@@ -173,15 +167,29 @@ function selectDay(index) {
 
 // 시간 버튼 클릭 시 다음 페이지로 이동
 function goToNextPage(timeSlot) {
-    Swal.fire(`${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`).then(() => {
-        router.push({
-            name: "SeatChoiceView",
-            params: {
-                playingId: timeSlot.playingId,
-                screenId: timeSlot.screenId,
-            },
-        });
-    });
+    Swal.fire({
+        icon: 'info',
+        title: '확인 창.',
+        text: `${timeSlot.start} ~ ${timeSlot.end} 시간대를\n 선택하셨습니다.`,
+        showCancelButton: true,
+        confirmButtonText: '예',
+        cancelButtonText: '아니오',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                router.push({
+                    name: 'SeatChoiceView',
+                    params: {
+                        playingId: timeSlot.playingId,
+                        screenId: timeSlot.screenId
+                    }
+                })
+            }
+
+        })
 }
 
 onMounted(() => {
@@ -326,6 +334,13 @@ onMounted(() => {
 
 .time-button:hover {
     background-color: #dde3ff;
+}
+
+.time-button:disabled {
+    background-color: #eee;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* 토요일: 파란색 글씨 */
