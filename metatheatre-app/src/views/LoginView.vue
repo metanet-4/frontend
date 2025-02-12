@@ -34,7 +34,9 @@ const login = async () => {
 
 <template>
     <div class="login-container">
-        <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+        <router-link to="/" class="logo-link">
+            <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+        </router-link>
 
         <input v-model="userId" placeholder="아이디를 입력하세요" class="input-box" />
         <input v-model="password" type="password" placeholder="비밀번호를 입력하세요" class="input-box" />
@@ -44,6 +46,8 @@ const login = async () => {
         <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
         <router-link to="/signup" class="signup-link">회원가입</router-link>
+
+        <div class="white-overlay"></div>
     </div>
 </template>
 
@@ -56,7 +60,9 @@ const login = async () => {
     height: 100vh;
     background-color: #ffffff;
 }
-
+.logo-link {
+    display: inline-block;
+}
 .logo {
     width: 200px;
     margin-bottom: 30px;
@@ -73,7 +79,7 @@ const login = async () => {
 .login-btn {
     width: 250px;
     padding: 10px;
-    background-color: #0044cc;
+    background-color:#283593;
     color: white;
     border: none;
     border-radius: 5px;
@@ -94,5 +100,14 @@ const login = async () => {
     text-decoration: none;
     color: black;
     border-bottom: 1px solid black;
+}
+.white-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* 하단 바 높이만큼 설정 */
+    background-color: white;
+    z-index: 9999; /* 최대한 높은 값으로 설정 */
 }
 </style>

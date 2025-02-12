@@ -1,13 +1,14 @@
 <template>
+  <NavBar />
   <div class="container">
-      <h1>회원 정보 수정</h1>
+      <h1 class="title">회원 정보 수정</h1>
 
       <!-- ✅ 프로필 사진 변경 -->
-      <h3>프로필 사진 변경</h3>
+      
       <img :src="profileImage" alt="프로필 사진" class="profile-img">
 
       <!-- ✅ 파일 선택 버튼 및 파일명 표시 -->
-      <label for="profileUpload" class="custom-file-upload">파일 선택</label>
+      <label for="profileUpload" class="custom-file-upload">사진 변경</label>
       <input id="profileUpload" type="file" @change="updateProfile">
       <span v-if="profileFileName">{{ profileFileName }}</span>
       
@@ -32,11 +33,11 @@
           <input type="password" v-model="password2" placeholder="비밀번호 확인 입력">
       </form>
 
-      <!-- ✅ 장애인 인증서 변경 -->
-      <h2>장애인 인증서 변경</h2>
-      <img :src="certificateImage" alt="장애인 인증서" class="certificate-img">
+      <!-- ✅ 우대 인증서 변경 -->
+  
+      <img :src="certificateImage" alt="우대 인증서" class="certificate-img">
 
-      <label for="certificateUpload" class="custom-file-upload">파일 선택</label>
+      <label for="certificateUpload" class="custom-file-upload">인증서 변경</label>
       <input id="certificateUpload" type="file" @change="updateCertificate">
       <span v-if="certificateFileName">{{ certificateFileName }}</span>
 
@@ -51,6 +52,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import NavBar from "../components/NavBar.vue";
 
 const router = useRouter();
 const userInfo = ref({ userId: '', name: '', email: '' });
@@ -86,51 +89,52 @@ onMounted(async () => {
       console.error('사용자 정보를 가져오는 중 오류 발생:', error);
   }
 
-  loadProfileImage();
-  loadCertificateImage();
+  await loadProfileImage(); // ✅ 이 부분을 확인하세요
+  await loadCertificateImage(); // ✅ 이 부분도 확인
 });
 
 // 프로필 사진 불러오기
 const loadProfileImage = async () => {
-  try {
-      const response = await fetch('/user/profile-pic', {
-          method: 'GET',
-          headers: { "Authorization": `Bearer ${getJwtToken()}` },
-          credentials: 'include'
-      });
+    try {
+        const response = await axios.get('http://localhost:8080/user/profile-pic', {
+            responseType: 'blob',
+            headers: { "Authorization": `Bearer ${getJwtToken()}` },
+        });
 
-      if (response.ok) {
-          const blob = await response.blob();
-          if (blob.size > 0) {
-              profileImage.value = URL.createObjectURL(blob);
-          }
-      }
-  } catch (error) {
-      console.error('프로필 사진 로드 실패:', error);
-  }
+        if (response.status === 200 && response.data.size > 0) {
+            profileImage.value = URL.createObjectURL(response.data);
+        } else {
+            console.warn("프로필 사진 없음, 기본 이미지 사용");
+            profileImage.value = '/images/default-profile.png'; // 기본 이미지 설정
+        }
+    } catch (error) {
+        console.error('프로필 사진 로드 실패:', error);
+        profileImage.value = '/images/default-profile.png'; // 오류 발생 시 기본 이미지
+    }
 };
 
-// 장애인 인증서 불러오기
+
+
+// 우대 인증서 불러오기
 const loadCertificateImage = async () => {
-  try {
-      const response = await fetch('/user/certificate', {
-          method: 'GET',
-          headers: { "Authorization": `Bearer ${getJwtToken()}` },
-          credentials: 'include'
-      });
+    try {
+        const response = await axios.get('http://localhost:8080/user/certificate', {
+            responseType: 'blob',
+            headers: { "Authorization": `Bearer ${getJwtToken()}` },
+            withCredentials: true, // ✅ 쿠키 기반 인증 유지
+        });
 
-      if (response.ok) {
-          const blob = await response.blob();
-          if (blob.size > 0) {
-              certificateImage.value = URL.createObjectURL(blob);
-          } else {
-              certificateUploadMsg.value = '등록된 장애인 인증서가 없습니다.';
-          }
-      }
-  } catch (error) {
-      console.error('장애인 인증서 로드 실패:', error);
-  }
+        if (response.status === 200 && response.data.size > 0) {
+            certificateImage.value = URL.createObjectURL(response.data);
+        } else {
+            console.warn("우대 인증서 없음, 기본 메시지 표시");
+            certificateUploadMsg.value = '등록된 우대 인증서가 없습니다.';
+        }
+    } catch (error) {
+        console.error('우대 인증서 로드 실패:', error);
+    }
 };
+
 
 // 회원 정보 수정 요청
 const updateUserInfo = async () => {
@@ -207,7 +211,7 @@ const updateProfile = async (event) => {
 
 
 
-// 장애인 인증서 변경
+// 우대 인증서 변경
 const updateCertificate = async (event) => {
     const file = event.target.files[0];
     if (!file) {
@@ -253,7 +257,7 @@ const goToProfile = () => {
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 140px 20px 20px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -262,7 +266,6 @@ const goToProfile = () => {
   overflow-y: auto; /* 세로 스크롤 가능하도록 설정 */
 }
 
-/* 프로필 사진 스타일 */
 /* 프로필 사진 (동그랗게) */
 .profile-img {
   border-radius: 50%;
@@ -271,17 +274,20 @@ const goToProfile = () => {
   object-fit: cover;
   display: block;
   margin: 10px auto;
+  border: 1px solid #d3d3d3; /* 연한 회색 테두리 */
 }
 
-/* 장애인 인증서 (네모 형태 유지) */
+/* 우대 인증서 (네모 형태 유지) */
 .certificate-img {
   width: 150px;
   height: 150px;
   object-fit: cover;
   display: block;
   margin: 10px auto;
-  border-radius: 8px; /* 약간 둥글게 하고 싶다면 추가 */
+  border-radius: 8px; /* 약간 둥글게 */
+  border: 1px solid #d3d3d3; /* 연한 회색 테두리 */
 }
+
 
 
 /* 버튼 스타일 */
@@ -297,7 +303,7 @@ button {
 
 /* 수정 버튼 */
 button[type="submit"] {
-  background-color: #4B0082; /* 진한 보라색 */
+  background-color: #283593; /* 진한 보라색 */
   color: white;
 }
 
@@ -341,13 +347,28 @@ input[type="file"] {
 .custom-file-upload {
   display: inline-block;
   padding: 8px 15px;
-  background-color: #4B0082;
+  background-color: #283593;
   color: white;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   margin-top: 5px;
 }
+.title {
+    color: #283593;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px; /* 밑줄 두께 조정 (일부 브라우저 지원) */
+    text-underline-offset: 8px; /* 밑줄과 글자 간격 조정 (일부 브라우저 지원) */
+}
+label {
+    display: block;   /* 블록 요소로 만들어 줄바꿈 */
+    text-align: left; /* 왼쪽 정렬 */
+    margin-bottom: 5px; /* 입력 필드와 간격 추가 */
+}
+
 
 </style>
 

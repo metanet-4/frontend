@@ -1,11 +1,13 @@
 <template>
+    <NavBar />
     <div class="container">
-        <h1>회원 탈퇴</h1>
+        <h1 class="title">회원 탈퇴</h1>
 
         <div class="user-info">
-            <p><strong>아이디:</strong> {{ userInfo.userId }}</p>
-            <p><strong>이메일:</strong> {{ userInfo.email }}</p>
-            <p><strong>생일:</strong> {{ formatDate(userInfo.birthday) }}</p>
+            <p><span class="label">이름</span> {{ userInfo.name }}</p>
+            <p><span class="label">아이디</span> {{ userInfo.userId }}</p>
+            <p><span class="label">이메일</span> {{ userInfo.email }}</p>
+            <p><span class="label">생일</span> {{ formatDate(userInfo.birthday) }}</p>
         </div>
 
         <p class="warning-text">모든 정보가 삭제됩니다.<br>정말 탈퇴하시겠습니까?</p>
@@ -20,22 +22,22 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import NavBar from "../components/NavBar.vue";
 
 const router = useRouter();
 const userInfo = ref({
+    name: '',
     userId: '',
     email: '',
     birthday: '',
 });
 
-// 생일 날짜 포맷 함수
 const formatDate = (timestamp) => {
     if (!timestamp) return '-';
     const date = new Date(timestamp);
-    return date.toLocaleDateString();
+    return date.toISOString().split('T')[0];
 };
 
-// 사용자 정보 불러오기
 onMounted(async () => {
     try {
         const response = await fetch('http://localhost:8080/mypage', { credentials: 'include' });
@@ -50,29 +52,20 @@ onMounted(async () => {
     }
 });
 
-// 회원 탈퇴 요청
 const confirmDelete = async () => {
     if (!confirm('정말로 회원 탈퇴를 진행하시겠습니까?')) {
         return;
     }
-
     try {
         const response = await fetch('http://localhost:8080/user/delete', {
             method: 'DELETE',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
         });
-
         if (response.ok) {
             alert('회원 탈퇴가 완료되었습니다.');
-
-            // ✅ 쿠키 삭제
             document.cookie = 'jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
             document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-
-            // ✅ 홈페이지로 이동
             router.push('/');
         } else {
             const errorMessage = await response.text();
@@ -83,7 +76,6 @@ const confirmDelete = async () => {
     }
 };
 
-// 취소 버튼: 마이페이지로 이동
 const cancelDelete = () => {
     router.push('/mypage');
 };
@@ -93,61 +85,66 @@ const cancelDelete = () => {
 .container {
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(246, 246, 246, 0.065);
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 160px 20px 20px;
     text-align: center;
-    
-    /* ✅ 중앙 정렬을 위한 추가 스타일 */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 12px;
 }
 
-
-h1 {
-    color: #333;
+.title {
+    color: #283593;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px; /* 밑줄 두께 조정 (일부 브라우저 지원) */
+    text-underline-offset: 8px; /* 밑줄과 글자 간격 조정 (일부 브라우저 지원) */
 }
 
 .user-info {
     text-align: left;
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #f1f1f1;
+    padding: 15px;
+    background-color: #f8f8f8;
     border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .user-info p {
-    margin: 5px 0;
     font-size: 16px;
-    color: #555;
+    color: #333;
+    margin: 5px 0;
+}
+
+.label {
+    color: gray;
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 .warning-text {
-    margin-top: 20px;
     font-size: 14px;
-    color: red;
+    color: #d32f2f;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .button-container {
-    margin-top: 20px;
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
 .button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
+    font-size: 16px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .delete-btn {
-    background-color: #4e73df;
+    background-color: #1A237E;
     color: white;
 }
 

@@ -17,6 +17,7 @@ import SignupView from "../views/SignupView.vue";
 import AdminUsersView from "../views/AdminUsersView.vue";
 import UpdateInfoView from "../views/UpdateInfoView.vue";
 import DeleteAccountView from "../views/DeleteAccountView.vue";
+import ErrorPage from '@/views/ErrorPage.vue';
 
 const routes = [
   { path: "/", component: MainView },
@@ -52,9 +53,11 @@ const routes = [
 
   { path: "/login", component: LoginView },
   { path: "/signup", component: SignupView },
-  { path: "/admin/users", component: AdminUsersView },
+  { path: "/admin/users", component: AdminUsersView,meta: { requiresAuth: true, role: 'ROLE_ADMIN' } },
   { path: "/edit-profile", component: UpdateInfoView },
   { path: "/delete", component: DeleteAccountView },
+  { path: '/error/403', component: ErrorPage },
+
 ];
 
 const router = createRouter({
