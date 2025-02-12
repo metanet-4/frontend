@@ -1,34 +1,34 @@
 <script setup>
-import { ref } from 'vue';
-import api from '@/api';
-import { useRouter } from 'vue-router';
-import ws from '../services/WebSocketService';
-import { useStore } from 'vuex';
+import { ref } from "vue";
+import api from "@/api";
+import { useRouter } from "vue-router";
+import ws from "../services/WebSocketService";
+import { useStore } from "vuex";
 
-const userId = ref('');
-const password = ref('');
-const errorMessage = ref('');
+const userId = ref("");
+const password = ref("");
+const errorMessage = ref("");
 const router = useRouter();
 const store = useStore();
 
 const login = async () => {
-    errorMessage.value = '';
+    errorMessage.value = "";
     try {
-        const response = await api.post('/auth/login', {
+        const response = await api.post("/auth/login", {
             userId: userId.value,
             password: password.value,
         });
 
         // 로그인 성공 시 JWT 쿠키 저장 (Spring Boot가 Set-Cookie로 처리하면 자동 저장됨)
-        console.log('로그인 성공:', response.data);
+        console.log("로그인 성공:", response.data);
         const role = response.data.role;
-        store.dispatch('login', role);
+        store.dispatch("login", role);
         // 홈 페이지로 이동
-        router.push('/');
-        ws.connect('ws://localhost:8080/ws');
-        console.log('웹 소켓 연결 성공');
+        router.push("/");
+        ws.connect("ws://localhost:8080/ws");
+        console.log("웹 소켓 연결 성공");
     } catch (error) {
-        errorMessage.value = error.response?.data || '로그인 실패';
+        errorMessage.value = error.response?.data || "로그인 실패";
     }
 };
 </script>

@@ -37,9 +37,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import NavBar from '../components/NavBar.vue';
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRoute } from "vue-router";
+import NavBar from "../components/NavBar.vue";
 
 const router = useRoute();
 const keyword = ref(router.params.keyword);
@@ -50,17 +50,17 @@ let intervalId = null;
 const fetchMovies = async (searchKeyword) => {
     try {
         const response = await fetch(`http://localhost:8080/movie/search/${encodeURIComponent(searchKeyword)}`, {
-            method: 'GET',
-            credentials: 'include',
+            method: "GET",
+            credentials: "include",
         });
         if (response.ok) {
             const data = await response.json();
             movies.value = data;
         } else {
-            console.error('API 호출 실패');
+            console.error("API 호출 실패");
         }
     } catch (error) {
-        console.error('데이터를 가져오는 중 오류 발생:', error);
+        console.error("데이터를 가져오는 중 오류 발생:", error);
     }
 };
 
@@ -68,11 +68,11 @@ const formatDate = (timestamp) => {
     if (timestamp) {
         const date = new Date(parseInt(timestamp));
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
         return `${year}-${month}-${day}`;
     }
-    return '';
+    return "";
 };
 
 // 🔹 컴포넌트 마운트 시 API 호출 및 10초마다 갱신

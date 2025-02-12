@@ -13,14 +13,14 @@
             class="bottom-link-button"
         >
             <i class="bi bi-person-lines-fill"></i>
-            <span>{{ role === null ? '로그인' : role === 'ROLE_ADMIN' ? '관리자페이지' : '마이페이지' }}</span>
+            <span>{{ role === null ? "로그인" : role === "ROLE_ADMIN" ? "관리자페이지" : "마이페이지" }}</span>
         </router-link>
     </div>
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { watch, computed } from 'vue';
+import { useStore } from "vuex";
+import { watch, computed } from "vue";
 
 const store = useStore();
 const role = computed(() => store.getters.user || null);
