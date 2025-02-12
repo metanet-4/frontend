@@ -18,38 +18,41 @@ import AdminUsersView from "../views/AdminUsersView.vue";
 import UpdateInfoView from "../views/UpdateInfoView.vue";
 import DeleteAccountView from "../views/DeleteAccountView.vue";
 import ErrorPage from '@/views/ErrorPage.vue';
+import MovieChoiceView from "../views/MovieChoiceView.vue";
 
 const routes = [
-  { path: "/", component: MainView },
-  { path: "/movies", component: MovieListView, name: "List" },
-  { path: "/movie/:movieId", component: MovieDetailView, name: "Detail" },
-  { path: "/cinema", component: CinemaChoiceView },
-  { path: "/mypage", component: MypageView },
-  {
-    path: "/screen?:cinemaId&:movieId",
-    component: ScreenChoiceView,
-    name: "ScreenChoiceView",
-  },
-  {
-    path: "/payment/:movieId/:playingId/:seatName/:youthCount/:adultCount/:seniorCount/:preferentialCount/:totalPrice",
-    name: "PaymentPage",
-    component: PaymentPage
-  },
-  { path: "/reservation/:reservationCode", component: ReservationDetail, props: true }, // 예매 상세 페이지
-  {
-    path: "/seats?:playingId",
-    component: SeatChoiceView,
-    name: "SeatChoiceView",
-  },
-  { path: "/seatMap", component: SeatMap },
-  {
-    path: "/movie/search/:keyword",
-    component: SearchMovieView,
-    name: "SearchMovieView",
-  },
-  // 파일 업로드 페이지 보기 편하라고 링크 만들었어요 적용하면 지워도 돼요!
-  { path: "/profileUpload", component: ProfileUpload },
-  { path: "/certificateUpload", component: CertificateUpload },
+    { path: "/", component: MainView },
+    { path: "/movies", component: MovieListView, name: "List" },
+    { path: "/movie/:movieId", component: MovieDetailView, name: "Detail" },
+    { path: "/cinema/:movieId", component: CinemaChoiceView, name: "CinemaChoice" },
+    { path: "/mypage", component: MypageView },
+    { path: "/movieList", component: MovieChoiceView, name: "MovieList" },
+    {
+        path: "/screen?:cinemaId&:movieId",
+        component: ScreenChoiceView,
+        name: "ScreenChoiceView",
+    },
+    {
+        path: "/payment/:movieId/:playingId/:seatName/:youthCount/:adultCount/:seniorCount/:preferentialCount/:totalPrice",
+        name: "PaymentPage",
+        component: PaymentPage
+    },
+    { path: "/reservation/:reservationCode", component: ReservationDetail, props: true }, // 예매 상세 페이지
+    {
+        path: "/seats?:playingId",
+        component: SeatChoiceView,
+        name: "SeatChoiceView",
+    },
+    { path: "/seatMap", component: SeatMap },
+    {
+        path: "/movie/search/:keyword",
+        component: SearchMovieView,
+        name: "SearchMovieView",
+    },
+    // 파일 업로드 페이지 보기 편하라고 링크 만들었어요 적용하면 지워도 돼요!
+    { path: "/profileUpload", component: ProfileUpload },
+    { path: "/certificateUpload", component: CertificateUpload },
+
 
   { path: "/login", component: LoginView },
   { path: "/signup", component: SignupView },
@@ -61,8 +64,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+    history: createWebHistory(),
+    routes,
 });
 
 export default router;

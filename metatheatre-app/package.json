@@ -16,6 +16,7 @@
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",
         "jwt-decode": "^4.0.0",
+        "mitt": "^3.0.1",
         "qrcode": "^1.5.4",
         "sweetalert2": "^11.15.10",
         "swiper": "^11.2.2",
