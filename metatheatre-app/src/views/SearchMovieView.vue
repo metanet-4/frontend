@@ -57,6 +57,7 @@ import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import NavBar from "../components/NavBar.vue";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const router = useRoute();
 const keyword = ref(router.params.keyword);
 const movies = ref([]);
@@ -65,7 +66,7 @@ let intervalId = null;
 // 🔹 API 호출 함수
 const fetchMovies = async (searchKeyword) => {
     try {
-        const response = await fetch(`http://localhost:8080/movie/search/${encodeURIComponent(searchKeyword)}`, {
+        const response = await fetch(`${API_BASE_URL}/movie/search/${encodeURIComponent(searchKeyword)}`, {
             method: "GET",
             credentials: "include",
         });

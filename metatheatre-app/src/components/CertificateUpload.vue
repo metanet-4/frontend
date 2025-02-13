@@ -10,6 +10,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import api from "@/api";
 
 const certificateImage = ref(null); // 미리보기 이미지
 const selectedImage = ref(null); // 선택된 파일
@@ -22,7 +23,7 @@ onMounted(() => {
 // 인증서 이미지 가져오기
 const fetchCertificateImage = async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/file/member/${memberId.value}/certificate`, {
+        const response = await api.get(`/file/member/${memberId.value}/certificate`, {
             responseType: "blob",
         });
 
@@ -55,7 +56,7 @@ const certificateChange = async () => {
     formData.append("file", selectedImage.value);
 
     try {
-        await axios.put(`http://localhost:8080/file/member/${memberId.value}/certificate`, formData);
+        await api.put(`/file/member/${memberId.value}/certificate`, formData);
 
         certificateImage.value = URL.createObjectURL(selectedImage.value);
     } catch (error) {
@@ -66,7 +67,7 @@ const certificateChange = async () => {
 // 인증서 이미지 삭제
 const deleteCertificate = async () => {
     try {
-        await axios.delete(`http://localhost:8080/file/member/${memberId.value}/certificate`);
+        await api.delete(`/file/member/${memberId.value}/certificate`);
         certificateImage.value = null;
         console.log("인증서 이미지가 삭제되었습니다.");
     } catch (error) {

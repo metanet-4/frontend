@@ -74,10 +74,12 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import NavBar from "../components/NavBar.vue";
 import axios from "axios";
+import api from "@/api";
 
 const route = useRoute(); // vue-router 사용하여 현재 movieId 파라미터 가져오기
 const router = useRouter();
 const store = useStore();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // 데이터 및 상태 변수 설정
 const movie = ref(null);
@@ -151,7 +153,7 @@ const chartOptionsGender = ref({
 
 // 영화 데이터 가져오기 함수
 const fetchMovieData = (movieId) => {
-    fetch(`http://localhost:8080/movie/detail/${movieId}`, {
+    fetch(`${API_BASE_URL}/movie/detail/${movieId}`, {
         credentials: "include",
     })
         .then((response) => response.json())
@@ -190,7 +192,7 @@ const fetchMovieData = (movieId) => {
 };
 
 const fetchLikeData = (movieId) => {
-    fetch(`http://localhost:8080/movie/detail/${movieId}/like`, {
+    fetch(`${API_BASE_URL}/movie/detail/${movieId}/like`, {
         credentials: "include",
     })
         .then((response) => response.json())
@@ -237,7 +239,7 @@ watch(
 const toggleLike = async () => {
     try {
         const movieId = route.params.movieId;
-        const response = await axios.post(`http://localhost:8080/movie/detail/${movieId}`, {
+        const response = await api.post(`/movie/detail/${movieId}`, {
             credentials: "include",
         });
         if (response.status === 200) {
@@ -284,8 +286,8 @@ const fetchYouTubeVideo = (query) => {
 const posterDownload = async () => {
     console.log(movie.value.mainImage);
     try {
-        const response = await axios.get(
-            `http://localhost:8080/movie/proxy-image?url=${encodeURIComponent(movie.value.mainImage)}`,
+        const response = await api.get(
+            `/movie/proxy-image?url=${encodeURIComponent(movie.value.mainImage)}`,
             {
                 responseType: "blob",
             }

@@ -10,6 +10,7 @@ const password = ref("");
 const errorMessage = ref("");
 const router = useRouter();
 const store = useStore();
+const WS_URL = import.meta.env.VITE_WS_URL;
 
 const login = async () => {
     errorMessage.value = "";
@@ -35,7 +36,7 @@ const login = async () => {
         store.dispatch("login", role);
 
         router.push("/");
-        ws.connect("ws://localhost:8080/ws");
+        ws.connect(WS_URL);
         console.log("웹 소켓 연결 성공");
     } catch (error) {
         // 백엔드 응답과 관계없이 동일한 오류 메시지 출력
