@@ -58,6 +58,7 @@ import Swal from "sweetalert2";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import api from "@/api";
 
 const store = useStore();
 
@@ -79,8 +80,8 @@ async function fetchSchedules() {
     const movieId = route.params.movieId;
 
     try {
-        const response = await axios.get(
-            `http://localhost:8080/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`,
+        const response = await api.get(
+            `/ticket/screen?cinemaId=${cinemaId}&movieId=${movieId}`,
             {
                 withCredentials: true,
             }

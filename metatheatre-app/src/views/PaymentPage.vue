@@ -22,6 +22,7 @@ import axios from "axios";
 import MovieInfo from "@/components/MovieInfo.vue";
 import PaymentMethods from "@/components/PaymentMethods.vue";
 import PaymentButton from "@/components/PaymentButton.vue";
+import api from "@/api";
 
 const route = useRoute();
 
@@ -52,7 +53,7 @@ const ticketType = ref("");
 const fetchMovieInfo = async () => {
     console.log("fetchMovieInfo 함수 실행됨, playingId:", playingId.value);
     try {
-        const response = await axios.get(`http://localhost:8080/ticket/playing/${playingId.value}`);
+        const response = await api.get(`/ticket/playing/${playingId.value}`);
         const data = response.data;
 
         // movie 상태 업데이트

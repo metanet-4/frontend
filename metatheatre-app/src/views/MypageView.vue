@@ -97,6 +97,7 @@ import ws from "../services/WebSocketService";
 import { useStore } from "vuex";
 import Swal from "sweetalert2";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const store = useStore();
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
 const profileImage = ref(null);
@@ -120,7 +121,7 @@ const formatDate = (timestamp) => {
 
 const handleLogout = async () => {
     try {
-        await fetch("http://localhost:8080/auth/logout", {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
             method: "POST",
             credentials: "include",
         });
@@ -154,7 +155,7 @@ const handleLogout = async () => {
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
     try {
-        const response = await fetch("http://localhost:8080/mypage", {
+        const response = await fetch(`${API_BASE_URL}/mypage`, {
             credentials: "include",
         });
         if (response.ok) {
@@ -162,7 +163,7 @@ onMounted(async () => {
             mypageData.value = data; // 받은 데이터를 반영
             console.log("프로필 여부 보기", mypageData.value);
             if (data.mypageMember.image) {
-                const response = await axios.get(`http://localhost:8080/file/member/${data.mypageMember.id}/profile`, {
+                const response = await api.get(`/file/member/${data.mypageMember.id}/profile`, {
                     responseType: "blob",
                 });
 

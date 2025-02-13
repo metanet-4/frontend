@@ -82,6 +82,7 @@ import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
+import api from "@/api";
 
 // 서버에서 받아올 지역/극장 데이터를 저장할 객체
 const regionData = ref({});
@@ -146,7 +147,7 @@ async function fetchRegions() {
   errorMessage.value = "";
   const movieId = route.params.movieId;
   try {
-    const response = await axios.get(`http://localhost:8080/ticket/cinema?movieId=${movieId}`, {
+    const response = await api.get(`/ticket/cinema?movieId=${movieId}`, {
       withCredentials: true,
     });
     regionData.value = response.data;

@@ -58,6 +58,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
 import Swal from "sweetalert2";
+import api from "@/api";
 
 const router = useRouter();
 const userInfo = ref({ userId: "", name: "", email: "" });
@@ -67,6 +68,7 @@ const profileImage = ref("/src/assets/basicprofile.jpg");
 const certificateImage = ref("");
 const profileUploadMsg = ref("");
 const certificateUploadMsg = ref("");
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // JWT 토큰 가져오기
 const getJwtToken = () => {
@@ -82,7 +84,7 @@ const getJwtToken = () => {
 // 사용자 정보 불러오기
 onMounted(async () => {
     try {
-        const response = await fetch("http://localhost:8080/mypage", { credentials: "include" });
+        const response = await fetch(`${API_BASE_URL}/mypage`, { credentials: "include" });
         if (response.ok) {
             const data = await response.json();
             userInfo.value = data.mypageMember;
@@ -101,7 +103,7 @@ onMounted(async () => {
 // 프로필 사진 불러오기
 const loadProfileImage = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/user/profile-pic", {
+        const response = await api.get("/user/profile-pic", {
             responseType: "blob",
             headers: { Authorization: `Bearer ${getJwtToken()}` },
         });
@@ -122,7 +124,7 @@ const loadProfileImage = async () => {
 // 우대 인증서 불러오기
 const loadCertificateImage = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/user/certificate", {
+        const response = await api.get("/user/certificate", {
             responseType: "blob",
             headers: { Authorization: `Bearer ${getJwtToken()}` },
             withCredentials: true, // ✅ 쿠키 기반 인증 유지
@@ -159,7 +161,7 @@ const updateUserInfo = async () => {
     };
 
     try {
-        const response = await fetch("http://localhost:8080/user/updateInfo", {
+        const response = await fetch(`${API_BASE_URL}/user/updateInfo`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -209,7 +211,7 @@ const updateProfile = async (event) => {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://localhost:8080/user/profile-pic", {
+        const response = await fetch(`${API_BASE_URL}/user/profile-pic`, {
             // ✅ URL 확인
             method: "PUT",
             headers: { Authorization: `Bearer ${getJwtToken()}` },
@@ -244,7 +246,7 @@ const updateCertificate = async (event) => {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://localhost:8080/user/certificate", {
+        const response = await fetch(`${API_BASE_URL}/user/certificate`, {
             // ✅ URL 확인
             method: "PUT",
             headers: { Authorization: `Bearer ${getJwtToken()}` },
