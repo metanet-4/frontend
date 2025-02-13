@@ -6,6 +6,7 @@
 
 <script>
 import { Bootpay } from "@bootpay/client-js";
+import Swal from "sweetalert2";
 
 export default {
     props: {
@@ -22,7 +23,12 @@ export default {
 
             console.log("결제 버튼 클릭됨 - 선택된 결제 수단:", this.method);
             if (!this.method) {
-                alert("결제 수단을 선택해주세요.");
+                Swal.fire({
+                    title: "결제 수단을 선택해주세요.",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "확인",
+                });
                 return;
             }
 
@@ -58,8 +64,6 @@ export default {
 
                 if (response.event === "done") {
                     console.log("결제 성공:", response);
-                    alert("결제가 완료되었습니다!");
-                    // 결제 성공 후 티켓 저장 API 호출
                     await this.reserveTicket(response.data.receipt_id);
                 } else if (response.event === "error") {
                     console.error("❌ 결제 실패:", response);

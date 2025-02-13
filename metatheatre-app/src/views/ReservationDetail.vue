@@ -12,7 +12,6 @@
         <!-- 예매 정보 -->
         <ul class="ticket-info">
             <li>
-                <!-- ✅ watchGrade를 이미지로 표시 -->
                 <img v-if="watchGradeImg" :src="watchGradeImg" alt="관람 등급" class="watch-grade-image" />
                 <span class="movie-title">{{ krName }}</span>
             </li>
@@ -29,21 +28,22 @@
 
 <script setup>
 import { ref, computed, onMounted, defineProps } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import QRCode from "qrcode";
+import Swal from "sweetalert2";
 import NavBar from "../components/NavBar.vue";
 
-// ✅ 관람 등급 이미지 불러오기
 import allImg from "../assets/all.png";
 import age12Img from "../assets/12.png";
 import age15Img from "../assets/15.png";
 
-// ✅ props에서 reservationCode를 받도록 명시
 defineProps({
     reservationCode: String,
 });
 
 const route = useRoute();
+const router = useRouter();
+
 const reservationCode = ref(route.params.reservationCode);
 
 const watchGrade = ref("");
@@ -57,7 +57,6 @@ const seatName = ref("");
 const ticketType = ref("");
 const qrUrl = ref("");
 
-// ✅ 관람 등급을 이미지로 변환
 const watchGradeImg = computed(() => {
     if (watchGrade.value === "전체관람가") return allImg;
     if (watchGrade.value === "12세이상관람가") return age12Img;
@@ -102,7 +101,7 @@ async function loadReservation() {
         endTime.value = data.endTime;
         cinemaName.value = data.cinemaName;
         screenName.value = data.screenName;
-        seatName.value = data.seatName;
+        seatName.value = data.seatList.map((seat) => seat.name).join(", ");
         ticketType.value = data.ticketType;
 
         const codeText = `ReservationCode: ${reservationCode.value}`;
@@ -112,12 +111,22 @@ async function loadReservation() {
         });
     } catch (err) {
         console.error("예매 상세 정보 로드 오류:", err);
-        alert("예매 상세 정보를 불러오지 못했습니다.");
     }
 }
 
 async function cancelReservation() {
-    if (!confirm("정말 예매를 취소하시겠습니까?")) return;
+    const result = await Swal.fire({
+        title: "정말 예매를 취소하시겠습니까?",
+        text: "예매 취소 후에는 복구할 수 없습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "네, 취소합니다",
+        cancelButtonText: "아니요",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
         const url = `http://localhost:8080/ticket/${reservationCode.value}/cancel`;
@@ -128,10 +137,17 @@ async function cancelReservation() {
         if (!response.ok) {
             throw new Error("예매 취소에 실패했습니다.");
         }
-        alert("예매가 취소되었습니다.");
+
+        router.push(`/mypage`);
     } catch (err) {
         console.error("예매 취소 오류:", err);
-        alert("예매 취소 중 오류가 발생했습니다.");
+        Swal.fire({
+            title: "오류 발생",
+            text: "예매 취소 중 문제가 발생했습니다.",
+            icon: "error",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "확인",
+        });
     }
 }
 
@@ -190,7 +206,6 @@ onMounted(loadReservation);
     margin-bottom: 6px;
 }
 
-/* ✅ 관람 등급 이미지 스타일 */
 .watch-grade-image {
     width: 24px;
     height: 24px;
