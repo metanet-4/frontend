@@ -48,11 +48,7 @@
         <div class="total-price">{{ totalPrice }}원</div>
 
         <!-- 예매하기 버튼 -->
-        <<<<<<< HEAD
         <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">예매하기</button>
-        =======
-        <button class="reserve-button" :disabled="!canReserve" @click="reserveTickets">예매하기</button>
-        >>>>>>> c5e3923ff00aa8c1da42feb330d3a575e0710a2a
     </div>
 </template>
 
