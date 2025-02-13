@@ -56,6 +56,7 @@ const screenName = ref("");
 const seatName = ref("");
 const ticketType = ref("");
 const qrUrl = ref("");
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const watchGradeImg = computed(() => {
     if (watchGrade.value === "전체관람가") return allImg;
@@ -87,7 +88,7 @@ function formatTime(epochMs) {
 
 async function loadReservation() {
     try {
-        const url = `http://localhost:8080/ticket/${reservationCode.value}`;
+        const url = `${API_BASE_URL}/ticket/${reservationCode.value}`;
         const response = await fetch(url, { credentials: "include" });
         if (!response.ok) {
             throw new Error("서버 에러 또는 예매 정보를 불러올 수 없습니다.");
@@ -129,7 +130,7 @@ async function cancelReservation() {
     if (!result.isConfirmed) return;
 
     try {
-        const url = `http://localhost:8080/ticket/${reservationCode.value}/cancel`;
+        const url = `${API_BASE_URL}/ticket/${reservationCode.value}/cancel`;
         const response = await fetch(url, {
             method: "PATCH",
             credentials: "include",

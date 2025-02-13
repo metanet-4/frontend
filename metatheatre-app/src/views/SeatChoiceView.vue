@@ -61,6 +61,7 @@ import age12Img from "../assets/12.png";
 import age15Img from "../assets/15.png";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import api from "@/api";
 
 const route = useRoute();
 const router = useRouter();
@@ -95,7 +96,7 @@ async function fetchSeats() {
     console.log("pp : " + playingId.value);
     console.log("ss : " + screenId.value);
     try {
-        const response = await axios.get(`http://localhost:8080/ticket/seats?playingId=${playingId.value}`, {
+        const response = await api.get(`/ticket/seats?playingId=${playingId.value}`, {
             withCredentials: true,
         });
         const data = response.data;

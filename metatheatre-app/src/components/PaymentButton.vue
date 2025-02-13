@@ -7,6 +7,7 @@
 <script>
 import { Bootpay } from "@bootpay/client-js";
 import Swal from "sweetalert2";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
     props: {
@@ -80,7 +81,7 @@ export default {
 
         async reserveTicket(receiptId) {
             try {
-                const response = await fetch("http://localhost:8080/payment", {
+                const response = await fetch(`${API_BASE_URL}/payment`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

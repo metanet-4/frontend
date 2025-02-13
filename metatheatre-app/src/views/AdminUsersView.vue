@@ -11,6 +11,7 @@ const certificateImage = ref("");
 const errorMessage = ref("");
 const router = useRouter();
 const store = useStore();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const getJwtToken = () => {
     const cookies = document.cookie.split("; ");
@@ -122,7 +123,7 @@ const deleteUser = async (userId) => {
 
 const handleLogout = async () => {
     try {
-        await fetch("http://localhost:8080/auth/logout", {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
             method: "POST",
             credentials: "include",
         });

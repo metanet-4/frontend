@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
 import { i18nStore } from "./i18nStore";
+import api from "@/api";
 
 const store = createStore({
     state: {
@@ -59,7 +60,7 @@ const store = createStore({
     actions: {
         async fetchLikeList({ commit }) {
             try {
-                const response = await axios.get("http://localhost:8080/likeList");
+                const response = await api.get("/likeList");
                 commit("setLikeList", response.data); // 받아온 데이터를 상태에 저장
                 commit("openModal"); // 데이터 가져온 후 모달 열기
             } catch (error) {

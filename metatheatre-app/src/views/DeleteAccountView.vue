@@ -25,6 +25,7 @@ import { ref, onMounted } from "vue";
 import NavBar from "../components/NavBar.vue";
 import Swal from "sweetalert2";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const router = useRouter();
 const userInfo = ref({
     name: "",
@@ -41,7 +42,7 @@ const formatDate = (timestamp) => {
 
 onMounted(async () => {
     try {
-        const response = await fetch("http://localhost:8080/mypage", { credentials: "include" });
+        const response = await fetch(`${API_BASE_URL}/mypage`, { credentials: "include" });
         if (response.ok) {
             const data = await response.json();
             userInfo.value = data.mypageMember;
@@ -70,7 +71,7 @@ const confirmDelete = async () => {
     if (!result.isConfirmed) return;
 
     try {
-        const response = await fetch("http://localhost:8080/user/delete", {
+        const response = await fetch(`${API_BASE_URL}/user/delete`, {
             method: "DELETE",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
