@@ -34,12 +34,15 @@
         </form>
 
         <!-- ✅ 우대 인증서 변경 -->
-
-        <img :src="certificateImage" alt="우대 인증서" class="certificate-img" />
+        <div v-if="certificateImage">
+            <img :src="certificateImage" alt="우대 인증서" class="certificate-img" />
+        </div>
+        <p v-else class="upload-msg">{{ certificateUploadMsg }}</p> <!-- ✅ 인증서 없을 경우 메시지 표시 -->
 
         <label for="certificateUpload" class="custom-file-upload">인증서 변경</label>
         <input id="certificateUpload" type="file" @change="updateCertificate" />
         <span v-if="certificateFileName">{{ certificateFileName }}</span>
+
 
         <!-- ✅ 버튼을 한 줄에 정렬 -->
         <div class="button-container">
@@ -60,7 +63,7 @@ const router = useRouter();
 const userInfo = ref({ userId: "", name: "", email: "" });
 const password = ref("");
 const password2 = ref("");
-const profileImage = ref("");
+const profileImage = ref("/src/assets/basicprofile.jpg");
 const certificateImage = ref("");
 const profileUploadMsg = ref("");
 const certificateUploadMsg = ref("");
@@ -94,6 +97,7 @@ onMounted(async () => {
     await loadCertificateImage(); // ✅ 이 부분도 확인
 });
 
+
 // 프로필 사진 불러오기
 const loadProfileImage = async () => {
     try {
@@ -106,13 +110,14 @@ const loadProfileImage = async () => {
             profileImage.value = URL.createObjectURL(response.data);
         } else {
             console.warn("프로필 사진 없음, 기본 이미지 사용");
-            profileImage.value = "/images/default-profile.png"; // 기본 이미지 설정
+            profileImage.value = "/src/assets/basicprofile.jpg"; // ✅ 기본 이미지 유지
         }
     } catch (error) {
         console.error("프로필 사진 로드 실패:", error);
-        profileImage.value = "/images/default-profile.png"; // 오류 발생 시 기본 이미지
+        profileImage.value = "/src/assets/basicprofile.jpg"; // ✅ 오류 발생 시 기본 이미지 사용
     }
 };
+
 
 // 우대 인증서 불러오기
 const loadCertificateImage = async () => {
@@ -125,14 +130,19 @@ const loadCertificateImage = async () => {
 
         if (response.status === 200 && response.data.size > 0) {
             certificateImage.value = URL.createObjectURL(response.data);
+            certificateUploadMsg.value = ""; // ✅ 인증서가 있으면 메시지 숨김
         } else {
-            console.warn("우대 인증서 없음, 기본 메시지 표시");
-            certificateUploadMsg.value = "등록된 우대 인증서가 없습니다.";
+            console.warn("우대 인증서 없음");
+            certificateImage.value = ""; // ✅ 이미지 비우기
+            certificateUploadMsg.value = "등록된 우대 인증서가 없습니다"; // ✅ 메시지 표시
         }
     } catch (error) {
         console.error("우대 인증서 로드 실패:", error);
+        certificateImage.value = ""; // ✅ 오류 발생 시 이미지 비우기
+        certificateUploadMsg.value = "등록된 우대 인증서가 없습니다"; // ✅ 메시지 표시
     }
 };
+
 
 // 회원 정보 수정 요청
 const updateUserInfo = async () => {

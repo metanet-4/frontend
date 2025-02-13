@@ -95,6 +95,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import ws from "../services/WebSocketService";
 import { useStore } from "vuex";
+import Swal from "sweetalert2";
 
 const store = useStore();
 const router = useRouter(); // ✅ Vue Router 인스턴스 생성
@@ -123,15 +124,32 @@ const handleLogout = async () => {
             method: "POST",
             credentials: "include",
         });
+
         ws.disconnect();
         store.dispatch("logout");
-        alert("로그아웃 되었습니다.");
         window.sessionStorage.removeItem("vuex");
-        router.push("/");
+
+        // ✅ SweetAlert2 성공 메시지
+        Swal.fire({
+            icon: "success",
+            title: "로그아웃 완료",
+            text: "로그아웃되었습니다.",
+            confirmButtonColor: "#6A5ACD", // 💜 사용자 선호 색상 반영
+        }).then(() => {
+            router.push("/");
+        });
+
     } catch (error) {
-        alert("로그아웃 실패: " + error.message);
+        // ✅ SweetAlert2 오류 메시지
+        Swal.fire({
+            icon: "error",
+            title: "로그아웃 실패",
+            text: error.message || "로그아웃 중 문제가 발생했습니다.",
+            confirmButtonColor: "#FF6347", // 🔴 오류 강조
+        });
     }
 };
+
 
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {
