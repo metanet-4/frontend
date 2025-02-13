@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import api from "@/api";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 const userId = ref("");
 const name = ref("");
@@ -110,21 +111,39 @@ const signup = async () => {
     formData.append("email", email.value);
     formData.append("birthday", birthDate.value);
     formData.append("gender", gender.value);
-    if (disabilityCertificate.value) {
-        formData.append("disabilityCertificate", disabilityCertificate.value);
-    }
-    try {
-        const response = await api.post("/auth/signup", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-            withCredentials: true, // ✅ 쿠키 포함 요청 설정
-        });
-        console.log("회원가입 성공:", response.data);
-        // ✅ 회원가입 성공 시 alert 띄우기
-        alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-        router.push("/login");
-    } catch (error) {
-        errorMessage.value = error.response?.data?.error || "회원가입 실패";
-    }
+  
+
+  if (disabilityCertificate.value) {
+      formData.append("disabilityCertificate", disabilityCertificate.value);
+  }
+  try {
+      const response = await api.post("/auth/signup", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true, // ✅ 쿠키 포함 요청 설정
+      });
+
+      console.log("회원가입 성공:", response.data);
+
+      // ✅ SweetAlert2 성공 메시지
+      Swal.fire({
+          icon: "success",
+          title: "회원가입 완료!",
+          text: "회원가입이 완료되었습니다.",
+          confirmButtonColor: "#6A5ACD", // 💜 사용자 선호 색상 반영
+      }).then(() => {
+          router.push("/login"); // ✅ 로그인 페이지로 이동
+      });
+
+  } catch (error) {
+      // ✅ SweetAlert2 오류 메시지
+      Swal.fire({
+          icon: "error",
+          title: "회원가입 실패",
+          text: error.response?.data?.error || "회원가입 중 문제가 발생했습니다.",
+          confirmButtonColor: "#FF6347", // 🔴 오류 강조
+      });
+  }
+
 };
 </script>
 
