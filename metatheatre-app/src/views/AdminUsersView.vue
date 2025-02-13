@@ -50,7 +50,6 @@ const showCertificate = async (userId) => {
     }
 };
 
-
 const updateDiscountStatus = async (userId, status) => {
     try {
         await api.put(
@@ -142,7 +141,6 @@ const handleLogout = async () => {
                 window.location.reload(); // 강제 새로고침
             });
         });
-
     } catch (error) {
         // ✅ SweetAlert2 오류 메시지
         Swal.fire({
@@ -154,13 +152,13 @@ const handleLogout = async () => {
     }
 };
 
-
 onMounted(loadUsers);
 </script>
 
 <template>
     <div class="admin-container">
-        <img src="@/assets/logo.png" alt="META THEATRE" class="logo" />
+        <router-link to="/"><img src="@/assets/logo.png" alt="META THEATRE" class="logo" /></router-link>
+
         <h2 class="title">사용자 관리</h2>
 
         <button @click="handleLogout" class="logout-button">로그아웃</button>
