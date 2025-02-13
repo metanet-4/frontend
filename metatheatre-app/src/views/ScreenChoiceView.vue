@@ -187,6 +187,7 @@ function goToNextPage(timeSlot) {
                     params: {
                         playingId: timeSlot.playingId,
                         screenId: timeSlot.screenId,
+                        movieId: route.params.movieId,
                     },
                 });
             } else {
