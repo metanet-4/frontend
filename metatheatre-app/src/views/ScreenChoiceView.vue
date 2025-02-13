@@ -9,16 +9,11 @@
         <!-- 날짜 선택 영역 -->
         <div class="date-container">
             <ul>
-                <li
-                    v-for="(day, index) in days"
-                    :key="day.fullDate"
-                    :class="{
-                        active: selectedDayIndex === index,
-                        saturday: day.dayName === '토',
-                        sunday: day.dayName === '일',
-                    }"
-                    @click="selectDay(index)"
-                >
+                <li v-for="(day, index) in days" :key="day.fullDate" :class="{
+                    active: selectedDayIndex === index,
+                    saturday: day.dayName === '토',
+                    sunday: day.dayName === '일',
+                }" @click="selectDay(index)">
                     <span class="date-number">{{ day.date }}</span>
                     <span class="date-day">{{ day.dayName }}</span>
                 </li>
@@ -38,13 +33,8 @@
 
                     <!-- 시간 버튼들 (가로 스크롤) -->
                     <div class="time-buttons">
-                        <button
-                            v-for="timeSlot in screen.timeSlots"
-                            :key="timeSlot.start"
-                            class="time-button"
-                            :disabled="timeSlot.availableSeats === 0"
-                            @click="goToNextPage(timeSlot)"
-                        >
+                        <button v-for="timeSlot in screen.timeSlots" :key="timeSlot.start" class="time-button"
+                            :disabled="timeSlot.availableSeats === 0" @click="goToNextPage(timeSlot)">
                             <div class="time-range">
                                 {{ timeSlot.start }}
                                 <p></p>
@@ -67,6 +57,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const role = computed(() => store.getters.user || null);
 // 날짜별 버튼과 스케줄 데이터를 저장할 변수
@@ -187,7 +180,7 @@ function goToNextPage(timeSlot) {
         cancelButtonColor: "#d33",
     }).then((result) => {
         if (result.isConfirmed) {
-            if (role.value === "user") {
+            if (role.value === "ROLE_USER") {
                 router.push({
                     name: "SeatChoiceView",
                     params: {
@@ -196,7 +189,7 @@ function goToNextPage(timeSlot) {
                     },
                 });
             } else {
-                router.push({ name: "LoginView" });
+                router.push({ path: "/login" });
             }
         }
     });
