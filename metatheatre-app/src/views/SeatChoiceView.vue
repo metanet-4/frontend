@@ -19,29 +19,37 @@
         <div class="people-container">
             <div class="people-row">
                 <label>청소년</label>
-                <button @click="decrement('youth')">-</button>
-                <span class="count-text">{{ youthCount }}</span>
-                <button @click="increment('youth')">+</button>
+                <div class="count-container">
+                    <button class="people-button" @click="decrement('youth')">-</button>
+                    <span class="count-text">{{ youthCount }}</span>
+                    <button class="people-button" @click="increment('youth')">+</button>
+                </div>
             </div>
             <div class="people-row">
                 <label>성인</label>
-                <button @click="decrement('adult')">-</button>
-                <span class="count-text">{{ adultCount }}</span>
-                <button @click="increment('adult')">+</button>
+                <div class="count-container">
+                    <button class="people-button" @click="decrement('adult')">-</button>
+                    <span class="count-text">{{ adultCount }}</span>
+                    <button class="people-button" @click="increment('adult')">+</button>
+                </div>
             </div>
         </div>
         <div class="people-container">
             <div class="people-row">
-                <label>우대</label>
-                <button @click="decrement('preferential')">-</button>
-                <span class="count-text">{{ preferentialCount }}</span>
-                <button @click="increment('preferential')">+</button>
+                <label>우&nbsp;&nbsp;대&nbsp;</label>
+                <div class="count-container">
+                    <button class="people-button" @click="decrement('preferential')">-</button>
+                    <span class="count-text">{{ preferentialCount }}</span>
+                    <button class="people-button" @click="increment('preferential')">+</button>
+                </div>
             </div>
             <div class="people-row">
                 <label> 경로</label>
-                <button @click="decrement('senior')">-</button>
-                <span class="count-text">{{ seniorCount }}</span>
-                <button @click="increment('senior')">+</button>
+                <div class="count-container">
+                    <button class="people-button" @click="decrement('senior')">-</button>
+                    <span class="count-text">{{ seniorCount }}</span>
+                    <button class="people-button" @click="increment('senior')">+</button>
+                </div>
             </div>
         </div>
         <!-- 총 가격 표시 -->
@@ -239,6 +247,7 @@ function reserveTickets() {
     width: 20px;
     text-align: center;
     font-weight: bold;
+    margin: 0 10px;
 }
 
 /* 총 가격 */
@@ -262,5 +271,18 @@ function reserveTickets() {
 .reserve-button:disabled {
     background-color: #999;
     cursor: not-allowed;
+}
+
+.people-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+}
+
+.count-container {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 0 7px;
+    margin-left: 10px;
 }
 </style>
