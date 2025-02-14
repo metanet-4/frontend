@@ -96,6 +96,7 @@ import axios from "axios";
 import ws from "../services/WebSocketService";
 import { useStore } from "vuex";
 import Swal from "sweetalert2";
+import api from "@/api";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const store = useStore();
@@ -139,7 +140,6 @@ const handleLogout = async () => {
         }).then(() => {
             router.push("/");
         });
-
     } catch (error) {
         // ✅ SweetAlert2 오류 메시지
         Swal.fire({
@@ -150,7 +150,6 @@ const handleLogout = async () => {
         });
     }
 };
-
 
 // 페이지가 로드될 때 API 호출
 onMounted(async () => {

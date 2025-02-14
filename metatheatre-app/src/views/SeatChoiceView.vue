@@ -1,5 +1,9 @@
 <template>
     <div class="seat-choice-view">
+        <header class="header">
+            <h1>좌석 선택</h1>
+            <hr />
+        </header>
         <!-- 상단: 영화 정보 (등급 + 제목) -->
         <div class="movie-info">
             <h2>
@@ -101,8 +105,7 @@ const seatName = ref("");
 async function fetchSeats() {
     playingId.value = route.params.playingId;
     screenId.value = route.params.screenId;
-    console.log("pp : " + playingId.value);
-    console.log("ss : " + screenId.value);
+    movieId.value = route.params.movieId;
     try {
         const response = await api.get(`/ticket/seats?playingId=${playingId.value}`, {
             withCredentials: true,
@@ -115,8 +118,6 @@ async function fetchSeats() {
         // 2) 영화 정보 (첫 번째 항목 기준)
         if (data.length > 0) {
             const first = data[0];
-            screenId.value = first.screenId;
-            movieId.value = first.movieId;
             movieTitle.value = first.krName;
             watchGrade.value = first.watchGrade;
             startTimeRaw.value = first.startTime;
@@ -126,6 +127,7 @@ async function fetchSeats() {
         // console.error(error)
     }
 }
+
 
 onMounted(() => {
     fetchSeats();
@@ -199,6 +201,21 @@ function reserveTickets() {
 </script>
 
 <style scoped>
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.header hr {
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
 .grade-icon {
     width: 20px;
     height: auto;
@@ -208,7 +225,7 @@ function reserveTickets() {
 
 .seat-choice-view {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     font-family: sans-serif;
     text-align: center;
