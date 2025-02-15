@@ -12,12 +12,7 @@
         <!-- 예매 정보 -->
         <ul class="ticket-info">
             <li>
-                <img
-                    v-if="watchGradeImg"
-                    :src="watchGradeImg"
-                    alt="관람 등급"
-                    class="watch-grade-image"
-                />
+                <img v-if="watchGradeImg" :src="watchGradeImg" alt="관람 등급" class="watch-grade-image" />
                 <span class="movie-title">{{ krName }}</span>
             </li>
             <li>상영 시간 {{ formattedPlayingDate }} ({{ formattedStartTime }} ~ {{ formattedEndTime }})</li>
@@ -35,7 +30,7 @@
 import { ref, computed, onMounted, defineProps } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import QRCode from "qrcode";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 import NavBar from "../components/NavBar.vue";
 
 import allImg from "../assets/all.png";
@@ -107,7 +102,7 @@ async function loadReservation() {
         endTime.value = data.endTime;
         cinemaName.value = data.cinemaName;
         screenName.value = data.screenName;
-        seatName.value = data.seatList.map(seat => seat.name).join(", "); 
+        seatName.value = data.seatList.map((seat) => seat.name).join(", ");
         ticketType.value = data.ticketType;
 
         const codeText = `ReservationCode: ${reservationCode.value}`;
@@ -129,7 +124,7 @@ async function cancelReservation() {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "네, 취소합니다",
-        cancelButtonText: "아니요"
+        cancelButtonText: "아니요",
     });
 
     if (!result.isConfirmed) return;
