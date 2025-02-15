@@ -229,8 +229,7 @@ function reserveTickets() {
     margin: 0 auto;
     font-family: sans-serif;
     text-align: center;
-    bottom: 70px;
-    padding: 20px;
+    padding: 20px 20px 80px 20px;
     overflow-y: auto;
 }
 
