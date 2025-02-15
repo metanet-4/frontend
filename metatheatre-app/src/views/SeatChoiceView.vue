@@ -229,7 +229,9 @@ function reserveTickets() {
     margin: 0 auto;
     font-family: sans-serif;
     text-align: center;
+    bottom: 70px;
     padding: 20px;
+    overflow-y: auto;
 }
 
 .movie-info {

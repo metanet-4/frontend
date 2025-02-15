@@ -214,7 +214,9 @@ onMounted(() => {
     max-width: 600px;
     margin: 0 auto;
     font-family: sans-serif;
+    bottom: 70px;
     padding: 20px;
+    overflow-y: auto;
 }
 
 /* 상단 헤더 */

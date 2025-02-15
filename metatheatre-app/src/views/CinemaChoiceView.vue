@@ -186,9 +186,11 @@ onMounted(() => {
   height: 100vh;
   max-width: 600px;
   margin: 0 auto;
+  bottom: 70px;
   font-family: sans-serif;
   padding-bottom: 80px;
   padding-top: 20px;
+  overflow-y: auto;
 }
 
 /* 상단 헤더 */
@@ -288,34 +290,5 @@ onMounted(() => {
   cursor: pointer;
   align-self: center;
   position: relative;
-}
-
-/* ----- 반응형(모바일) 스타일 ----- */
-@media (max-width: 768px) {
-  .theater-selection-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .region-list {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-  }
-
-  .theater-list {
-    width: 100%;
-    padding: 0;
-  }
-
-  .header h1 {
-    font-size: 1.2rem;
-  }
-
-  .complete-button {
-    width: 100%;
-    max-width: 300px;
-  }
 }
 </style>
