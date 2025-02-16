@@ -10,7 +10,7 @@
                 <img :src="watchGradeImg" alt="관람등급" class="grade-icon" v-if="watchGradeImg" />
                 {{ movieTitle }}
             </h2>
-            <p>{{ formattedStartTime }}</p>
+            <p>{{ timeInfo }}</p>
             <p>{{ cinemaInfo }}</p>
         </div>
 
@@ -101,6 +101,7 @@ const playingId = ref();
 const movieId = ref("");
 const screenId = ref();
 const seatName = ref("");
+const timeInfo = ref("");
 
 async function fetchSeats() {
     playingId.value = route.params.playingId;
@@ -128,9 +129,20 @@ async function fetchSeats() {
     }
 }
 
+const fetchMovieInfo = async () => {
+    try {
+        const response = await api.get(`/ticket/playing/${playingId.value}`);
+        const data = response.data;
+        timeInfo.value = data.playingTime;
+        console.log("ti : " + timeInfo);
+    } catch (error) {
+        console.error("영화 정보를 불러오는 중 오류 발생:", error);
+    }
+};
 
 onMounted(() => {
     fetchSeats();
+    fetchMovieInfo();
 });
 
 function increment(type) {
