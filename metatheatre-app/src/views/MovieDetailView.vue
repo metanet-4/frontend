@@ -184,9 +184,9 @@ const fetchMovieData = (movieId) => {
             totalAudience.value = audienceCount;
 
             //API 호출 부분 비활성화 처리 (영화 제목으로 YouTube 비디오 검색)
-            // if (movie.value.krName) {
-            //     fetchYouTubeVideo(movie.value.krName);
-            // }
+            if (movie.value.krName) {
+                fetchYouTubeVideo(movie.value.krName);
+            }
         })
         .catch((error) => console.error("Error fetching movie:", error));
 };
