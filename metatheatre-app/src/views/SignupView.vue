@@ -28,7 +28,38 @@ const handleFileUpload = (event) => {
     disabilityCertificate.value = event.target.files[0];
 };
 
-// ✅ 비밀번호 유효성 검사
+const checkUserId = async () => {
+    if (!userId.value) {
+        userIdMessage.value = "아이디를 입력해주세요.";
+        return;
+    }
+    try {
+        const response = await api.get("/auth/check-userId", {
+            params: { userId: userId.value },
+        });
+        userIdMessage.value = response.data ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.";
+    } catch (error) {
+        userIdMessage.value = "아이디 확인 실패";
+    }
+};
+
+const sendAuthCode = async () => {
+    emailMessage.value = "";
+    if (!email.value) {
+        emailMessage.value = "이메일을 입력해주세요.";
+        return;
+    }
+    try {
+        emailMessage.value = "인증번호가 이메일로 전송중입니다.";
+        const response = await api.post("/auth/send-code", null, {
+            params: { email: email.value },
+        });
+        emailMessage.value = response.status === 200 ? "인증번호가 이메일로 전송되었습니다." : "이메일 전송 실패.";
+    } catch (error) {
+        emailMessage.value = "이메일 전송 실패.";
+    }
+};
+
 const validatePassword = () => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!password.value) {
